@@ -51,7 +51,7 @@
         { "@type": "City", "name": "Cambridge" },
         { "@type": "AdministrativeArea", "name": "Region of Waterloo, Ontario" }
       ],
-      "knowsAbout": ["Accounts payable automation", "Invoice processing", "Lead intake automation", "Business reporting", "AI automation", "Workflow automation"],
+      "knowsAbout": ["Accounts payable automation", "Invoice processing", "Lead intake automation", "Business reporting", "AI automation", "Workflow automation", "Custom internal tools"],
       "hasOfferCatalog": {
         "@type": "OfferCatalog",
         "name": "Automations",
@@ -59,7 +59,8 @@
           { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Supplier invoice and payables automation", "description": "Invoices picked up from email and vendor portals, matched to purchase orders, posted to the accounting system and queued for payment. Anything that doesn't match waits for a person." } },
           { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Lead intake and follow-up automation", "description": "Website, email and form inquiries logged in the CRM with a reply sent, and open quotes chased on a schedule." } },
           { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Reporting automation", "description": "Weekly and monthly reports built overnight from the systems a business already uses, ready before the team starts." } },
-          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Routine process automation", "description": "The recurring jobs one person carries in their head, written down and run on a schedule with a log of every run." } }
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Routine process automation", "description": "The recurring jobs one person carries in their head, written down and run on a schedule with a log of every run." } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Custom automation and internal tools", "description": "Automations and small internal tools built to fit one business: inventory and reorder alerts, scheduling, timesheets, document drafting, onboarding, and moving data between apps." } }
         ]
       },
       "sameAs": [
@@ -73,6 +74,7 @@
       "mainEntity": [
         { "@type": "Question", "name": "What does a build cost?", "acceptedAnswer": { "@type": "Answer", "text": "Every build has a fixed price, written on the one-page plan before any work starts. You know the number before you commit." } },
         { "@type": "Question", "name": "Do we need new software?", "acceptedAnswer": { "@type": "Answer", "text": "Usually not. We connect the email, spreadsheets and accounting system you already use. If a new tool would genuinely help, we say so and why." } },
+        { "@type": "Question", "name": "Can you build something that isn't on this list?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Invoices, inquiries and reports are where most owners start, but every build is made to fit. If a job repeats and lives in email, spreadsheets or an app you log into, we can usually automate it. Tell us what it is and we'll say honestly whether it's worth building." } },
         { "@type": "Question", "name": "Will AI make mistakes with our numbers?", "acceptedAnswer": { "@type": "Answer", "text": "The AI reads and sorts; rules and checks do the math. Anything outside the rules, like an invoice that doesn't match its purchase order, is held for a person. You see every exception." } },
         { "@type": "Question", "name": "What happens when something breaks?", "acceptedAnswer": { "@type": "Answer", "text": "Every automation is monitored and logs each run. When something fails or looks wrong, it stops and tells a person instead of guessing." } },
         { "@type": "Question", "name": "How long does a first build take?", "acceptedAnswer": { "@type": "Answer", "text": "First builds typically ship within a few weeks. We run it alongside your team until it's trusted, then hand it over." } },
@@ -243,6 +245,26 @@
           </div>
           <h3>The process one person carries in their head</h3>
           <p>The spreadsheet, the checklist, the Friday routine only Dave knows how to do. Written down, built out, and running on a schedule with a log of what it did.</p>
+        </li>
+        <li class="card card-wide" data-glow data-reveal>
+          <div class="custom">
+            <div>
+              <p class="custom-kicker">Built to fit</p>
+              <h3>Something else eating your week?</h3>
+              <p>Those four are where most owners start, not the whole menu. Every build is made for the business in front of us, so if a job repeats and lives in software, it’s a candidate.</p>
+              <a class="link-quiet custom-link" href="#contact">Tell us what it is</a>
+            </div>
+            <ul class="custom-list" aria-label="Other things we build">
+              <li>Inventory counts and reorder alerts</li>
+              <li>Scheduling, dispatch and reminders</li>
+              <li>Timesheets and payroll prep</li>
+              <li>Quotes and contracts from templates</li>
+              <li>New-customer onboarding</li>
+              <li>Syncing apps that don’t talk</li>
+              <li>Dashboards and small internal tools</li>
+              <li>Month-end checklists</li>
+            </ul>
+          </div>
         </li>
       </ul>
     </div>
@@ -416,6 +438,10 @@
         <details>
           <summary>Do we need new software?</summary>
           <p>Usually not. We connect the email, spreadsheets and accounting system you already use. If a new tool would genuinely help, we say so and why.</p>
+        </details>
+        <details>
+          <summary>Can you build something that isn’t on this list?</summary>
+          <p>Yes. Invoices, inquiries and reports are where most owners start, but every build is made to fit. If a job repeats and lives in email, spreadsheets or an app you log into, we can usually automate it. Tell us what it is and we’ll say honestly whether it’s worth building.</p>
         </details>
         <details>
           <summary>Will AI make mistakes with our numbers?</summary>

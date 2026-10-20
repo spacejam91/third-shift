@@ -1,8 +1,8 @@
 // Copyright (c) 2026 Third Shift (thirdshift.ca). All rights reserved. See LICENSE.
 // The town along the bottom of the footer. Two rows of buildings, a hazy back row and the front row,
-// rise toward two downtowns, and the tower in the middle spells a word in its windows. Every lit
-// window has a dawn threshold (--t); the CSS switches it on once the footer is that far into view,
-// whole floors at a time, the way offices light up.
+// rise toward two downtowns around a pair of office towers in the middle. Every lit window has a dawn
+// threshold (--t); the CSS switches it on once the footer is that far into view, whole floors at a
+// time, the way offices light up. The tall tower's crown comes on last, as the shift ends.
 
 const W = 1440, H = 200;
 const NS = "http://www.w3.org/2000/svg";
@@ -12,22 +12,21 @@ const NS = "http://www.w3.org/2000/svg";
 const PX = 8, PY = 10, WIN_W = 4, WIN_H = 5;
 const WIDTHS = [32, 40, 40, 48, 48, 56, 56, 64, 72, 88];
 
-// 5x7 dot-matrix letters for the tower's word.
-const DOTS = {
-  D: ["11110", "10001", "10001", "10001", "10001", "10001", "11110"],
-  O: ["01110", "10001", "10001", "10001", "10001", "10001", "01110"],
-  N: ["10001", "11001", "11001", "10101", "10011", "10011", "10001"],
-  E: ["11111", "10000", "10000", "11110", "10000", "10000", "11111"],
-  ".": ["0", "0", "0", "0", "0", "0", "1"],
-};
-const WORD = "DONE.";
-const TOWER = { cols: 27, rows: 13 };
+// The rows are laid out around this footprint; the two towers stand in it, the shorter one on the
+// left and the tall one with the crown on the right.
+const CORE = { w: 224, h: 144 };
+const SHORT = { dx: 0, w: 96, floors: 11 };
+const TALL = { dx: 104, w: 120, floors: 15 };
 
 function el(tag, attrs, cls) {
   const e = document.createElementNS(NS, tag);
   for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, typeof v === "number" ? +v.toFixed(2) : v);
   if (cls) e.setAttribute("class", cls);
   return e;
+}
+
+function lcg(seed) {
+  return () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; };
 }
 
 // How tall the town is at x, 0..1: the core in the middle, uptown to the left, a smaller rise east.
@@ -38,21 +37,7 @@ function profile(x) {
   return Math.max(core, uptown, east);
 }
 
-// Grid cells ("col,row") that spell the word, centred across and sitting in the lower middle.
-function wordCells(cols, rows) {
-  const glyphs = [...WORD].map((ch) => DOTS[ch]);
-  const width = glyphs.reduce((n, g) => n + g[0].length, 0) + glyphs.length - 1;
-  let c0 = Math.floor((cols - width) / 2);
-  const r0 = rows - 7 - 2;
-  const on = new Set();
-  for (const g of glyphs) {
-    g.forEach((line, r) => [...line].forEach((bit, c) => { if (bit === "1") on.add(`${c0 + c},${r0 + r}`); }));
-    c0 += g[0].length + 1;
-  }
-  return on;
-}
-
-// Lays out one row of buildings outward from the tower's sides. Heights snap to whole floors and
+// Lays out one row of buildings outward from the core's sides. Heights snap to whole floors and
 // never sit level with the neighbour, gaps are a tight 2-3 units with the odd street.
 function row(rnd, { inner, minH, maxH, gap, street, nearCap }) {
   const out = [];
@@ -109,38 +94,44 @@ function roof(rnd, b, group, front) {
 }
 
 // A building's windows: unlit panes go into one shared path; lit ones are grouped by floor so a
-// floor comes on together, with a few stragglers lighting on their own.
-function windows(rnd, b, panes, lit, { litShare, floorShare }) {
+// floor comes on together, with a few stragglers lighting on their own. Most offices burn warm, the
+// odd one cool white. No building is left dark: if the dice leave it under minShare, the night shift
+// is in a few more offices (from `extra`, so topping one building up doesn't reshuffle the town).
+function windows(rnd, extra, b, panes, lit, { litShare, floorShare, minShare = 0, plain = false }) {
   const cols = Math.floor((b.w - 8) / PX) + 1;
   const gridW = (cols - 1) * PX + WIN_W;
   const x0 = b.x + (b.w - gridW) / 2;
   const y0 = H - b.h + 8;
-  const strips = b.h > 100 && rnd() < 0.3;           // tall towers sometimes have vertical strip windows
-  const bands = !strips && b.h < 60 && b.w >= 56 && rnd() < 0.5;   // low blocks sometimes have ribbon windows
+  const strips = !plain && b.h > 100 && rnd() < 0.3;           // tall towers sometimes have vertical strip windows
+  const floors = [], off = [];
+  let count = 0, on = 0;
   for (let r = 0; r < b.floors; r++) {
     const y = y0 + r * PY;
     const floorOn = rnd() < floorShare;
-    const floorT = 0.1 + rnd() * 0.8;
-    let d = "";
-    const singles = [];
-    const cells = bands ? [[x0, gridW]] : Array.from({ length: cols }, (_, c) => [x0 + c * PX, strips ? 2.4 : WIN_W]);
-    for (const [x, w] of cells) {
-      const hgt = strips ? 8 : bands ? 3 : WIN_H;
+    const floor = { t: 0.1 + rnd() * 0.8, d: "", singles: [] };
+    for (let c = 0; c < cols; c++) {
+      const x = x0 + c * PX, w = strips ? 2.4 : WIN_W, hgt = strips ? 8 : WIN_H;
       const rect = `M${+x.toFixed(2)} ${+y.toFixed(2)}h${w}v${hgt}h${-w}z`;
-      if (floorOn ? rnd() < 0.88 : false) d += rect;
-      else if (rnd() < litShare) singles.push(rect);
-      else panes.push(rect);
+      count++;
+      if (floorOn && rnd() < 0.88) { floor.d += rect; on++; }
+      else if (rnd() < litShare) { floor.singles.push(rect); on++; }
+      else off.push(rect);
     }
-    if (d) {
-      const p = el("path", { d });
-      p.style.setProperty("--t", floorT.toFixed(3));
-      lit.append(p);
-    }
-    for (const s of singles) {
-      const p = el("path", { d: s });
-      p.style.setProperty("--t", (0.1 + rnd() * 0.85).toFixed(3));
-      lit.append(p);
-    }
+    floors.push(floor);
+  }
+  for (let need = Math.ceil(count * minShare) - on; need > 0 && off.length; need--) {
+    const [rect] = off.splice(Math.floor(extra() * off.length), 1);
+    floors[0].singles.push(rect);
+  }
+  panes.push(...off);
+  const light = (d, t) => {
+    const p = el("path", { d }, extra() < 0.14 ? "cool" : null);
+    p.style.setProperty("--t", t.toFixed(3));
+    lit.append(p);
+  };
+  for (const floor of floors) {
+    if (floor.d) light(floor.d, floor.t);
+    for (const s of floor.singles) light(s, 0.1 + extra() * 0.85);
   }
 }
 
@@ -149,12 +140,7 @@ export function initSkyline(reduced) {
   const foot = svg && svg.closest("footer");
   if (!svg || !foot) return;
   svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
-  let seed = 20261020;
-  const rnd = () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; };
-
-  // The tower: the town's tallest, in the middle so it shows even on a phone.
-  const tw = (TOWER.cols - 1) * PX + WIN_W + 12;
-  const tower = { x: W / 2 - tw / 2, w: tw, floors: TOWER.rows, h: TOWER.rows * PY + 14 };
+  const rnd = lcg(20261020), extra = lcg(7001);
 
   const back = el("g", {}, "back");
   const backLit = el("g", {}, "back-lit");
@@ -162,56 +148,74 @@ export function initSkyline(reduced) {
   const frontLit = el("g", {}, "lit");
   const beacons = el("g", {}, "beacons");
   const backPanes = [], frontPanes = [];
+  const left = W / 2 - CORE.w / 2;
 
-  for (const b of row(rnd, { inner: tw / 2 - 30, minH: 52, maxH: 150, gap: [8, 16], street: [10, 18], nearCap: tower.h - 8 })) {
-    if (b.x > tower.x && b.x + b.w < tower.x + tower.w) continue;    // hidden behind the tower anyway
+  for (const b of row(rnd, { inner: CORE.w / 2 - 30, minH: 52, maxH: 150, gap: [8, 16], street: [10, 18], nearCap: CORE.h - 8 })) {
+    if (b.x > left && b.x + b.w < left + CORE.w) continue;    // hidden behind the towers anyway
     back.append(el("rect", { x: b.x, y: H - b.h, width: b.w, height: b.h + 2 }));
     roof(rnd, b, back, false);
-    windows(rnd, b, backPanes, backLit, { litShare: 0.1, floorShare: 0.04 });
+    windows(rnd, extra, b, backPanes, backLit, { litShare: 0.1, floorShare: 0.04, minShare: 0.06 });
   }
-  for (const b of row(rnd, { inner: tw / 2 + 3, minH: 26, maxH: 128, gap: [2, 3], street: [12, 20], nearCap: tower.h * 0.74 })) {
+  for (const b of row(rnd, { inner: CORE.w / 2 + 3, minH: 26, maxH: 128, gap: [2, 3], street: [12, 20], nearCap: CORE.h * 0.74 })) {
     front.append(el("rect", { x: b.x, y: H - b.h, width: b.w, height: b.h + 2 }));
     const beacon = roof(rnd, b, front, true);
     if (beacon && b.h > 80) beacons.append(el("circle", { cx: beacon[0], cy: beacon[1], r: 1.8 }));
-    windows(rnd, b, frontPanes, frontLit, { litShare: 0.2, floorShare: 0.09 });
+    windows(rnd, extra, b, frontPanes, frontLit, { litShare: 0.2, floorShare: 0.09, minShare: 0.26 });
   }
 
-  // Tower body, crown and mast, then its window grid with the word.
-  const top = H - tower.h;
-  front.append(
-    el("rect", { x: tower.x, y: top, width: tower.w, height: tower.h + 2 }),
-    el("rect", { x: tower.x + tower.w * 0.22, y: top - 12, width: tower.w * 0.56, height: 13 }),
-    el("rect", { x: W / 2 - 0.9, y: top - 34, width: 1.8, height: 23 }),
-  );
-  beacons.append(el("circle", { cx: W / 2, cy: top - 35, r: 2 }));
-  const cells = wordCells(TOWER.cols, TOWER.rows);
-  const word = el("g", { filter: "url(#ts-glow)" }, "word");
-  const gx = tower.x + 6;
-  for (let r = 0; r < TOWER.rows; r++) {
-    for (let c = 0; c < TOWER.cols; c++) {
-      const x = gx + c * PX, y = top + 8 + r * PY;
-      if (!cells.has(`${c},${r}`)) { frontPanes.push(`M${x} ${y}h${WIN_W}v${WIN_H}h${-WIN_W}z`); continue; }
-      // the lit dots are a touch bigger than a window, and sweep on from the first letter to the last
-      const dot = el("rect", { x: x - 0.5, y: y - 0.5, width: WIN_W + 1, height: WIN_H + 1 });
-      dot.style.setProperty("--t", (0.5 + (c / TOWER.cols) * 0.32 + rnd() * 0.02).toFixed(3));
-      dot.style.setProperty("--c", String(c));
-      word.append(dot);
-    }
+  // The towers: offices with the night shift in, a plant room and aerial on the short one, and a
+  // hazier block behind closing the gap between them.
+  const short = { x: left + SHORT.dx, w: SHORT.w, floors: SHORT.floors, h: SHORT.floors * PY + 14 };
+  const tall = { x: left + TALL.dx, w: TALL.w, floors: TALL.floors, h: TALL.floors * PY + 14 };
+  const behind = { x: short.x + short.w - 16, w: 40, floors: 13, h: 13 * PY + 14 };
+  back.append(el("rect", { x: behind.x, y: H - behind.h, width: behind.w, height: behind.h + 2 }));
+  windows(rnd, extra, behind, backPanes, backLit, { litShare: 0.1, floorShare: 0.04, minShare: 0.06, plain: true });
+  for (const t of [short, tall]) {
+    front.append(el("rect", { x: t.x, y: H - t.h, width: t.w, height: t.h + 2 }));
+    windows(rnd, extra, t, frontPanes, frontLit, { litShare: 0.26, floorShare: 0.2, minShare: 0.36, plain: true });
   }
+  const st = H - short.h;
+  front.append(
+    el("rect", { x: short.x + 14, y: st - 8, width: 40, height: 9 }),
+    el("rect", { x: short.x + 70 - 0.8, y: st - 20, width: 1.6, height: 21 }),
+  );
+  beacons.append(el("circle", { cx: short.x + 70, cy: st - 21, r: 1.8 }));
+
+  // The tall tower steps in twice to a mast. Its crown is uplit, ledge by ledge from the bottom.
+  const tt = H - tall.h, cx = tall.x + tall.w / 2;
+  const steps = [
+    { x: tall.x + 12, y: tt - 10, w: tall.w - 24, h: 10 },
+    { x: tall.x + 30, y: tt - 19, w: tall.w - 60, h: 9 },
+  ];
+  for (const s of steps) front.append(el("rect", { x: s.x, y: s.y, width: s.w, height: s.h + 1 }));
+  front.append(el("rect", { x: cx - 0.9, y: tt - 31, width: 1.8, height: 13 }));
+  beacons.append(el("circle", { cx, cy: tt - 32, r: 2 }));
+
+  const crown = el("g", { filter: "url(#ts-glow)" }, "crown");
+  const ledges = [{ x: tall.x, y: tt, w: tall.w }, ...steps];
+  ledges.forEach((s, i) => {
+    if (i > 0) {
+      const flood = el("rect", { x: s.x, y: s.y, width: s.w, height: s.h }, "flood");
+      flood.style.setProperty("--t", (0.85 + i * 0.03).toFixed(3));
+      crown.append(flood);
+    }
+    const ledge = el("rect", { x: s.x, y: s.y - 0.6, width: s.w, height: 1.2 }, "ledge");
+    ledge.style.setProperty("--t", (0.84 + i * 0.03).toFixed(3));
+    crown.append(ledge);
+  });
 
   const defs = el("defs", {});
-  const glow = el("filter", { id: "ts-glow", x: "-10%", y: "-30%", width: "120%", height: "160%" });
+  const wash = el("linearGradient", { id: "ts-crown", x1: 0, y1: 1, x2: 0, y2: 0 });
+  wash.append(el("stop", { offset: 0, "stop-color": "#F2B055", "stop-opacity": 0.55 }), el("stop", { offset: 1, "stop-color": "#F2B055", "stop-opacity": 0 }));
+  const glow = el("filter", { id: "ts-glow", x: "-10%", y: "-60%", width: "120%", height: "220%" });
   const merge = el("feMerge", {});
   merge.append(el("feMergeNode", { in: "blur" }), el("feMergeNode", { in: "SourceGraphic" }));
-  glow.append(el("feGaussianBlur", { stdDeviation: 1.8, result: "blur" }), merge);
-  defs.append(glow);
+  glow.append(el("feGaussianBlur", { stdDeviation: 1.6, result: "blur" }), merge);
+  defs.append(wash, glow);
 
-  // A train light running along the bottom of the town.
-  const track = el("rect", { x: 0, y: H - 3, width: W, height: 1 }, "track");
-  const train = el("rect", { x: -60, y: H - 6.5, width: 54, height: 3, rx: 1.5 }, "train");
   svg.append(
     defs, back, el("path", { d: backPanes.join("") }, "back-panes"), backLit,
-    front, el("path", { d: frontPanes.join("") }, "panes"), frontLit, word, beacons, track, train,
+    front, el("path", { d: frontPanes.join("") }, "panes"), frontLit, crown, beacons,
   );
 
   let queued = false;

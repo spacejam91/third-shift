@@ -62,6 +62,8 @@ Written on your behalf. Change anything that isn't true or isn't how you'd say i
 - "First builds typically ship within a few weeks."
 - "We'll reply within one business day." This appears on the form, in the auto-reply and in the success message, so keep all three in step.
 - "We meet in person" across Waterloo Region (Kitchener, Waterloo, Cambridge).
+- The "Built to fit" card under the four services lists other work we take on (inventory alerts, scheduling,
+  timesheets, quotes and contracts, onboarding, syncing apps, internal tools, month-end checklists). Cut any you wouldn't want to be asked for.
 - There's no pricing yet. A "from $X" line on step 2 helps small-business buyers decide to call.
 - The footer says "© 2026 Third Shift". Once the name is registered, make it "[Legal name] o/a Third Shift" there and in `LICENSE`.
 
@@ -80,6 +82,12 @@ Written on your behalf. Change anything that isn't true or isn't how you'd say i
 - `social-kit/` holds the logos, banners and animated videos for social profiles. Its README says what goes where.
 - `tools/` holds the local preview server, the CRM preview, and the brand and video renderers.
 - `docs/SYSTEM.md` describes how the site, the sales bot and the marketing bot work together: who owns what, the shared CRM, campaign tags, and how each bot reports back.
+
+Why this stack: browsers only run HTML, CSS and JavaScript, so every site ends up as those three whatever
+it's written in. Python or Java would mean renting and patching a server for pages that don't need one.
+When the site needs many pages of its own (case studies, a blog), move `site/` to a static site
+generator such as Astro: same output, same free hosting. Anything that needs a database or a login
+lives in the backend, as the intake and CRM already do.
 
 The bots: the sales bot (prospecting and outreach, repo `third-shift-outreach`) and the marketing bot (content and social) each run in their own lane and report to the main Third Shift session. The business manager bot gets a lane in `docs/SYSTEM.md` when it starts.
 

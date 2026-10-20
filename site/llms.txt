@@ -1,6 +1,6 @@
 # Third Shift
 
-> AI automation for small businesses in Kitchener-Waterloo, Ontario. Third Shift builds automations that clear supplier invoices, answer inquiries, chase quotes and build reports overnight, so the team starts the day with it done.
+> AI automation for small businesses in Kitchener-Waterloo, Ontario. Third Shift builds automations that clear supplier invoices, answer inquiries, chase quotes and build reports overnight, so the team starts the day with it done. Those are the usual starting points; every build is tailored, from inventory alerts and scheduling to document drafting, onboarding and small internal tools.
 
 - Who it's for: owner-run businesses in Waterloo Region (Kitchener, Waterloo, Cambridge) with roughly 5 to 100 people: distributors, trades, clinics, professional services, manufacturers.
 - How it starts: a free 20-minute call, then a one-page plan with a fixed price and a delivery date.

@@ -414,6 +414,16 @@ h3 { letter-spacing: -.012em; }
 .card h3 { margin: 0 0 .5rem; font-size: 1.28rem; font-weight: 600; }
 .card p { margin: 0; color: var(--muted); }
 
+/* The wide card under the four: everything else, as examples rather than a menu. */
+@media (min-width: 760px) { .card-wide { grid-column: 1 / -1; } }
+.custom { display: grid; gap: 1.4rem; }
+@media (min-width: 960px) { .custom { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 3rem; align-items: center; } }
+.card .custom-kicker { margin: 0 0 .7rem; font-family: var(--mono); font-size: .74rem; letter-spacing: .16em; text-transform: uppercase; color: var(--amber); }
+.custom-link { display: inline-block; margin-top: 1rem; }
+.custom-list { display: flex; flex-wrap: wrap; gap: .5rem; margin: 0; padding: 0; list-style: none; }
+.custom-list li { padding: .42rem .85rem; border: 1px solid var(--line-2); border-radius: 999px; font-size: .9rem; color: var(--ink-2); background: rgba(5, 9, 19, .5); }
+@media (max-width: 480px) { .custom-list li { padding: .38rem .7rem; font-size: .84rem; } }
+
 .viz {
   container-type: inline-size;
   position: relative; height: 140px; margin-bottom: 1.5rem; overflow: hidden;
@@ -915,31 +925,28 @@ textarea { min-height: 8.5rem; resize: vertical; }
 
 /* Dawn over the town at the foot of the page (effects.js builds it). */
 .foot { overflow: hidden; }
-.skyline { display: block; width: 100%; height: clamp(130px, 13.9vw, 320px); margin-top: clamp(2.5rem, 6vw, 4rem); margin-bottom: -3rem; --dawn-p: 0; }
+.skyline { display: block; width: 100%; height: max(130px, 13.889vw); margin-top: clamp(2.5rem, 6vw, 4rem); margin-bottom: -3rem; --dawn-p: 0; }
 .skyline .back { fill: #0B1527; }
 .skyline .back-panes { fill: #0F1A30; }
 .skyline .front { fill: #03060D; }
 .skyline .panes { fill: #0A1222; }
 /* Windows (whole floors, and a few on their own) light as the footer comes into view. */
 .skyline .lit path { fill: #FFD08A; opacity: clamp(0, calc((var(--dawn-p) - var(--t)) * 14), .9); transition: opacity .3s ease; }
+.skyline .lit path.cool { fill: #D3E2F8; opacity: clamp(0, calc((var(--dawn-p) - var(--t)) * 14), .62); }
 .skyline .back-lit path { fill: #F2B055; opacity: clamp(0, calc((var(--dawn-p) - var(--t)) * 14), .38); transition: opacity .3s ease; }
 .skyline .beacons { fill: #FF5A4E; opacity: .85; }
 .skyline.is-live .beacons circle { animation: beacon 2.6s steps(1) infinite; }
 .skyline.is-live .beacons circle:nth-child(3n) { animation-delay: .9s; }
 .skyline.is-live .beacons circle:nth-child(3n+1) { animation-delay: 1.7s; }
-.skyline .track { fill: rgba(242, 176, 85, .14); }
-.skyline .train { fill: #FFE3B5; opacity: 0; filter: drop-shadow(0 0 4px rgba(255, 214, 150, .9)); }
-.skyline.is-live .train { animation: train 13s linear infinite 1s; }
-/* The tower's word: dots sweep on, then a glint runs through them. */
-.skyline .word rect { fill: #FFD08A; opacity: clamp(0, calc((var(--dawn-p) - var(--t)) * 12), 1); transition: opacity .35s ease; }
-.skyline.is-live .word rect { animation: glint 5.5s ease-in-out infinite; animation-delay: calc(var(--c) * 55ms); }
-@keyframes glint { 0%, 72%, 100% { fill: #FFD08A; } 82% { fill: #FFF7EA; } }
+/* The tall tower's crown: uplit ledge by ledge, the last lights on as the shift ends. */
+.skyline .crown > * { opacity: clamp(0, calc((var(--dawn-p) - var(--t)) * 14), 1); transition: opacity .4s ease; }
+.skyline .crown .ledge { fill: #FFD08A; }
+.skyline .crown .flood { fill: url(#ts-crown); }
 @keyframes beacon { 50% { opacity: .15; } }
-@keyframes train { 0% { transform: translateX(0); opacity: 0; } 4%, 92% { opacity: 1; } 100% { transform: translateX(1560px); opacity: 0; } }
 
 @media (prefers-reduced-motion: reduce) {
-  .comet::before, .skyline .train { display: none; }
-  .skyline .beacons circle, .skyline .word rect { animation: none; }
+  .comet::before { display: none; }
+  .skyline .beacons circle { animation: none; }
   .nights-grid i, .lede .task { transition: none; }
 }
 
