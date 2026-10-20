@@ -30,9 +30,13 @@ function doGet() {
   } catch (err) {
     return HtmlService.createHtmlOutput("<p style='font-family:sans-serif'>This CRM is private.</p>").setTitle("Third Shift CRM");
   }
+  // The icon and the app-capable tag let Chrome or Edge install the CRM as its own window with the
+  // Third Shift moon on the desktop and taskbar, and let a phone open it full-screen from the home screen.
   return HtmlService.createHtmlOutputFromFile("Index")
     .setTitle("Third Shift CRM")
+    .setFaviconUrl("https://thirdshift.ca/icon-192.png")
     .addMetaTag("viewport", "width=device-width, initial-scale=1")
+    .addMetaTag("mobile-web-app-capable", "yes")
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.DEFAULT);
 }
 

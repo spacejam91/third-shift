@@ -81,7 +81,11 @@ thirdshift.ca@gmail.com for now and swap the link later. It's a one-line change.
 1. Create a new **standalone** Apps Script project (script.google.com > New project) as the Workspace user. Add the files from `backend/crm/` (`Schema.gs`, `Crm.gs`, `Index.html`, and the manifest from `appsscript.json`).
 2. Project Settings > Script properties: `CRM_SHEET_ID` = the long id in the CRM sheet's URL.
 3. Run `setupCrm` once. It builds the tabs, adds you to `CRM_USERS` and sets the 7 AM summary email.
-4. Deploy > New deployment > Web app (Execute as: User accessing, Who has access: Only myself). Bookmark the URL.
+4. Deploy > New deployment > Web app (Execute as: User accessing, Who has access: Only myself).
+   Open its URL and install it as a desktop app: in Chrome, the menu > Cast, save and share > Install
+   page as app (or Create shortcut, with "Open as window" ticked); in Edge, the menu > Apps > Install
+   this site as an app. It opens in its own window with the Third Shift icon, and you can pin it to the
+   taskbar. On a phone, use Add to Home screen.
 5. In the intake project's Script properties, set `CRM_URL` to that URL so new-lead emails link straight to the CRM.
 
 To try the CRM screen with demo data on this computer first: `node tools/crm-preview.mjs`, then open http://127.0.0.1:8915.
