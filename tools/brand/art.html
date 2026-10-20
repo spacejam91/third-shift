@@ -98,6 +98,8 @@ const W = innerWidth, H = innerHeight;
 // path between the two points where the circles meet, on a grid 100 times the site's 26-unit one.
 // Chrome breaks curves into straight segments sized to the drawing's own units, so the small grid
 // showed flat facets along the edge once exported at 1080 px; the large one draws a smooth curve.
+// The line under the name on covers, posts and the video lockup; the bios and the site say the same.
+const KICKER = "AI systems implementation · Ontario, Canada";
 const CRESCENT = "M1658.18 154.69A1200 1200 0 1 0 2461.66 1600.95A900 900 0 1 1 1658.18 154.69Z";
 
 function moon(size, { glow = false, color = "#F2B055" } = {}) {
@@ -271,7 +273,7 @@ function buildBanner() {
     }));
     stage.append(el("div", "shade"));
   }
-  const kick = el("div", "kicker", "AI automation · Ontario, Canada");
+  const kick = el("div", "kicker", KICKER);
   const head = el("h1", "head");
   head.append("The work that gets done while you ", el("em", null, "sleep."));
   // line= replaces the headline ("|" breaks the line); url=0 drops the address.
@@ -339,7 +341,7 @@ function buildSquare() {
   line.style.fontWeight = "600";
   line.style.maxWidth = (u * 62) + "px";
   line.style.lineHeight = "1.08";
-  const kick = el("div", "kicker", "AI automation · Ontario, Canada");
+  const kick = el("div", "kicker", KICKER);
   kick.style.fontSize = (u * 2.1) + "px";
   kick.style.marginTop = (u * 5) + "px";
   stage.append(el("div", "text", m, lock, line, kick));
@@ -360,7 +362,7 @@ function buildOg() {
   head.append("The work that", el("br"), "gets done while", el("br"), "you ", el("em", null, "sleep."));
   head.style.fontSize = (u * 12.4) + "px";
   head.style.margin = (u * 5) + "px 0 " + (u * 5) + "px";
-  const sub = el("div", "url", "AI automation for small businesses · thirdshift.ca");
+  const sub = el("div", "url", "AI systems implementation · thirdshift.ca");
   sub.style.fontSize = (u * 3.3) + "px";
   stage.append(el("div", "text", lock, head, sub));
 

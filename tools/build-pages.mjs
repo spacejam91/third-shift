@@ -125,7 +125,7 @@ export function renderPage(svc, collection = COLLECTIONS[0], policy = sitePolicy
 <meta property="og:image" content="https://thirdshift.ca/assets/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Third Shift: the work that gets done while you sleep. AI automation for small businesses in Ontario.">
+<meta property="og:image:alt" content="Third Shift: the work that gets done while you sleep. AI systems implementation, thirdshift.ca.">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">
 ${structuredData(svc, url, collection)}

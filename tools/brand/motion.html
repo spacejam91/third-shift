@@ -112,6 +112,8 @@ function svg(tag, attrs = {}) {
 // site's 26-unit one, where Chrome draws the curves smooth instead of in flat facets. At rest it is the
 // same path as tools/brand/art.html. phase(p) < 1 draws the disc with its shadow slid off toward the top
 // right instead (0 is the full disc), so the shadow can move in.
+// The line under the name on covers, posts and the video lockup; the bios and the site say the same.
+const KICKER = "AI systems implementation · Ontario, Canada";
 const CRESCENT = "M1658.18 154.69A1200 1200 0 1 0 2461.66 1600.95A900 900 0 1 1 1658.18 154.69Z";
 let ids = 0;
 function moon(size) {
@@ -157,7 +159,7 @@ function lockup(s) {
   const name = clipped("name", s * 9.5, "Third Shift");
   name.style.margin = `${px(s * 4)} 0 ${px(s * 3)}`;
   const lines = [["The work that gets"], ["done while you ", el("em", null, "sleep.")]].map((kids) => clipped("line", s * 5.2, ...kids));
-  const kick = el("div", "kicker", "AI automation · Ontario, Canada");
+  const kick = el("div", "kicker", KICKER);
   kick.style.fontSize = px(s * 2.1);
   kick.style.marginTop = px(s * 5);
   const url = el("div", "url", "thirdshift.ca");
