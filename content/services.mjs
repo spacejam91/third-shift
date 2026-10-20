@@ -68,7 +68,7 @@ export const SERVICES = [
       h2: "Built the way a careful AP team would want it",
       intro: "Third Shift is run by Aaron, who spent years inside accounts payable and finance operations. The checks are the ones a careful AP team makes by hand, written by someone who spent years making them.",
       items: [
-        ["Payments", "Nothing is paid without a person signing off, unless you decide otherwise."],
+        ["Payments", "No money is paid or sent without a person signing off, unless you decide otherwise."],
         ["Exceptions", "An invoice that doesn’t match, a supplier it hasn’t seen before, or anything outside the rules waits for a person, with the reason."],
         ["Bank details", "New or changed supplier banking information is always held for a call-back to a number you already have."],
         ["Access", "Read-only access to the inbox wherever possible, a separate login in your accounting system, and access you can revoke at any time."],
@@ -315,7 +315,7 @@ export const SERVICES = [
       h2: "Decisions stay with people",
       items: [
         ["Judgment calls", "Anything that needs a decision is prepared and handed to a person, not decided by the automation."],
-        ["Money", "Nothing pays, posts or sends money without a person signing off, unless you decide otherwise."],
+        ["Money", "No money is paid or sent without a person signing off, unless you decide otherwise."],
         ["Its own login", "Each automation has its own access, so you can switch it off without touching anything else."],
         ["Stops when unsure", "When something fails or looks wrong, it stops and tells a person instead of guessing."],
       ],
@@ -396,7 +396,7 @@ export const SERVICES = [
       kicker: "How we build",
       h2: "The same rules on every build",
       items: [
-        ["People approve the money", "Nothing pays, posts or sends money without a person signing off, unless you decide otherwise."],
+        ["People approve the money", "No money is paid or sent without a person signing off, unless you decide otherwise."],
         ["Your data stays in your systems", "We build inside the accounts you already own. Where an AI model reads a document, we use business-grade services that don’t train on your data."],
         ["The least access that does the job", "Read-only wherever possible, a separate login for each automation, and access you can revoke at any time."],
         ["Every run is logged", "A plain-English record of what ran, what it touched and what it held back."],

@@ -118,7 +118,6 @@ ${structuredData(svc, url)}
 </div>
 <div class="spot" aria-hidden="true"></div>
 <div class="progress" aria-hidden="true"></div>
-<div class="ring" aria-hidden="true"></div>
 
 <header class="top">
   <div class="wrap top-in">
@@ -136,7 +135,7 @@ ${structuredData(svc, url)}
       <a class="nav-link" href="./#services">What we automate</a>
       <a class="nav-link" href="./#how">How it starts</a>
       <a class="nav-link" href="./#faq">Questions</a>
-      <a class="btn btn-sm" href="./#contact" data-magnetic data-book>Book a call</a>
+      <a class="btn btn-sm" href="./#contact" data-book>Book a call</a>
     </nav>
   </div>
 </header>
@@ -156,7 +155,7 @@ ${structuredData(svc, url)}
         <h1 id="page-title">${svc.h1}</h1>
         <p class="lede">${esc(svc.lede)}</p>
         <div class="actions">
-          <a class="btn btn-lg comet" href="./#contact" data-magnetic data-book>Book a free 20-minute call</a>
+          <a class="btn btn-lg comet" href="./#contact" data-book>Book a free 20-minute call</a>
           <a class="link-quiet" href="#how-it-works">How it works</a>
         </div>
       </div>
@@ -280,7 +279,7 @@ ${lines(others, (o) => `        <li><a href="${o.slug}"><strong>${esc(o.crumb)}<
           <h2 id="cta-title">${esc(svc.cta.h2)}</h2>
           <p>${esc(svc.cta.p)}</p>
         </div>
-        <a class="btn btn-lg" href="./#contact" data-magnetic data-book>Book a free 20-minute call</a>
+        <a class="btn btn-lg" href="./#contact" data-book>Book a free 20-minute call</a>
       </div>
       <p class="cta-alt">Prefer email? <a href="mailto:thirdshift.ca@gmail.com">thirdshift.ca@gmail.com</a></p>
     </div>

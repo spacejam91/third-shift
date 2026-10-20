@@ -106,18 +106,6 @@ a { color: inherit; }
   transform-origin: left; transform: scaleX(var(--p));
   box-shadow: 0 0 12px rgba(242, 176, 85, .7);
 }
-/* A soft ring that trails the pointer and swells over anything clickable (effects.js). */
-.ring {
-  position: fixed; left: 0; top: 0; z-index: 70; pointer-events: none;
-  width: 34px; height: 34px; margin: -17px 0 0 -17px; border-radius: 50%;
-  border: 1.5px solid rgba(242, 176, 85, .55);
-  opacity: 0; transition: opacity .3s ease, width .25s var(--ease), height .25s var(--ease), margin .25s var(--ease), background-color .25s ease, border-color .25s ease;
-  will-change: transform;
-}
-.ring.is-on { opacity: 1; }
-.ring.is-hot { width: 58px; height: 58px; margin: -29px 0 0 -29px; background: rgba(242, 176, 85, .1); border-color: rgba(255, 208, 138, .8); }
-.ring.is-down { width: 24px; height: 24px; margin: -12px 0 0 -12px; }
-@media (hover: none) { .ring { display: none; } }
 .spot {
   position: fixed; inset: 0; z-index: -1; pointer-events: none;
   background: radial-gradient(560px circle at var(--mx, -1000px) var(--my, -1000px), rgba(242, 176, 85, .065), transparent 65%);
@@ -163,8 +151,7 @@ a { color: inherit; }
   padding: .85rem 1.35rem; border-radius: 999px; border: 0;
   font: inherit; font-weight: 600; line-height: 1.2; text-decoration: none; cursor: pointer;
   box-shadow: 0 12px 30px -14px rgba(242, 176, 85, .75), inset 0 1px 0 rgba(255, 255, 255, .4);
-  transition: box-shadow .3s ease, filter .2s ease, transform .35s var(--ease);
-  will-change: transform;
+  transition: box-shadow .3s ease, filter .2s ease;
 }
 .btn:hover { box-shadow: 0 16px 40px -12px rgba(242, 176, 85, .9), inset 0 1px 0 rgba(255, 255, 255, .5); filter: brightness(1.04); }
 .btn:active { filter: brightness(.96); }
@@ -434,7 +421,8 @@ h3 { letter-spacing: -.012em; }
 
 /* Each card's illustration is a small product at work. Loops join up cleanly: whatever is on screen
    at 100% is invisible or identical at 0%, so nothing ever parks or snaps. Base styles are the
-   finished picture, which is what reduced-motion visitors see. */
+   finished picture, which is what reduced-motion visitors see. effects.js plays each loop once as
+   its card arrives and rests it on a finished frame (VIZ_REST), so the cards don't loop forever. */
 .viz[data-label]::before {
   content: attr(data-label); position: absolute; left: 12px; top: 10px; z-index: 1;
   font-family: var(--mono); font-size: 9px; letter-spacing: .16em; color: var(--faint);
@@ -626,30 +614,7 @@ h3 { letter-spacing: -.012em; }
 .tick:has(input:checked) .tick-text { color: var(--ink); }
 .tick input:focus-visible ~ .tick-box { outline: 3px solid var(--amber); outline-offset: 3px; }
 
-/* ---------------------------------------------------------------- Jobs chip and phone call-to-action */
-
-.chip {
-  position: fixed; left: 1.25rem; bottom: 1.25rem; z-index: 55; max-width: 330px;
-  display: grid; grid-template-columns: 1fr auto; gap: .7rem 1rem; align-items: center;
-  padding: 1rem 1.1rem; border-radius: 16px;
-  background: rgba(10, 17, 34, .92); border: 1px solid rgba(242, 176, 85, .4);
-  box-shadow: 0 24px 60px -20px rgba(0, 0, 0, .8), 0 0 30px -10px rgba(242, 176, 85, .4);
-  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
-  font-size: .9rem; color: var(--ink-2);
-  animation: chipIn .6s var(--ease) both;
-}
-.chip[hidden] { display: none; }
-.chip p { margin: 0; grid-column: 1; }
-.chip p strong { font-family: var(--mono); color: var(--amber-hot); font-size: 1.05rem; }
-.chip p span { display: block; color: var(--muted); font-size: .84rem; margin-top: .15rem; }
-.chip-cta { grid-column: 1; justify-self: start; color: var(--on-amber); background: var(--amber); padding: .45rem .85rem; border-radius: 999px; font-weight: 600; font-size: .88rem; text-decoration: none; }
-.chip-cta:hover { background: var(--amber-hot); }
-.chip-x { grid-column: 2; grid-row: 1; align-self: start; position: relative; width: 26px; height: 26px; border: 0; border-radius: 50%; background: rgba(236, 241, 248, .08); cursor: pointer; }
-.chip-x::before, .chip-x::after { content: ""; position: absolute; left: 7px; right: 7px; top: 12px; height: 1.5px; background: var(--muted); transform: rotate(45deg); }
-.chip-x::after { transform: rotate(-45deg); }
-.chip-x:hover { background: rgba(236, 241, 248, .16); }
-@keyframes chipIn { from { opacity: 0; transform: translateY(16px) scale(.96); } to { opacity: 1; transform: none; } }
-@media (max-width: 760px) { .chip { display: none; } }
+/* ---------------------------------------------------------------- Phone call-to-action */
 
 .mobile-cta {
   position: fixed; left: 1rem; right: 1rem; bottom: calc(1rem + env(safe-area-inset-bottom, 0px)); z-index: 55;
@@ -908,13 +873,12 @@ textarea { min-height: 8.5rem; resize: vertical; }
   .viz-ap .d4 { transform: translate(calc(100cqw - 99px), 28px) scale(.6); box-shadow: 0 0 0 2px var(--amber); }
   .viz-leads .msg { opacity: .35; }
   .viz-leads .packet { opacity: 0; }
-  .ring, .progress { display: none; }
+  .progress { display: none; }
   .mobile-cta { transition: none; }
   .fx [data-reveal] { transform: none; }
   .spot, .hint, .scroll-cue { display: none; }
   .cursor::after { animation: none; }
-  .btn, .log { will-change: auto; }
-  .stamp { animation: none !important; opacity: .92 !important; }
+  .log { will-change: auto; }
 }
 
 /* ---------------------------------------------------------------- Night-to-dawn details */
@@ -1000,7 +964,7 @@ textarea { min-height: 8.5rem; resize: vertical; }
   .nights-grid i, .lede .task { transition: none; }
 }
 
-/* ---------------------------------------------------------------- Promises and stamps */
+/* ---------------------------------------------------------------- Promises */
 
 /* The four promises once more before the form: one still line in the log's mono voice. It replaced two
    crossing ribbons that scrolled both ways, which read as busy rather than calm. */
@@ -1016,23 +980,6 @@ textarea { min-height: 8.5rem; resize: vertical; }
   .promises ul { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: .8rem 1rem; text-align: center; }
   .promises li { justify-content: center; }
   .promises li + li::before { display: none; }
-}
-
-/* Rubber stamps on the promises that matter: they thump down as their step or card arrives. */
-.stamp {
-  display: inline-block; margin-top: 1rem; padding: .34rem .75rem .3rem;
-  font-family: var(--mono); font-size: .74rem; font-weight: 500; letter-spacing: .16em; text-transform: uppercase;
-  color: var(--amber-hot); border: 2px solid currentColor; border-radius: 6px; rotate: -6deg; opacity: .92;
-  box-shadow: inset 0 0 0 1px rgba(255, 208, 138, .22), 0 0 18px -6px rgba(242, 176, 85, .5);
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='60'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 -2.2 1.75'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='60'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 -2.2 1.75'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-.fx [data-reveal] .stamp { opacity: 0; }
-.fx [data-reveal].is-in .stamp { animation: stampDown .5s .55s cubic-bezier(.2, 1.5, .45, 1) both; }
-@keyframes stampDown {
-  from { opacity: 0; transform: scale(1.9); rotate: -15deg; }
-  55% { opacity: 1; }
-  to { opacity: .92; transform: none; rotate: -6deg; }
 }
 
 /* Shown only when the site is served from a domain that isn't Third Shift's (see app.js). */

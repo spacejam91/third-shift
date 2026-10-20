@@ -1,8 +1,11 @@
 // Copyright (c) 2026 Third Shift (thirdshift.ca). All rights reserved. See LICENSE.
 // Page-wide effects: the night-to-dawn sky, header state, scroll reveals, the steps progress line,
-// and the pointer effects (spotlight, glowing borders, magnetic buttons, tilting log panel).
-// Every effect writes CSS custom properties or transforms through the CSSOM, which the
+// the service cards' illustrations, and the pointer effects (spotlight, glowing borders, tilting
+// panels). Every effect writes CSS custom properties or transforms through the CSSOM, which the
 // Content-Security-Policy allows without 'unsafe-inline'.
+//
+// Taken out on Oct 20, 2026 because they read as busy rather than calm: a ring trailing the mouse,
+// buttons pulled toward it, and section labels that scrambled in from random characters.
 
 import { initSkyline } from "./skyline.js";
 
@@ -12,15 +15,13 @@ export function initEffects({ reduced = false, finePointer = false } = {}) {
   initReveal(root, reduced);
   initMobileCta();
   initSkyline(reduced);
-  if (!reduced) initScramble();
+  if (!reduced) initVizOnce(finePointer);
   if (!reduced) initComet();
   if (reduced || !finePointer) return;
   initSpotlight(root);
   initGlow();
-  initMagnetic();
   initTilt();
   initCardTilt();
-  initRing();
 }
 
 // The phone call-to-action bar shows once the hero is gone and hides again at the form (on the
@@ -39,49 +40,38 @@ function initMobileCta() {
   io.observe(contact);
 }
 
-// Section labels decode from machine noise into words as they arrive, and again on hover.
-function initScramble() {
-  const GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/#";
-  const els = [...document.querySelectorAll(".kicker")];
-  if (!els.length || !("IntersectionObserver" in window)) return;
+// The service cards' illustrations play through once as each card arrives, then rest on a finished
+// frame instead of looping; hovering a card plays it again. The times are the moment in each loop
+// where the picture is complete (all four are drawn in styles.css). Without this script the CSS loops
+// as before, so nothing breaks if it never runs.
+const VIZ_REST = { "viz-ap": 2160, "viz-leads": 4800, "viz-report": 4800, "viz-list": 4800 };
 
-  function run(el) {
-    const final = el.dataset.text;
-    cancelAnimationFrame(el._scramble || 0);
-    const start = performance.now();
-    const dur = 500 + final.length * 22;
-    const tick = (now) => {
-      const t = Math.min(1, (now - start) / dur);
-      const shown = Math.floor(t * final.length);
-      let out = final.slice(0, shown);
-      for (let i = shown; i < final.length; i++) out += final[i] === " " ? " " : GLYPHS[(Math.random() * GLYPHS.length) | 0];
-      el.textContent = out;
-      if (t < 1) el._scramble = requestAnimationFrame(tick);
-    };
-    el._scramble = requestAnimationFrame(tick);
-  }
-
+function initVizOnce(finePointer) {
+  if (!("IntersectionObserver" in window)) return;
   const io = new IntersectionObserver((entries) => {
     for (const e of entries) {
       if (!e.isIntersecting) continue;
-      run(e.target._shown);
+      e.target._play();
       io.unobserve(e.target);
     }
-  }, { threshold: 0.6 });
-  for (const el of els) {
-    // Screen readers get the real words; only an aria-hidden copy scrambles.
-    const text = el.textContent;
-    const real = document.createElement("span");
-    real.className = "sr-only";
-    real.textContent = text;
-    const shown = document.createElement("span");
-    shown.setAttribute("aria-hidden", "true");
-    shown.textContent = text;
-    shown.dataset.text = text;
-    el.replaceChildren(real, shown);
-    el._shown = shown;
-    io.observe(el);
-    el.addEventListener("pointerenter", () => run(shown));
+  }, { rootMargin: "0px 0px -8% 0px", threshold: 0.12 });
+
+  for (const viz of document.querySelectorAll(".viz")) {
+    const card = viz.closest(".card");
+    const rest = VIZ_REST[[...viz.classList].find((c) => c in VIZ_REST)];
+    if (!card || !rest || !viz.getAnimations) continue;
+    let timer = 0;
+    card._play = () => {
+      const anims = viz.getAnimations({ subtree: true });
+      clearTimeout(timer);
+      for (const a of anims) { a.currentTime = 0; a.play(); }
+      timer = setTimeout(() => {
+        for (const a of anims) { a.pause(); a.currentTime = rest; }
+        timer = 0;
+      }, rest);
+    };
+    io.observe(card);
+    if (finePointer) card.addEventListener("pointerenter", () => { if (!timer) card._play(); });
   }
 }
 
@@ -111,32 +101,6 @@ function initCardTilt() {
     });
     card.addEventListener("pointerleave", () => { card.style.rotate = ""; });
   }
-}
-
-// A soft ring that trails the mouse and swells over anything clickable.
-function initRing() {
-  const ring = document.querySelector(".ring");
-  if (!ring) return;
-  const HOT = "a, button, input, textarea, select, summary, label, [data-magnetic]";
-  let x = -100, y = -100, cx = x, cy = y, raf = 0;
-
-  function frame() {
-    cx += (x - cx) * 0.22;
-    cy += (y - cy) * 0.22;
-    ring.style.transform = `translate3d(${cx.toFixed(1)}px, ${cy.toFixed(1)}px, 0)`;
-    raf = Math.abs(x - cx) + Math.abs(y - cy) > 0.3 ? requestAnimationFrame(frame) : 0;
-  }
-  window.addEventListener("pointermove", (e) => {
-    if (e.pointerType !== "mouse") return;
-    x = e.clientX;
-    y = e.clientY;
-    if (!ring.classList.contains("is-on")) { cx = x; cy = y; ring.classList.add("is-on"); }
-    ring.classList.toggle("is-hot", !!(e.target.closest && e.target.closest(HOT)));
-    if (!raf) raf = requestAnimationFrame(frame);
-  }, { passive: true });
-  window.addEventListener("pointerdown", () => ring.classList.add("is-down"), { passive: true });
-  window.addEventListener("pointerup", () => ring.classList.remove("is-down"), { passive: true });
-  document.documentElement.addEventListener("pointerleave", () => ring.classList.remove("is-on"));
 }
 
 function initScroll(root) {
@@ -209,18 +173,6 @@ function initGlow() {
     el.style.setProperty("--gx", (e.clientX - r.left).toFixed(0) + "px");
     el.style.setProperty("--gy", (e.clientY - r.top).toFixed(0) + "px");
   }, { passive: true });
-}
-
-function initMagnetic() {
-  for (const el of document.querySelectorAll("[data-magnetic]")) {
-    el.addEventListener("pointermove", (e) => {
-      const r = el.getBoundingClientRect();
-      const dx = (e.clientX - (r.left + r.width / 2)) / (r.width / 2);
-      const dy = (e.clientY - (r.top + r.height / 2)) / (r.height / 2);
-      el.style.transform = `translate(${(dx * 6).toFixed(1)}px, ${(dy * 4).toFixed(1)}px)`;
-    });
-    el.addEventListener("pointerleave", () => { el.style.transform = ""; });
-  }
 }
 
 function initTilt() {

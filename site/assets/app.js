@@ -69,29 +69,9 @@ const log = safely("log", () => initLog({
   onKind: (kind) => lede?.flash(kind),
 }));
 
-// "N jobs kicked off since you got here": appears after the visitor's third job, hides at the form.
-const chip = safely("chip", () => {
-  const box = document.getElementById("chip");
-  const n = document.getElementById("chip-n");
-  if (!box || !n) return null;
-  let count = 0, dismissed = false, atForm = false;
-  try { dismissed = sessionStorage.getItem("ts-chip") === "hidden"; } catch { /* storage blocked */ }
-  const show = () => { box.hidden = dismissed || atForm || count < 3; };
-  document.getElementById("chip-x")?.addEventListener("click", () => {
-    dismissed = true;
-    show();
-    try { sessionStorage.setItem("ts-chip", "hidden"); } catch { /* storage blocked */ }
-  });
-  const contact = document.getElementById("contact");
-  if (contact && "IntersectionObserver" in window) {
-    new IntersectionObserver(([e]) => { atForm = e.isIntersecting; show(); }, { threshold: 0.15 }).observe(contact);
-  }
-  return { bump() { count++; n.textContent = String(count); show(); } };
-});
-
 const night = safely("night", () => {
   const canvas = document.querySelector("canvas.night");
-  return canvas ? initNight(canvas, { reduced, onJob: () => log?.push(), onUserJob: () => chip?.bump() }) : null;
+  return canvas ? initNight(canvas, { reduced, onJob: () => log?.push() }) : null;
 });
 
 safely("effects", () => initEffects({ reduced, finePointer }));

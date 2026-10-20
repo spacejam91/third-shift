@@ -140,7 +140,9 @@ Aaron confirmed the site copy on Oct 20, 2026, as written: the "Who's behind it"
 employer), "First builds typically ship within a few weeks", "We'll reply within one business day" (form,
 auto-reply and success message), "We meet in person" across Waterloo Region, and the "Built to fit" list.
 The service pages added the same day use only those claims. Anything new that promises a time, a price
-or a result needs his OK first.
+or a result needs his OK first. One line changed after sign-off, on his say-so: "Nothing pays, posts or
+sends money without a person signing off" became "No money is paid or sent without a person signing
+off", because the example log shows matched invoices being posted automatically.
 
 ## How it fits together
 
@@ -186,7 +188,7 @@ record. None of them touch the records above.
 ## Design and security notes
 
 - The night network, the shift log and the dawn at the bottom carry the page. New sections should stay quiet around them.
-- Motion should mean something (a job getting done), not decorate. On Oct 20 the two crossing slogan ribbons above the form were replaced with one still line of the four promises, because Aaron found them busy.
+- Motion should mean something (a job getting done), not decorate. On Oct 20, at Aaron's word, these went: the two crossing slogan ribbons above the form (now one still line of the four promises), the rubber stamps ("Free call", "Fixed price", "Human sign-off"), the ring trailing the mouse, buttons pulled toward the mouse, section labels scrambling in, and the "jobs kicked off since you got here" pop-up. The four service-card illustrations now play once as each card arrives, rest on their finished picture, and replay on hover.
 - Palette tokens are at the top of `site/assets/styles.css`. On wide monitors everything sized in rem scales up gently, from 16px at 1440 wide to 22px at the cap.
 - The log lines, the fast-forward summary, the service pages' example logs and the videos show example nights. Once there's a real client, swap in real (anonymised) numbers.
 - Every page carries a Content-Security-Policy meta tag; `_headers` has the same rules for hosts that read it, and a test keeps them all in step. Scripts are first-party only, and there are no trackers. The privacy page promises that, so keep it true.

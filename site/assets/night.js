@@ -24,7 +24,7 @@ const JOB_SPEED = 300;              // px per second along the path
 const TRAVEL_PER_JOB = 320;         // px of pointer movement that kicks off a job
 const AMBIENT_MIN = 1700, AMBIENT_JITTER = 1300;
 const HUB_SHARE = 0.36;             // share of lights that are hubs in the standing mesh behind the hero
-const IGNORE_CLICKS = "a, button, input, textarea, select, label, summary, form, .log, .calc-panel, .audit-list, .chip";
+const IGNORE_CLICKS = "a, button, input, textarea, select, label, summary, form, .log, .calc-panel, .audit-list";
 
 const MESH_DIRS = [[1, 0], [-1, 1], [0, 1], [1, 1]];
 const rand = Math.random;
