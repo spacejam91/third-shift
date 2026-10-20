@@ -67,6 +67,29 @@ watches that account's calendar to notice booked calls.
 If Workspace won't be ready before the marketing launch on Monday Oct 26, make the schedule under
 thirdshift.ca@gmail.com for now and swap the link later. It's a one-line change.
 
+**Done on Oct 20, under thirdshift.ca@gmail.com for now (steps 4, 5 and Search Console).** The form is
+live and tested end to end, the CRM is deployed and set up, and Search Console is verified with the
+sitemap read (12 pages). What's left on these: open the CRM (see "Opening the CRM" below), Bing, and,
+once Workspace exists, moving the sheet and both scripts across ("Moving to Workspace" below). The steps
+are kept for that move.
+
+**Updating the scripts:** `backend/intake/` and `backend/crm/` each hold a `.clasp.json` (git ignores it)
+pointing at the live project, so from either folder `npx @google/clasp@3.4.1 push` uploads the code. In
+PowerShell, use `npx.cmd`. A code change to a web app also needs Deploy > Manage deployments > Edit >
+New version, so its address stays the same.
+
+**Opening the CRM:** Google won't open a private web app in a browser where another Google account is
+the default, which is why it shows "Sorry, unable to open the file" in the Chrome where you're signed in
+to work. Make a separate Chrome profile for Third Shift (profile picture at the top right > Add > sign in
+as thirdshift.ca@gmail.com only). Open the CRM's address there (the intake project's `CRM_URL` script
+property, or Deploy > Manage deployments in the "Third Shift CRM screen" project), then install it as an
+app (step 5.4). The profile also keeps Third Shift apart from work.
+
+**Moving to Workspace (later):** as the Workspace user, make a copy of the Third Shift CRM sheet (File >
+Make a copy keeps the tabs and data), create the two Apps Script projects again from `backend/`, set their
+script properties, run `selfTest` and `setupCrm`, deploy, then send thirdshift the new form address for
+`LEAD_ENDPOINT`. About 20 minutes. Point the sales bot at the new sheet id.
+
 ### 4. Turn on the contact form (intake)
 
 1. Signed in as the Workspace user, create a Google Sheet named **Third Shift CRM**.
@@ -93,7 +116,12 @@ To try the CRM screen with demo data on this computer first: `node tools/crm-pre
 ### 6. Get found: Search Console and Bing
 
 The site side is done: titles, descriptions, structured data for the business, each service and the FAQs,
-breadcrumbs, a sitemap with all seven pages, robots.txt and llms.txt. These two steps need your accounts.
+breadcrumbs, a sitemap with all twelve pages, robots.txt and llms.txt.
+
+Search Console was set up on Oct 20 as a URL-prefix property for `https://thirdshift.ca/` under
+thirdshift.ca@gmail.com, verified by the `google-site-verification` meta tag in `site/index.html` (keep
+that tag, or the property loses verification). The sitemap is submitted and read. The steps below are
+for adding the wider Domain property later, which also covers www and http.
 
 **Google Search Console** (about 10 minutes, plus waiting for DNS):
 
