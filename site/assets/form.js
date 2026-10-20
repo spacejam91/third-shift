@@ -66,7 +66,7 @@ export function initForm(form) {
       return;
     }
     if (!LEAD_ENDPOINT) {
-      say("The form isn’t connected yet. Email hello@thirdshift.ca for now.", true);
+      say("The form isn’t connected yet. Email thirdshift.ca@gmail.com for now.", true);
       return;
     }
     if (TURNSTILE_SITE_KEY && !token) {
@@ -98,7 +98,7 @@ export function initForm(form) {
       if (!ok) throw new Error("bad response");
       done();
     } catch {
-      say("Couldn’t send just now. Try again, or email hello@thirdshift.ca.", true);
+      say("Couldn’t send just now. Try again, or email thirdshift.ca@gmail.com.", true);
       send.disabled = false;
       send.textContent = "Send";
       token = "";
@@ -114,7 +114,7 @@ export function initForm(form) {
     box.tabIndex = -1;
     const strong = document.createElement("strong");
     strong.textContent = "Sent.";
-    box.append(strong, "We’ll reply within one business day. If it’s urgent, email hello@thirdshift.ca.");
+    box.append(strong, "We’ll reply within one business day. If it’s urgent, email thirdshift.ca@gmail.com.");
     form.replaceChildren(box);
     // The live status line went with the form, so move focus to the confirmation for screen readers.
     box.focus();

@@ -19,7 +19,7 @@
 
 const NOTIFY_TO = "thirdshift.ca@gmail.com";   // swap to hello@thirdshift.ca once that mailbox exists
 const FROM_NAME = "Third Shift";
-const REPLY_TO = "hello@thirdshift.ca";
+const REPLY_TO = "thirdshift.ca@gmail.com";   // swap to hello@thirdshift.ca once email forwarding exists
 const DEFAULT_ALLOWED_HOSTS = ["thirdshift.ca", "www.thirdshift.ca"];
 const TURNSTILE_VERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
 
