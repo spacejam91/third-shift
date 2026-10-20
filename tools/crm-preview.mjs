@@ -15,7 +15,12 @@ import { loadProject, MockSpreadsheet, backendDir } from "../tests/gas-mock.mjs"
 
 const PORT = Number(process.argv[2]) || 8915;
 const USER = "demo@thirdshift.ca";
-const CALLABLE = new Set(["crmLoad", "crmSaveDeal", "crmMoveDeal", "crmAddActivity", "crmSetTaskDone", "crmSaveContact", "crmSaveCompany"]);
+const CALLABLE = new Set([
+  "crmLoad", "crmSaveDeal", "crmMoveDeal", "crmAddActivity", "crmSetTaskDone", "crmSaveContact", "crmSaveCompany",
+  // The Outreach tab. With no sales tabs in the demo sheet it says the agent isn't set up yet; for a demo with
+  // agent data, run `npm run crm` in third-shift-outreach.
+  "crmOutreachLoad", "crmOutreachDecide", "crmOutreachApproveAll", "crmActionDecide",
+]);
 
 const ss = new MockSpreadsheet("DEMO-SHEET");
 const crm = loadProject(["crm/Schema.gs", "crm/Crm.gs"], { ss, activeUser: USER, effectiveUser: USER });
