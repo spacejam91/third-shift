@@ -67,7 +67,8 @@ test("a repeat inquiry joins the open deal instead of making a duplicate", () =>
 test("campaign tags and the referring site are kept, and set the deal's source", () => {
   const cases = [
     [{ utm_source: "instagram", utm_medium: "social", utm_campaign: "launch-reel" }, "Instagram"],
-    [{ utm_source: "outreach", utm_medium: "email", utm_campaign: "seq-ap-1" }, "Outreach"],
+    [{ utm_source: "outreach", utm_medium: "email", utm_campaign: "cold-v1-trades" }, "Cold outreach"],
+    [{ utm_source: "google", utm_medium: "social", utm_campaign: "bio" }, "Google"],
     [{ utm_source: "Newsletter" }, "Newsletter"],
     [{ referrer: "l.instagram.com" }, "Instagram"],
     [{ referrer: "www.google.ca" }, "Google"],
@@ -84,19 +85,19 @@ test("campaign tags and the referring site are kept, and set the deal's source",
   }
 });
 
-test("an inquiry from someone the sales bot already emailed joins their deal and keeps it Outreach", () => {
+test("an inquiry from someone the sales bot already emailed joins their deal and keeps it Cold outreach", () => {
   const { ctx, ss } = loadProject(INTAKE);
   const now = new Date();
   ctx.crmAppend_(ctx.crmSheet_(ss, "Companies"), { id: "CO-1", name: "Acme Distribution", created: now, updated: now });
   ctx.crmAppend_(ctx.crmSheet_(ss, "Contacts"), { id: "P-1", name: "Jane Doe", email: "Jane@Acme.example", company_id: "CO-1", created: now, updated: now });
   ctx.crmAppend_(ctx.crmSheet_(ss, "Deals"), {
     id: "D-1", title: "Acme Distribution", company_id: "CO-1", contact_id: "P-1", stage: "Contacted",
-    source: "Outreach", next_step: "Follow-up email 2", next_date: "2026-11-30", created: now, updated: now,
+    source: "Cold outreach", next_step: "Follow-up email 2", next_date: "2026-11-30", created: now, updated: now,
   });
-  assert.deepEqual(post(ctx, lead({ utm_source: "outreach", utm_campaign: "seq-ap-1" })), { ok: true });
+  assert.deepEqual(post(ctx, lead({ utm_source: "outreach", utm_campaign: "cold-v1-trades" })), { ok: true });
   const deals = tab(ss, "Deals");
   assert.equal(deals.length, 1, "no duplicate deal");
-  assert.equal(deals[0].source, "Outreach");
+  assert.equal(deals[0].source, "Cold outreach");
   assert.equal(deals[0].next_step, "Reply to the inquiry", "the inquiry becomes the next step");
   const acts = tab(ss, "Activities");
   assert.equal(acts.length, 1);
@@ -344,6 +345,8 @@ test("notes, calls and tasks; tasks tick off", () => {
   assert.throws(() => p.ctx.crmSetTaskDone(note.activity.id, true), /isn't a task/);
   const spoof = p.ctx.crmAddActivity({ deal_id: deal.id, type: "Stage", summary: "x" });
   assert.equal(spoof.activity.type, "Note", "system types can't be added by hand");
+  const reply = p.ctx.crmAddActivity({ deal_id: deal.id, type: "Reply", summary: "x" });
+  assert.equal(reply.activity.type, "Note", "Reply is logged by the sales bot only");
 });
 
 test("contact edits", () => {

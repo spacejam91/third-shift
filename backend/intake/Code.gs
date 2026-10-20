@@ -152,7 +152,7 @@ function crmCreateFromLead_(ss, lead) {
 // The deal's source, for the CRM: the link's campaign tag (docs/SYSTEM.md), else the referring site,
 // else Website.
 const SOURCE_NAMES = {
-  outreach: "Outreach", instagram: "Instagram", ig: "Instagram", x: "X", twitter: "X", facebook: "Facebook", fb: "Facebook",
+  outreach: "Cold outreach", instagram: "Instagram", ig: "Instagram", x: "X", twitter: "X", facebook: "Facebook", fb: "Facebook",
   linkedin: "LinkedIn", tiktok: "TikTok", google: "Google", bing: "Bing", youtube: "YouTube",
 };
 const REFERRER_SOURCES = [

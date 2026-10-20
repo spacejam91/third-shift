@@ -19,7 +19,7 @@ const CRM_SHEETS = Object.freeze({
 const CRM_STAGES = Object.freeze(["New", "Contacted", "Call booked", "Plan sent", "Building", "Live", "Lost"]);
 const CRM_OPEN_STAGES = Object.freeze(["New", "Contacted", "Call booked", "Plan sent"]);
 const CRM_WON_STAGES = Object.freeze(["Building", "Live"]);
-const CRM_ACTIVITY_TYPES = Object.freeze(["Inquiry", "Note", "Call", "Email", "Meeting", "Task", "Stage"]);
+const CRM_ACTIVITY_TYPES = Object.freeze(["Inquiry", "Reply", "Note", "Call", "Email", "Meeting", "Task", "Stage"]);
 const CRM_DATE_ONLY = Object.freeze(["next_date", "due", "closed"]);
 const CRM_TZ = "America/Toronto";
 

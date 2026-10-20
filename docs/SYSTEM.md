@@ -26,6 +26,7 @@ Need something from another lane? Message its session; don't do the work yoursel
   - A change to these five tabs goes through thirdshift, which updates all three copies together.
 - **Sales tabs:** the sales bot adds its own tabs (prospects, sequences, drafts, `Suppression`) to the same spreadsheet. It owns them.
 - **Every touch is logged:** every person a bot contacts is a Contact, and every touch is an Activity on their Deal (email sent, reply, call, inquiry). The CRM screen is the one place Aaron looks.
+- **System activity types:** `Inquiry` (intake), `Reply` (the sales bot, for inbound replies) and `Stage` (stage moves) are written by code only. People can't add them by hand in the CRM screen, so a bot can trust them.
 
 ## No doubling up on a person
 
@@ -43,9 +44,20 @@ Every link to thirdshift.ca that a bot publishes carries campaign tags, so the C
 | From | Tags |
 |---|---|
 | Social posts | `?utm_source=<instagram, x, facebook, linkedin, tiktok>&utm_medium=social&utm_campaign=<post-slug>` |
-| Outreach emails | `?utm_source=outreach&utm_medium=email&utm_campaign=<sequence-id>` |
+| Profile links | Same, with `utm_campaign=bio`, or `page-button` for the Facebook action button |
+| Google Business Profile | `?utm_source=google&utm_medium=social&utm_campaign=<post-slug or bio>` |
+| Outreach emails | `?utm_source=outreach&utm_medium=email&utm_campaign=cold-v1-<industry>` |
 
-The site keeps the first tags a visitor arrived with and sends them along with the form. Intake writes them to the `Leads` tab, and the Deal's `source` becomes Outreach, Instagram, X, and so on, or Website when there are no tags.
+The site keeps the first tags a visitor arrived with and sends them along with the form. Intake writes them to the `Leads` tab and sets the Deal's `source`:
+
+| `utm_source` | Deal source |
+|---|---|
+| `outreach` | Cold outreach (the same name the sales bot uses on the deals it creates) |
+| `instagram`, `x`, `facebook`, `linkedin`, `tiktok`, `google` | Instagram, X, Facebook, LinkedIn, TikTok, Google |
+| anything else | the tag as written |
+| no tags | the referring site (Google, Bing, Instagram and so on), else Website |
+
+`utm_campaign` is free text and kept as written on the lead.
 
 ## Approvals and limits (every lane)
 
