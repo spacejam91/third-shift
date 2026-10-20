@@ -72,6 +72,8 @@ canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 .flat.mono { background: #FFFFFF; color: #0A0A0A; }
 .flat.mono .head em, .flat.mono .kicker { color: #0A0A0A; }
 .flat.mono .url { color: #3A3A3A; }
+/* align=center: the text block centred, for covers where the profile picture already carries the mark. */
+.banner .text.center { right: auto; left: 50%; translate: -50% -50%; text-align: center; justify-items: center; }
 
 .og .text { position: absolute; left: 7%; top: 50%; translate: 0 -50%; display: grid; justify-items: start; }
 .og .shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(5, 9, 19, .82) 25%, rgba(5, 9, 19, .35) 58%, transparent 80%); }
@@ -241,10 +243,15 @@ function buildWordmark() {
 
 function buildBanner() {
   const flat = q.get("flat") === "1", mono = q.get("mono") === "1";
+  // moon=0 leaves the crescent off: on X and Facebook the profile picture sits over the cover's bottom
+  // left, so a second crescent there stacks two moons.
+  const noMoon = q.get("moon") === "0", centred = q.get("align") === "center";
   stage.className = "stage banner " + (flat ? "flat" : "night") + (mono ? " mono" : "");
   const u = H / 100;                         // 1% of height
   const tall = W / H < 4.2;
-  if (flat) {
+  if (flat && noMoon) {
+    // nothing beside the text
+  } else if (flat) {
     // Left of centre and above the middle, clear of where X and Facebook overlap the profile picture.
     const ms = Math.round(H * (tall ? .46 : .6));
     const m = sideMoon(ms, W * (tall ? .14 : .05), (H - ms) / 2 - H * (tall ? .05 : 0));
@@ -262,8 +269,8 @@ function buildBanner() {
   const head = el("h1", "head");
   head.append("The work that gets done while you ", el("em", null, "sleep."));
   const url = el("div", "url", "thirdshift.ca");
-  const text = el("div", "text", kick, head, url);
-  if (q.get("inset")) text.style.right = (+q.get("inset") * 100) + "%";
+  const text = el("div", "text" + (centred ? " center" : ""), kick, head, url);
+  if (q.get("inset") && !centred) text.style.right = (+q.get("inset") * 100) + "%";
   if (tall) {
     kick.style.fontSize = (u * 3.6) + "px";
     head.style.fontSize = (u * 13) + "px";

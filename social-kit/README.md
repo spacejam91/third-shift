@@ -16,7 +16,7 @@ Made by `node tools/render-brand.mjs` from `tools/brand/art.html`. Change the ar
 | `logo-mark.png` | The moon on its own, transparent | 1024 x 1024 |
 | `link-preview-1200x630.png` | The picture that shows when thirdshift.ca is shared in a post or message (already set on the site). Also good as a LinkedIn or Facebook post image. | 1200 x 630 |
 
-The covers, header and first post match it: black on white, flat, with the crescent, the line and "AI automation · Ontario, Canada". The website keeps its amber crescent and night colours.
+The covers and header match it: black on white, flat, the line centred with "AI automation · Ontario, Canada" and thirdshift.ca. They leave the crescent off, because X and Facebook place the profile picture over the cover's bottom left and two moons would stack. The first post keeps the crescent. The website keeps its amber crescent and night colours.
 
 Colours: night `#050913`, amber `#F2B055`, dawn `#FF8F4D`, light text `#ECF1F8`, navy text `#0B1222`.
 Type: Bricolage Grotesque (headings, logo), IBM Plex Mono (labels). Both free on Google Fonts.
