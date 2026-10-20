@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Third Shift brand art</title>
+<!--
+  Every logo, icon, banner and share image is drawn by this one page, then exported by
+  tools/render-brand.mjs. ?kind= picks the layout:
+    mark       the crescent alone (bg=night for app icons and profile pictures, bg=none for transparent)
+    wordmark   crescent + "Third Shift" (theme=dark for dark backgrounds, theme=light for light ones)
+    banner     wide social cover: network on the left, headline on the right
+    square     1:1 post: mark, wordmark and the line
+    og         1200x630 link preview
+  The night network is the same idea as site/assets/night.js, drawn once and still.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=IBM+Plex+Mono:wght@400;500&display=block" rel="stylesheet">
+<style>
+:root {
+  --night-0: #050913; --night-2: #0D1730; --ink: #ECF1F8; --ink-2: #C3CFE0; --muted: #95A6BF;
+  --amber: #F2B055; --amber-hot: #FFD08A; --dawn: #FF8F4D; --navy: #0B1222;
+}
+html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: transparent; }
+body { font-family: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
+.stage { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
+.night {
+  background:
+    radial-gradient(120% 90% at 50% 120%, rgba(255, 143, 77, .22), transparent 55%),
+    radial-gradient(90% 70% at 15% 0%, rgba(70, 100, 170, .22), transparent 60%),
+    linear-gradient(180deg, #050913 0%, #08101F 55%, #0D1730 100%);
+}
+canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.moon { display: block; overflow: visible; }
+.moon.glow { filter: drop-shadow(0 0 calc(var(--s) * .08) rgba(242, 176, 85, .55)) drop-shadow(0 0 calc(var(--s) * .25) rgba(242, 176, 85, .25)); }
+
+/* mark */
+.mark-wrap { position: absolute; inset: 0; display: grid; place-items: center; }
+
+/* wordmark: sized from the viewport height so the export can crop tight */
+.word { position: absolute; left: 0; top: 0; display: inline-flex; align-items: center; gap: .24em; padding: .16em .2em; font-size: 60vh; font-weight: 680; letter-spacing: -.012em; line-height: 1; font-variation-settings: "opsz" 72; white-space: nowrap; }
+.word .moon { width: .8em; height: .8em; flex: none; translate: 0 -.02em; }
+/* Bricolage Grotesque has ink traps (small wedge cuts where strokes meet). At logo size they read as
+   cracks, so a matching stroke under the fill closes them; the weight drops a little to make up for it. */
+.word, .lockup { -webkit-text-stroke: .018em currentColor; paint-order: stroke fill; }
+.word { font-weight: 620; }
+.word.light { color: var(--navy); }
+
+/* text blocks shared by banner, square, og */
+.kicker { font-family: "IBM Plex Mono", monospace; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: var(--amber); }
+.head { font-weight: 700; letter-spacing: -.04em; line-height: .98; font-variation-settings: "opsz" 96; margin: 0; text-wrap: balance; }
+.head em { font-style: normal; background: linear-gradient(100deg, var(--amber-hot) 0%, var(--amber) 45%, var(--dawn) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.url { font-family: "IBM Plex Mono", monospace; color: var(--ink-2); letter-spacing: .04em; }
+.lockup { display: inline-flex; align-items: center; gap: .32em; font-weight: 700; letter-spacing: -.02em; font-variation-settings: "opsz" 72; }
+.lockup .moon { width: .95em; height: .95em; }
+
+.banner .text { position: absolute; right: 5.5%; top: 50%; translate: 0 -50%; text-align: right; display: grid; justify-items: end; }
+.banner .shade { position: absolute; inset: 0; background: linear-gradient(90deg, transparent 30%, rgba(5, 9, 19, .55) 62%, rgba(5, 9, 19, .7)); }
+
+.square .text { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; text-align: center; }
+.square .shade { position: absolute; inset: 0; background: radial-gradient(closest-side, rgba(5, 9, 19, .82), rgba(5, 9, 19, .35) 70%, transparent); }
+
+.og .text { position: absolute; left: 7%; top: 50%; translate: 0 -50%; display: grid; justify-items: start; }
+.og .shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(5, 9, 19, .82) 25%, rgba(5, 9, 19, .35) 58%, transparent 80%); }
+.og .log { position: absolute; right: 6%; top: 50%; translate: 0 -50%; width: 31%; padding: 1.4% 1.6%; border-radius: 14px; border: 1px solid rgba(236, 241, 248, .17); background: linear-gradient(180deg, rgba(14, 23, 44, .92), rgba(7, 12, 25, .95)); box-shadow: 0 30px 70px -20px rgba(0, 0, 0, .9); font-family: "IBM Plex Mono", monospace; color: #E2E9F3; }
+.og .log-head { display: flex; justify-content: space-between; color: #9DB0CC; border-bottom: 1px solid rgba(236, 241, 248, .1); padding-bottom: .7em; margin-bottom: .5em; }
+.og .log-head b { color: var(--ink); font-weight: 500; }
+.og .row { display: grid; grid-template-columns: 5.6em 1fr; gap: .8em; padding: .38em 0; }
+.og .row time { color: #F2B55A; }
+</style>
+</head>
+<body>
+<div class="stage" id="stage"></div>
+<script>
+const q = new URLSearchParams(location.search);
+const kind = q.get("kind") || "mark";
+const stage = document.getElementById("stage");
+const W = innerWidth, H = innerHeight;
+
+function moon(size, { glow = false, color = "#F2B055" } = {}) {
+  const ns = "http://www.w3.org/2000/svg";
+  const id = "m" + Math.random().toString(36).slice(2);
+  const s = document.createElementNS(ns, "svg");
+  s.setAttribute("viewBox", "0 0 26 26");
+  s.setAttribute("class", "moon" + (glow ? " glow" : ""));
+  if (size) { s.setAttribute("width", size); s.setAttribute("height", size); s.style.setProperty("--s", size + "px"); }
+  const mask = document.createElementNS(ns, "mask");
+  mask.setAttribute("id", id);
+  const r = document.createElementNS(ns, "rect");
+  r.setAttribute("width", "26"); r.setAttribute("height", "26"); r.setAttribute("fill", "white");
+  const c = document.createElementNS(ns, "circle");
+  c.setAttribute("cx", "17.5"); c.setAttribute("cy", "10.5"); c.setAttribute("r", "9"); c.setAttribute("fill", "black");
+  mask.append(r, c);
+  const body = document.createElementNS(ns, "circle");
+  body.setAttribute("cx", "13"); body.setAttribute("cy", "13"); body.setAttribute("r", "12"); body.setAttribute("fill", color);
+  body.setAttribute("mask", `url(#${id})`);
+  s.append(mask, body);
+  return s;
+}
+
+function el(tag, cls, ...kids) {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  for (const k of kids) e.append(k);
+  return e;
+}
+
+// ------------------------------------------------------------------ the still night network
+
+function hash(i, g, k) {
+  let h = (i * 374761393 + g * 668265263 + k * 2147483647) | 0;
+  h = Math.imul(h ^ (h >>> 13), 1274126177);
+  h ^= h >>> 16;
+  return (h >>> 0) / 4294967296;
+}
+
+// strength(x, y) -> 0..1 decides where the network shows; path is a list of [x, y] fractions for a lit job.
+function drawNetwork({ sp, strength, seed = 7, path = null, dpr = 2 }) {
+  const cv = document.createElement("canvas");
+  cv.width = W * dpr; cv.height = H * dpr;
+  const ctx = cv.getContext("2d");
+  ctx.scale(dpr, dpr);
+  const cols = Math.ceil(W / sp) + 2, rows = Math.ceil(H / sp) + 2;
+  const P = (i, g) => [i * sp + (hash(i + seed, g, 1) - .5) * sp * .62, g * sp + (hash(i + seed, g, 2) - .5) * sp * .62];
+  const hub = (i, g) => hash(i + seed, g, 5) < .38;
+  const DIRS = [[1, 0], [-1, 1], [0, 1], [1, 1]];
+
+  ctx.lineWidth = Math.max(1, sp / 46);
+  for (let g = -1; g < rows; g++) for (let i = -1; i < cols; i++) {
+    if (!hub(i, g)) continue;
+    const [x, y] = P(i, g);
+    const f = strength(x / W, y / H);
+    if (f < .02) continue;
+    DIRS.forEach(([di, dg], d) => {
+      if (!hub(i + di, g + dg) || hash(i + seed, g, 10 + d) > .8) return;
+      const [nx, ny] = P(i + di, g + dg);
+      const a = .26 * Math.min(f, strength(nx / W, ny / H)) * (.55 + .45 * hash(i, g, 20 + d));
+      ctx.strokeStyle = `rgba(190,186,170,${a.toFixed(3)})`;
+      ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(nx, ny); ctx.stroke();
+    });
+  }
+  for (let g = -1; g < rows; g++) for (let i = -1; i < cols; i++) {
+    const [x, y] = P(i, g);
+    const f = strength(x / W, y / H);
+    const isHub = hub(i, g);
+    const a = (.1 + hash(i + seed, g, 3) * .22) * (.45 + f) + (isHub ? .18 * f : 0);
+    const r = (sp / 46) * (isHub ? 1.5 : 1) * (.8 + .5 * f);
+    ctx.fillStyle = `rgba(157,176,204,${Math.min(1, a).toFixed(3)})`;
+    ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+  }
+
+  if (path) {
+    const pts = path.map(([fx, fy]) => [fx * W, fy * H]);
+    const lw = Math.max(1.5, sp / 22);
+    // glow then line
+    ctx.lineCap = "round"; ctx.lineJoin = "round";
+    for (const [w, a] of [[lw * 6, .08], [lw * 3, .16], [lw, .9]]) {
+      ctx.strokeStyle = `rgba(242,176,85,${a})`;
+      ctx.lineWidth = w;
+      ctx.beginPath();
+      pts.forEach(([x, y], k) => (k ? ctx.lineTo(x, y) : ctx.moveTo(x, y)));
+      ctx.stroke();
+    }
+    for (const [x, y] of pts.slice(0, -1)) {
+      ctx.fillStyle = "rgba(255,214,150,.95)";
+      ctx.beginPath(); ctx.arc(x, y, lw * 1.25, 0, Math.PI * 2); ctx.fill();
+    }
+    const [hx, hy] = pts[pts.length - 1];
+    const grad = ctx.createRadialGradient(hx, hy, 0, hx, hy, lw * 10);
+    grad.addColorStop(0, "rgba(255,214,150,.55)");
+    grad.addColorStop(1, "rgba(255,214,150,0)");
+    ctx.fillStyle = grad;
+    ctx.beginPath(); ctx.arc(hx, hy, lw * 10, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = "#FFE3B5";
+    ctx.beginPath(); ctx.arc(hx, hy, lw * 2.1, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = "rgba(242,176,85,.55)";
+    ctx.lineWidth = Math.max(1, lw * .6);
+    ctx.beginPath(); ctx.arc(hx, hy, lw * 6, 0, Math.PI * 2); ctx.stroke();
+  }
+  return cv;
+}
+
+const smooth = (t) => { t = Math.max(0, Math.min(1, t)); return t * t * (3 - 2 * t); };
+
+// ------------------------------------------------------------------ layouts
+
+function buildMark() {
+  const night = q.get("bg") !== "none";
+  const scale = +(q.get("scale") || (night ? .5 : .9));
+  stage.className = "stage" + (night ? " night" : "");
+  if (night && q.get("net") !== "0") {
+    // network around the edge, clear in the middle so the crescent reads at thumbnail size
+    stage.append(drawNetwork({
+      sp: Math.max(18, W / 11), seed: 3,
+      strength: (x, y) => smooth((Math.hypot(x - .5, y - .5) - .3) / .25) * .9,
+    }));
+  }
+  const size = Math.round(Math.min(W, H) * scale);
+  const wrap = el("div", "mark-wrap", moon(size, { glow: night && q.get("glow") !== "0" }));
+  // optical centring: the crescent's weight sits left and low
+  wrap.style.transform = `translate(${(size * .03).toFixed(1)}px, ${(-size * .01).toFixed(1)}px)`;
+  stage.append(wrap);
+}
+
+function buildWordmark() {
+  const light = q.get("theme") === "light";
+  const w = el("div", "word" + (light ? " light" : ""), moon(null, { color: light ? "#E39A2E" : "#F2B055" }), "Third Shift");
+  w.id = "logo";
+  stage.append(w);
+}
+
+function buildBanner() {
+  stage.className = "stage night banner";
+  const u = H / 100;                         // 1% of height
+  const tall = W / H < 4.2;
+  stage.append(drawNetwork({
+    sp: Math.max(16, H / (tall ? 8.5 : 5.2)), seed: 11,
+    strength: (x, y) => smooth((0.72 - x) / 0.5) * (0.35 + 0.65 * smooth(1 - Math.abs(y - .5) * 1.4)),
+    path: tall ? [[.06, .72], [.11, .58], [.17, .62], [.23, .44], [.3, .4], [.36, .26]] : [[.04, .7], [.09, .45], [.14, .55], [.2, .32], [.26, .38]],
+  }));
+  stage.append(el("div", "shade"));
+  const kick = el("div", "kicker", "AI automation · Kitchener-Waterloo");
+  const head = el("h1", "head");
+  head.append("The work that gets done while you ", el("em", null, "sleep."));
+  const url = el("div", "url", "thirdshift.ca");
+  const text = el("div", "text", kick, head, url);
+  if (q.get("inset")) text.style.right = (+q.get("inset") * 100) + "%";
+  if (tall) {
+    kick.style.fontSize = (u * 3.6) + "px";
+    head.style.fontSize = (u * 13) + "px";
+    head.style.maxWidth = (W * .52) + "px";
+    head.style.margin = (u * 3.4) + "px 0 " + (u * 4) + "px";
+    url.style.fontSize = (u * 4.2) + "px";
+  } else {
+    // very wide and short (LinkedIn page cover): one line
+    kick.style.fontSize = (u * 6.4) + "px";
+    head.style.fontSize = (u * 17) + "px";
+    head.style.whiteSpace = "nowrap";
+    head.style.margin = (u * 4.5) + "px 0 " + (u * 5) + "px";
+    url.style.fontSize = (u * 7) + "px";
+  }
+  stage.append(text);
+}
+
+function buildSquare() {
+  stage.className = "stage night square";
+  const u = W / 100;
+  stage.append(drawNetwork({
+    sp: W / 13, seed: 5,
+    strength: (x, y) => smooth((Math.hypot(x - .5, (y - .5) * 1.1) - .26) / .3),
+    path: [[.07, .95], [.14, .88], [.21, .92], [.28, .85], [.35, .89], [.42, .96]],
+  }));
+  stage.append(el("div", "shade"));
+  const m = moon(Math.round(u * 17), { glow: true });
+  const lock = el("div", "lockup", "Third Shift");
+  lock.style.fontSize = (u * 9.5) + "px";
+  lock.style.margin = (u * 4) + "px 0 " + (u * 3) + "px";
+  const line = el("p", "head");
+  line.append("The work that gets done while you ", el("em", null, "sleep."));
+  line.style.fontSize = (u * 5.2) + "px";
+  line.style.fontWeight = "600";
+  line.style.maxWidth = (u * 62) + "px";
+  line.style.lineHeight = "1.08";
+  const kick = el("div", "kicker", "AI automation · Kitchener-Waterloo");
+  kick.style.fontSize = (u * 2.1) + "px";
+  kick.style.marginTop = (u * 5) + "px";
+  stage.append(el("div", "text", m, lock, line, kick));
+}
+
+function buildOg() {
+  stage.className = "stage night og";
+  const u = H / 100;
+  stage.append(drawNetwork({
+    sp: H / 9, seed: 21,
+    strength: (x, y) => smooth((x - .3) / .35) * (.5 + .5 * smooth(1 - Math.abs(y - .5) * 1.2)),
+    path: [[.6, .99], [.66, .88], [.72, .92], [.79, .83]],
+  }));
+  stage.append(el("div", "shade"));
+  const lock = el("div", "lockup", moon(Math.round(u * 6.4)), "Third Shift");
+  lock.style.fontSize = (u * 6.2) + "px";
+  const head = el("h1", "head");
+  head.append("The work that", el("br"), "gets done while", el("br"), "you ", el("em", null, "sleep."));
+  head.style.fontSize = (u * 12.4) + "px";
+  head.style.margin = (u * 5) + "px 0 " + (u * 5) + "px";
+  const sub = el("div", "url", "AI automation for small businesses · thirdshift.ca");
+  sub.style.fontSize = (u * 3.3) + "px";
+  stage.append(el("div", "text", lock, head, sub));
+
+  const log = el("div", "log");
+  log.style.fontSize = (u * 2.55) + "px";
+  const headRow = el("div", "log-head", el("b", null, "Tonight's shift"), "3:12 AM");
+  const rows = [["11:02 PM", "Matched 36 invoices to POs"], ["12:40 AM", "Chased 14 open quotes"], ["1:15 AM", "Answered 9 web inquiries"], ["2:30 AM", "Reconciled 212 bank lines"]];
+  log.append(headRow, ...rows.map(([t, s]) => el("div", "row", el("time", null, t), s)));
+  stage.append(log);
+}
+
+({ mark: buildMark, wordmark: buildWordmark, banner: buildBanner, square: buildSquare, og: buildOg })[kind]();
+
+// The exporter waits for this before it takes the picture.
+document.fonts.ready.then(() => requestAnimationFrame(() => { document.body.dataset.ready = "1"; }));
+</script>
+</body>
+</html>
