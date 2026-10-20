@@ -1,6 +1,6 @@
 # Third Shift
 
-> AI automation for small businesses in Kitchener-Waterloo, Ontario. Third Shift builds automations that clear supplier invoices, answer inquiries, chase quotes and build reports overnight, so the team starts the day with it done. Those are the usual starting points; every build is tailored, from inventory alerts and scheduling to document drafting, onboarding and small internal tools.
+> AI automation for small businesses in Ontario, based in Kitchener-Waterloo. Third Shift builds automations that answer inquiries, chase quotes, build reports and clear supplier invoices overnight, so the team starts the day with it done. Those are the usual starting points; every build is tailored, from inventory alerts and scheduling to document drafting, onboarding and small internal tools.
 
 - Who it's for: owner-run businesses with roughly 5 to 100 people (distributors, trades, clinics, professional services, manufacturers), met in person across Waterloo Region (Kitchener, Waterloo, Cambridge) and by video call elsewhere in Ontario.
 - How it starts: a free 20-minute call, then a one-page plan with a fixed price and a delivery date.
@@ -11,10 +11,10 @@
 ## Pages
 
 - [Home](https://thirdshift.ca/): services, the overnight audit, the cost calculator, how a build starts, FAQ
-- [Invoices and payables](https://thirdshift.ca/invoice-automation): supplier invoices collected, matched to purchase orders and posted overnight; people approve every payment
 - [Inquiries and quotes](https://thirdshift.ca/lead-follow-up): inquiries logged and answered within minutes, open quotes followed up on a schedule
 - [Reporting](https://thirdshift.ca/reporting-automation): weekly and monthly reports built overnight and checked against the source
 - [Routine processes](https://thirdshift.ca/process-automation): the routine one person carries in their head, written down and run on a schedule
+- [Invoices and payables](https://thirdshift.ca/invoice-automation): supplier invoices collected, matched to purchase orders and posted overnight; people approve every payment
 - [Built to fit](https://thirdshift.ca/custom-automation): reorder alerts, scheduling, timesheets, quotes, onboarding, app syncing and small internal tools
 - [Trades and contractors](https://thirdshift.ca/trades): quote follow-ups, crew schedules, timesheets and supplier invoices for trades businesses
 - [Distributors and wholesalers](https://thirdshift.ca/distributors): order entry, supplier invoice matching, reorder alerts and collections

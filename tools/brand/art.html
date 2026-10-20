@@ -327,7 +327,7 @@ function buildOg() {
   const log = el("div", "log");
   log.style.fontSize = (u * 2.55) + "px";
   const headRow = el("div", "log-head", el("b", null, "Tonight's shift"), "3:12 AM");
-  const rows = [["11:02 PM", "Matched 36 invoices to POs"], ["12:40 AM", "Chased 14 open quotes"], ["1:15 AM", "Answered 9 web inquiries"], ["2:30 AM", "Reconciled 212 bank lines"]];
+  const rows = [["11:02 PM", "Answered 9 web inquiries"], ["11:20 PM", "Chased 14 open quotes"], ["11:48 PM", "Sent 6 crew schedules"], ["12:15 AM", "Matched 36 invoices to POs"]];
   log.append(headRow, ...rows.map(([t, s]) => el("div", "row", el("time", null, t), s)));
   stage.append(log);
 }

@@ -13,8 +13,8 @@ export const INDUSTRIES = [
   {
     slug: "trades",
     crumb: "Trades and contractors",
-    title: "Automation for Trades and Contractors in Kitchener | Third Shift",
-    description: "For plumbing, HVAC, electrical, roofing and other trades in Waterloo Region: quotes followed up, crew schedules sent and supplier invoices matched to jobs.",
+    title: "Automation for Trades and Contractors in Ontario | Third Shift",
+    description: "For plumbing, HVAC, electrical, roofing and other trades in Ontario: quotes followed up, crew schedules sent and supplier invoices matched to jobs.",
     h1: "The office work behind every job, <em>done overnight.</em>",
     lede: "Plumbing, HVAC, electrical, roofing, landscaping: the work happens on site, and the quotes, schedules, timesheets and supplier invoices pile up for the evening. Third Shift builds automations that handle that office work in the systems you already use, with you approving anything that involves money or a price.",
     more: "Quotes followed up, crew schedules sent, supplier invoices matched to jobs.",
@@ -22,7 +22,7 @@ export const INDUSTRIES = [
       name: "AI automation for trades and contractors",
       serviceType: "Business process automation",
       audience: "Trades and contractors",
-      description: "Office work for trades businesses in Waterloo Region, automated: quote follow-ups, crew schedules and reminders, timesheets, supplier invoices and weekly job numbers.",
+      description: "Office work for trades businesses in Ontario, automated: quote follow-ups, crew schedules and reminders, timesheets, supplier invoices and weekly job numbers.",
     },
     log: {
       label: "An example night",
@@ -83,8 +83,8 @@ export const INDUSTRIES = [
   {
     slug: "distributors",
     crumb: "Distributors and wholesalers",
-    title: "Automation for Wholesale Distributors in Kitchener | Third Shift",
-    description: "For wholesale distributors in Waterloo Region: emailed orders drafted, supplier invoices matched, reorder lists built and overdue accounts listed overnight.",
+    title: "Automation for Wholesale Distributors in Ontario | Third Shift",
+    description: "For wholesale distributors in Ontario: emailed orders drafted, supplier invoices matched, reorder lists built and overdue accounts listed overnight.",
     h1: "Orders in, invoices matched, <em>stock watched.</em>",
     lede: "Distributors run on volume: customer orders arriving by email, supplier invoices to match, stock to reorder, and customers to chase for payment. Third Shift builds automations that take the re-keying out of it, inside the systems you already run, with a person approving anything that moves money.",
     more: "Emailed orders drafted, supplier invoices matched, stock and collections watched.",
@@ -92,7 +92,7 @@ export const INDUSTRIES = [
       name: "AI automation for distributors and wholesalers",
       serviceType: "Business process automation",
       audience: "Wholesale distributors",
-      description: "Office work for distributors in Waterloo Region, automated: draft orders from email and PDF purchase orders, supplier invoice matching, reorder alerts, collections and sales reporting.",
+      description: "Office work for distributors in Ontario, automated: draft orders from email and PDF purchase orders, supplier invoice matching, reorder alerts, collections and sales reporting.",
     },
     log: {
       label: "An example night",
@@ -153,8 +153,8 @@ export const INDUSTRIES = [
   {
     slug: "clinics",
     crumb: "Clinics",
-    title: "Automation for Clinics in Kitchener-Waterloo | Third Shift",
-    description: "For dental, physiotherapy, chiropractic and veterinary clinics in Waterloo Region: supplier invoices, inquiries, staff schedules and monthly numbers, automated.",
+    title: "Automation for Clinics in Ontario | Third Shift",
+    description: "For dental, physiotherapy, chiropractic and veterinary clinics in Ontario: supplier invoices, inquiries, staff schedules and monthly numbers, automated.",
     h1: "Less time on paperwork, <em>more with patients.</em>",
     lede: "Dental, physiotherapy, chiropractic and veterinary clinics run on front-desk time: supplier invoices, inquiries, schedules and the month-end numbers. Third Shift builds automations for the business side of the clinic, around the clinic software you already use.",
     more: "The business side of the clinic: supplier invoices, inquiries, schedules and numbers.",
@@ -162,7 +162,7 @@ export const INDUSTRIES = [
       name: "AI automation for clinics",
       serviceType: "Business process automation",
       audience: "Dental, physiotherapy, chiropractic and veterinary clinics",
-      description: "Business-side office work for clinics in Waterloo Region, automated: supplier invoices, website inquiries, staff schedules and timesheets, supply reorders and monthly reporting.",
+      description: "Business-side office work for clinics in Ontario, automated: supplier invoices, website inquiries, staff schedules and timesheets, supply reorders and monthly reporting.",
     },
     log: {
       label: "An example night",
@@ -223,8 +223,8 @@ export const INDUSTRIES = [
   {
     slug: "professional-services",
     crumb: "Professional services",
-    title: "Automation for Professional Firms in Kitchener | Third Shift",
-    description: "For accounting firms, insurance brokerages and other professional offices in Waterloo Region: document chasing, client onboarding and billing, automated.",
+    title: "Automation for Professional Firms in Ontario | Third Shift",
+    description: "For accounting firms, insurance brokerages and other professional offices in Ontario: document chasing, client onboarding and billing, automated.",
     h1: "Hours back <em>from the admin.</em>",
     lede: "Accounting and bookkeeping firms, insurance brokerages, engineering and design offices: the client work pays, and the admin around it doesn’t. Third Shift builds automations for that admin: chasing documents, onboarding clients, billing, and the month-end routine.",
     more: "Documents chased, clients onboarded, billing and month-end kept moving.",
@@ -232,7 +232,7 @@ export const INDUSTRIES = [
       name: "AI automation for professional services firms",
       serviceType: "Business process automation",
       audience: "Accounting firms, insurance brokerages and other professional services offices",
-      description: "Admin work for professional services firms in Waterloo Region, automated: client document reminders, onboarding, billing from approved time, inquiries and month-end reporting.",
+      description: "Admin work for professional services firms in Ontario, automated: client document reminders, onboarding, billing from approved time, inquiries and month-end reporting.",
     },
     log: {
       label: "An example night",
@@ -293,8 +293,8 @@ export const INDUSTRIES = [
   {
     slug: "manufacturers",
     crumb: "Manufacturers",
-    title: "Automation for Manufacturers in Kitchener-Waterloo | Third Shift",
-    description: "For small manufacturers and machine shops in Waterloo Region: purchase orders, supplier invoices, material reorders, timesheets and weekly numbers, automated.",
+    title: "Automation for Manufacturers in Ontario | Third Shift",
+    description: "For small manufacturers and machine shops in Ontario: purchase orders, supplier invoices, material reorders, timesheets and weekly numbers, automated.",
     h1: "The shop floor runs. <em>So should the office.</em>",
     lede: "Small manufacturers and machine shops keep the floor moving and fit the office work in between: purchase orders, supplier invoices, material reorders, timesheets and the weekly numbers. Third Shift builds automations for that office work, inside the systems you already run.",
     more: "Purchase orders, supplier invoices, material reorders, timesheets and weekly numbers.",
@@ -302,7 +302,7 @@ export const INDUSTRIES = [
       name: "AI automation for manufacturers",
       serviceType: "Business process automation",
       audience: "Small manufacturers and machine shops",
-      description: "Office work for small manufacturers in Waterloo Region, automated: supplier invoice matching, material reorder alerts, timesheets and payroll prep, RFQ and quote follow-up, and weekly reporting.",
+      description: "Office work for small manufacturers in Ontario, automated: supplier invoice matching, material reorder alerts, timesheets and payroll prep, RFQ and quote follow-up, and weekly reporting.",
     },
     log: {
       label: "An example night",

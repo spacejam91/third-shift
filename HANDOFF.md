@@ -159,7 +159,12 @@ Changed after sign-off, on the owner's word the same night:
   without a person signing off", because the example log shows matched invoices being posted automatically.
 - The "Who's behind it" paragraph became "Where we work", with no name or background (see the anonymity
   note at the top).
-- Service area: in person across Waterloo Region, and elsewhere in Ontario by video call.
+- Service area: in person across Waterloo Region, and elsewhere in Ontario by video call. Titles,
+  descriptions, the hero and the footer lead with Ontario; "based in Kitchener-Waterloo" stays where it's
+  a fact (where we meet in person).
+- Invoices aren't the headline: the hero line, the example log, the service cards and the overnight
+  checklist lead with inquiries, quotes and reports, and invoices come fourth. The owner's point: we don't
+  only automate accounting.
 
 ## How it fits together
 

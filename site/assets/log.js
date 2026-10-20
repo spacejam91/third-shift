@@ -18,27 +18,30 @@ const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 const vendors = ["a packaging supplier", "the freight carrier", "a new parts vendor", "the cleaning contractor"];
 
 // [kind, text]. The kind matches a phrase in the hero's opening line (ap, leads, quotes, reports).
+// The mix follows the site: inquiries, quotes, reports and the "built to fit" jobs as much as invoices.
 const JOBS = [
-  ["ap", () => `Picked up ${r(4, 31)} supplier invoices from the AP inbox`],
-  ["ap", () => `Matched invoice ${r(10400, 98900)} to PO ${r(4100, 4999)} and posted it`],
-  ["ap", () => `Matched ${r(12, 48)} invoices to purchase orders, queued for payment`],
-  ["quotes", () => `Sent a follow-up on quote Q-${r(1200, 1899)}, ${r(5, 14)} days old`],
   ["leads", () => `Logged a website inquiry in the CRM, reply sent`],
-  ["", () => { const n = r(18, 64), left = r(0, 2); return left ? `Matched ${n} bank lines, ${left} left for review` : `Matched all ${n} bank lines`; }],
-  ["", () => `Pulled ${r(8, 30)} timesheets into payroll`],
-  ["", () => `Reconciled ${r(20, 90)} card transactions to receipts`],
-  ["reports", () => `Updated ${pick(days)}’s cash position report`],
-  ["", () => `Chased ${r(2, 9)} overdue customer invoices, statements attached`],
-  ["", () => `Synced ${r(10, 60)} online orders to the ledger`],
-  ["ap", () => `Filed ${r(4, 20)} receipts from the expenses inbox`],
-  ["leads", () => `Booked ${r(2, 6)} discovery calls from last week’s inquiries`],
-  ["reports", () => `Built the weekly sales report, ready for 7 AM`],
+  ["leads", () => `Booked ${r(2, 6)} calls from last week’s inquiries`],
+  ["quotes", () => `Sent a follow-up on quote Q-${r(1200, 1899)}, ${r(5, 14)} days old`],
   ["quotes", () => `Chased ${r(2, 7)} open quotes, ${r(1, 2)} accepted overnight`],
+  ["reports", () => `Updated ${pick(days)}’s cash position report`],
+  ["reports", () => `Built the weekly sales report, ready for 7 AM`],
+  ["", () => `Sent tomorrow’s schedule to ${r(3, 9)} crews`],
+  ["", () => `Reminders queued for ${r(4, 18)} appointments tomorrow`],
+  ["", () => `Reorder list built: ${r(2, 9)} items below their minimum`],
+  ["", () => `New customer set up in three systems, welcome email sent`],
+  ["", () => `Pulled ${r(8, 30)} timesheets into payroll`],
+  ["", () => `Synced ${r(10, 60)} online orders to the ledger`],
+  ["ap", () => `Picked up ${r(4, 31)} supplier invoices from the inbox`],
+  ["ap", () => `Matched ${r(12, 48)} invoices to purchase orders, queued for payment`],
+  ["", () => { const n = r(18, 64), left = r(0, 2); return left ? `Matched ${n} bank lines, ${left} left for review` : `Matched all ${n} bank lines`; }],
+  ["", () => `Chased ${r(2, 9)} overdue customer invoices, statements attached`],
 ];
 const HELD = [
   () => `Invoice ${r(10400, 98900)} held for review: $${money()} over the PO`,
   () => `Bank details changed for ${pick(vendors)}: held for a call-back`,
-  () => `Duplicate invoice from ${pick(vendors)} held, not posted`,
+  () => `Pricing question in an inquiry: reply waiting for you`,
+  () => `Reorder held: ${pick(vendors)} is on hold`,
 ];
 
 function clockText(minutesIntoShift) {
