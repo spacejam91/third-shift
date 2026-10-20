@@ -23,11 +23,12 @@ export function initEffects({ reduced = false, finePointer = false } = {}) {
   initRing();
 }
 
-// The phone call-to-action bar shows once the hero is gone and hides again at the form.
+// The phone call-to-action bar shows once the hero is gone and hides again at the form (on the
+// service pages, at the closing call-to-action).
 function initMobileCta() {
   const bar = document.getElementById("mobile-cta");
-  const hero = document.querySelector(".hero");
-  const contact = document.getElementById("contact");
+  const hero = document.querySelector(".hero, [data-hero]");
+  const contact = document.querySelector("#contact, [data-cta-end]");
   if (!bar || !hero || !contact || !("IntersectionObserver" in window)) return;
   const seen = { hero: true, contact: false };
   const io = new IntersectionObserver((entries) => {

@@ -56,11 +56,11 @@
         "@type": "OfferCatalog",
         "name": "Automations",
         "itemListElement": [
-          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Supplier invoice and payables automation", "description": "Invoices picked up from email and vendor portals, matched to purchase orders, posted to the accounting system and queued for payment. Anything that doesn't match waits for a person." } },
-          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Lead intake and follow-up automation", "description": "Website, email and form inquiries logged in the CRM with a reply sent, and open quotes chased on a schedule." } },
-          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Reporting automation", "description": "Weekly and monthly reports built overnight from the systems a business already uses, ready before the team starts." } },
-          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Routine process automation", "description": "The recurring jobs one person carries in their head, written down and run on a schedule with a log of every run." } },
-          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Custom automation and internal tools", "description": "Automations and small internal tools built to fit one business: inventory and reorder alerts, scheduling, timesheets, document drafting, onboarding, and moving data between apps." } }
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Supplier invoice and payables automation", "url": "https://thirdshift.ca/invoice-automation", "description": "Invoices picked up from email and vendor portals, matched to purchase orders, posted to the accounting system and queued for payment. Anything that doesn't match waits for a person." } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Lead intake and follow-up automation", "url": "https://thirdshift.ca/lead-follow-up", "description": "Website, email and form inquiries logged in the CRM with a reply sent, and open quotes chased on a schedule." } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Reporting automation", "url": "https://thirdshift.ca/reporting-automation", "description": "Weekly and monthly reports built overnight from the systems a business already uses, ready before the team starts." } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Routine process automation", "url": "https://thirdshift.ca/process-automation", "description": "The recurring jobs one person carries in their head, written down and run on a schedule with a log of every run." } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Custom automation and internal tools", "url": "https://thirdshift.ca/custom-automation", "description": "Automations and small internal tools built to fit one business: inventory and reorder alerts, scheduling, timesheets, document drafting, onboarding, and moving data between apps." } }
         ]
       },
       "sameAs": [
@@ -208,6 +208,7 @@
           </div>
           <h3>Supplier invoices and payables</h3>
           <p>Invoices arrive by email and vendor portals, get matched to purchase orders, posted to your accounting system, and queued for payment. Anything that doesn’t match waits for a person.</p>
+          <a class="link-quiet card-link" href="invoice-automation">How invoice automation works</a>
         </li>
         <li class="card" data-glow data-reveal>
           <div class="viz viz-leads" data-label="NEW INQUIRY" aria-hidden="true">
@@ -222,6 +223,7 @@
           </div>
           <h3>Lead intake and follow-up</h3>
           <p>Website, email and form inquiries land in your CRM with a reply out within minutes. Open quotes get chased on a schedule, so nobody has to remember to.</p>
+          <a class="link-quiet card-link" href="lead-follow-up">How lead follow-up works</a>
         </li>
         <li class="card" data-glow data-reveal>
           <div class="viz viz-report" data-label="MONDAY REPORT" aria-hidden="true">
@@ -232,6 +234,7 @@
           </div>
           <h3>Reporting</h3>
           <p>The numbers you look at every Monday, pulled from the systems they live in and assembled Sunday night, instead of being built by hand that morning.</p>
+          <a class="link-quiet card-link" href="reporting-automation">How automated reporting works</a>
         </li>
         <li class="card" data-glow data-reveal>
           <div class="viz viz-list" data-label="FRIDAY ROUTINE" aria-hidden="true">
@@ -245,6 +248,7 @@
           </div>
           <h3>The process one person carries in their head</h3>
           <p>The spreadsheet, the checklist, the Friday routine only Dave knows how to do. Written down, built out, and running on a schedule with a log of what it did.</p>
+          <a class="link-quiet card-link" href="process-automation">How process automation works</a>
         </li>
         <li class="card card-wide" data-glow data-reveal>
           <div class="custom">
@@ -252,7 +256,10 @@
               <p class="custom-kicker">Built to fit</p>
               <h3>Something else eating your week?</h3>
               <p>Those four are where most owners start, not the whole menu. Every build is made for the business in front of us, so if a job repeats and lives in software, it’s a candidate.</p>
-              <a class="link-quiet custom-link" href="#contact">Tell us what it is</a>
+              <div class="custom-links">
+                <a class="link-quiet custom-link" href="#contact">Tell us what it is</a>
+                <a class="link-quiet custom-link" href="custom-automation">More on what else we build</a>
+              </div>
             </div>
             <ul class="custom-list" aria-label="Other things we build">
               <li>Inventory counts and reorder alerts</li>
@@ -463,16 +470,11 @@
     </div>
   </section>
 
-  <!-- Two slogan ribbons crossing, one each way. Decorative: everything they say is on the page already. -->
-  <div class="ribbons" aria-hidden="true">
-    <div class="ribbon ribbon-back">
-      <div class="ribbon-track"><span>While you sleep</span><span>Fixed price</span><span>Every run logged</span><span>People approve the money</span><span>Works with what you already run</span><span>Kitchener-Waterloo</span></div>
-      <div class="ribbon-track"><span>While you sleep</span><span>Fixed price</span><span>Every run logged</span><span>People approve the money</span><span>Works with what you already run</span><span>Kitchener-Waterloo</span></div>
-    </div>
-    <div class="ribbon ribbon-front">
-      <div class="ribbon-track"><span>Invoices matched</span><span>Quotes chased</span><span>Inquiries answered</span><span>Bank lines reconciled</span><span>Exceptions held for a person</span><span>Report ready by 7 AM</span></div>
-      <div class="ribbon-track"><span>Invoices matched</span><span>Quotes chased</span><span>Inquiries answered</span><span>Bank lines reconciled</span><span>Exceptions held for a person</span><span>Report ready by 7 AM</span></div>
-    </div>
+  <!-- The four promises once more before the form, standing still. Decorative: each is on the page already. -->
+  <div class="promises" aria-hidden="true">
+    <ul class="wrap">
+      <li>Fixed price</li><li>People approve the money</li><li>Every run logged</li><li>We meet in person</li>
+    </ul>
   </div>
 
   <section id="contact" class="section" aria-labelledby="contact-title">

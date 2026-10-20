@@ -7,11 +7,9 @@ import { initEffects } from "./effects.js";
 import { initCalculator } from "./calculator.js";
 import { initAudit } from "./audit.js";
 import { initForm } from "./form.js";
-import { BOOKING_URL } from "./config.js";
+import { book, bookAll, flagCopies } from "./shared.js";
 
 const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-// Where the real site lives. Anywhere else (a scraped copy, a cloned repo on a new domain) gets a note.
-const HOMES = ["thirdshift.ca", "www.thirdshift.ca", "spacejam91.github.io", "localhost", "127.0.0.1"];
 const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
 function safely(name, start) {
@@ -39,25 +37,8 @@ const clock = safely("clock", () => {
   };
 });
 
-// "Book a call" links go to the booking page once BOOKING_URL is set, otherwise to the form.
-function book(a) {
-  if (!/^https:\/\/[^\s]+$/.test(BOOKING_URL)) return;
-  a.href = BOOKING_URL;
-  a.target = "_blank";
-  a.rel = "noopener";
-}
-safely("booking", () => document.querySelectorAll("[data-book]").forEach(book));
-
-safely("origin", () => {
-  console.info("Third Shift, thirdshift.ca. Built in Kitchener-Waterloo. All rights reserved.");
-  const host = location.hostname;
-  if (!host || HOMES.includes(host) || host.endsWith(".localhost") || host.endsWith(".translate.goog")) return;
-  const note = document.createElement("a");
-  note.className = "origin-note";
-  note.href = "https://thirdshift.ca/";
-  note.textContent = "This is a copy. The original is at thirdshift.ca";
-  document.body.append(note);
-});
+safely("booking", bookAll);
+safely("origin", flagCopies);
 
 // The opening line's tasks ("clear your invoices", ...) underline as the log does that kind of job.
 const lede = safely("lede", () => {

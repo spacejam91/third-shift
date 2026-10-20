@@ -1,7 +1,13 @@
 # Third Shift: handoff
 
-The site is live at https://thirdshift.ca (GitHub Pages, HTTPS on). The contact form, the CRM and
-the booking link are built but switched off until the steps below are done. Work down the list in order.
+The site is live at https://thirdshift.ca (GitHub Pages, HTTPS on), with a page for each service. The
+contact form, the CRM and the booking link are built but switched off until the steps below are done.
+Until then, every "Book a call" button leads to a form that says it isn't connected yet, so the booking
+link (step 3) is the quickest way to make the site take leads. Work down the list in order.
+
+Decided on Oct 20, 2026: business email runs on **Google Workspace** on thirdshift.ca. The CRM sheet,
+both Apps Script projects and the booking calendar belong to the Workspace user (for example
+`aaron@thirdshift.ca`), not to thirdshift.ca@gmail.com. The sales bot runs as that user too.
 
 ## Your to-do list
 
@@ -13,22 +19,57 @@ text messages. Save each set of backup codes somewhere offline.
 | Account | Why it matters | Where |
 |---|---|---|
 | GoDaddy | Whoever controls it controls thirdshift.ca | Account Settings > Login & PIN > 2-Step Verification. Then My Products > thirdshift.ca > turn on Domain Protection (lock) and Auto-renew. |
-| Google (thirdshift.ca@gmail.com) | Holds the CRM sheet, both scripts and the inbox | myaccount.google.com > Security > 2-Step Verification. Add a passkey too. |
+| Google (thirdshift.ca@gmail.com, and the Workspace user once it exists) | Holds the CRM sheet, both scripts and the inbox | myaccount.google.com > Security > 2-Step Verification. Add a passkey too. |
 | GitHub (spacejam91) | Whoever has it can change the live site | github.com > Settings > Password and authentication > Two-factor authentication |
 | Instagram, X, Facebook, LinkedIn | Brand accounts get hijacked for scams | Each app's Settings > Security > Two-factor authentication, as the marketing bot sets them up |
 | Any email-sending or outreach service | The sales bot will send from it | Its security settings, before the first send |
 
-### 2. Turn on the contact form (intake)
+### 2. Google Workspace on thirdshift.ca
 
-1. Signed in as thirdshift.ca@gmail.com, create a Google Sheet named **Third Shift CRM**.
+1. Sign up for Google Workspace **Business Starter** with the domain thirdshift.ca. Create your user
+   (for example `aaron@thirdshift.ca`) and turn on 2-step verification for it straight away.
+2. Workspace asks you to verify the domain with a TXT record. Add it in GoDaddy (My Products >
+   thirdshift.ca > DNS > Add record). Leave every existing record alone: the A records, the `www`
+   CNAME and the `_github-pages-challenge-spacejam91` TXT keep the site up.
+3. Add the MX record the setup wizard shows (`smtp.google.com`, priority 1). Mail to @thirdshift.ca
+   starts arriving in Workspace once it takes effect.
+4. In the Admin console, add `hello@thirdshift.ca` as an alias of your user.
+5. Set up SPF, DKIM and DMARC for thirdshift.ca. The exact records are in
+   `third-shift-outreach/README.md`, section 1, which also covers the separate domain cold email will
+   go out from. The sales bot can check every record once you've added them.
+6. Tell the thirdshift session when `hello@thirdshift.ca` receives mail. It then swaps the address on the
+   site, in the contact form's emails and in the privacy page. Until then, everything keeps using
+   thirdshift.ca@gmail.com.
+
+### 3. Booking link
+
+The fastest way to make every "Book a call" button work. Make it as the Workspace user: the sales bot
+watches that account's calendar to notice booked calls.
+
+1. In Google Calendar, Create > **Appointment schedule**. Title: "Third Shift: free 20-minute call".
+2. Duration 20 minutes. Set the hours you can take calls, a minimum notice (a day is sensible) and a
+   buffer of 10 minutes between calls.
+3. Location: Google Meet, or phone if you prefer. If the booking form lets you add questions, ask for the
+   company name and "What takes up your team's time?".
+4. Save, open the booking page, and copy its link.
+5. Paste the link to the thirdshift session. It goes into `BOOKING_URL` in `site/assets/config.js`, and
+   from then on every "Book a call" button on every page opens it.
+
+If Workspace won't be ready before the marketing launch on Monday Oct 26, make the schedule under
+thirdshift.ca@gmail.com for now and swap the link later. It's a one-line change.
+
+### 4. Turn on the contact form (intake)
+
+1. Signed in as the Workspace user, create a Google Sheet named **Third Shift CRM**.
 2. In the sheet: Extensions > Apps Script. Create files matching `backend/intake/`, paste in `Schema.gs`, `Code.gs` and the contents of `appsscript.json` (Project Settings > show the manifest file).
 3. Run `selfTest` once from the editor and approve the permissions. A test lead should land on the Leads tab and two emails should arrive.
 4. Deploy > New deployment > Web app (Execute as: Me, Who has access: Anyone). Copy the web app URL.
-5. Paste it into `LEAD_ENDPOINT` in `site/assets/config.js`, then commit and push (see "Everyday" below).
+5. Paste it to the thirdshift session (or into `LEAD_ENDPOINT` in `site/assets/config.js`), then commit and push (see "Everyday" below).
+6. Send the sheet's id (the long part of its URL) to the sales bot. It needs it too.
 
-### 3. Turn on the CRM
+### 5. Turn on the CRM
 
-1. Create a new **standalone** Apps Script project (script.google.com > New project). Add the files from `backend/crm/` (`Schema.gs`, `Crm.gs`, `Index.html`, and the manifest from `appsscript.json`).
+1. Create a new **standalone** Apps Script project (script.google.com > New project) as the Workspace user. Add the files from `backend/crm/` (`Schema.gs`, `Crm.gs`, `Index.html`, and the manifest from `appsscript.json`).
 2. Project Settings > Script properties: `CRM_SHEET_ID` = the long id in the CRM sheet's URL.
 3. Run `setupCrm` once. It builds the tabs, adds you to `CRM_USERS` and sets the 7 AM summary email.
 4. Deploy > New deployment > Web app (Execute as: User accessing, Who has access: Only myself). Bookmark the URL.
@@ -36,56 +77,84 @@ text messages. Save each set of backup codes somewhere offline.
 
 To try the CRM screen with demo data on this computer first: `node tools/crm-preview.mjs`, then open http://127.0.0.1:8915.
 
-### 4. Booking link and bot check (optional, both free)
+### 6. Get found: Search Console and Bing
 
-- **Booking link:** make a Google Calendar appointment schedule or a Cal.com page for a 20-minute call. Put its https link in `BOOKING_URL` in `site/assets/config.js`. Every "Book a call" button then opens it.
-- **Cloudflare Turnstile** (stops form spam if it starts): Cloudflare > Turnstile > Add site for thirdshift.ca. The site key goes in `TURNSTILE_SITE_KEY` in `config.js`, and the secret goes in the intake project's `TURNSTILE_SECRET` script property.
+The site side is done: titles, descriptions, structured data for the business, each service and the FAQs,
+breadcrumbs, a sitemap with all seven pages, robots.txt and llms.txt. These two steps need your accounts.
 
-### 5. Get found (SEO off the site)
+**Google Search Console** (about 10 minutes, plus waiting for DNS):
 
-The site itself is done: titles, descriptions, structured data for the business, services and FAQ, sitemap, robots.txt and llms.txt. The rest needs your accounts:
+1. Go to search.google.com/search-console and sign in (thirdshift.ca@gmail.com is fine; you can add the
+   Workspace user as an owner later under Settings > Users and permissions).
+2. Add property > **Domain** > `thirdshift.ca`. Google shows a TXT record. Copy it.
+3. In GoDaddy DNS, add a TXT record with Name `@` and that value. Several TXT records on `@` are fine.
+4. Back in Search Console, press Verify. If it says not found, wait an hour and try again.
+5. Sitemaps > enter `sitemap.xml` > Submit.
+6. Optional: URL Inspection > paste each page's address > Request indexing. It speeds up the first visit.
 
-1. **Google Search Console** (search.google.com/search-console): add a Domain property for thirdshift.ca. It gives you a TXT record; add it in GoDaddy DNS. Then Sitemaps > submit `https://thirdshift.ca/sitemap.xml`.
-2. **Bing Webmaster Tools** (bing.com/webmasters): sign in and import from Search Console. One click, and it also covers DuckDuckGo and ChatGPT search.
-3. **Google Business Profile** (business.google.com): this is the biggest one for local search.
-   - Set it up as a service-area business (hide the street address) serving Kitchener, Waterloo and Cambridge.
-   - Primary category "Business management consultant", and add "Software company".
-   - Use `social-kit/profile-picture.png` and the cover images.
-   - Ask your first clients for reviews there.
-4. **Local listings:** Greater Kitchener Waterloo Chamber of Commerce, Communitech, the Waterloo Region Small Business Centre, and a LinkedIn company page. Each links back to the site.
+**Bing Webmaster Tools** (2 minutes, after Search Console is verified): go to bing.com/webmasters, sign
+in, and choose **Import from Google Search Console**. It brings the site and the sitemap across, and it
+also covers DuckDuckGo and the search inside ChatGPT.
 
-### 6. Copy to sign off
+### 7. Google Business Profile
 
-Written on your behalf. Change anything that isn't true or isn't how you'd say it.
+For "automation Kitchener" style searches this is probably the strongest single listing, and Google's
+verification can take days or weeks, so start it early.
 
-- "Who's behind it" says you spent years in accounts payable and finance operations automating your own job. It names no employer.
-- "First builds typically ship within a few weeks."
-- "We'll reply within one business day." This appears on the form, in the auto-reply and in the success message, so keep all three in step.
-- "We meet in person" across Waterloo Region (Kitchener, Waterloo, Cambridge).
-- The "Built to fit" card under the four services lists other work we take on (inventory alerts, scheduling,
-  timesheets, quotes and contracts, onboarding, syncing apps, internal tools, month-end checklists). Cut any you wouldn't want to be asked for.
-- There's no pricing yet. A "from $X" line on step 2 helps small-business buyers decide to call.
-- The footer says "© 2026 Third Shift". Once the name is registered, make it "[Legal name] o/a Third Shift" there and in `LICENSE`.
+1. business.google.com > Add business. Name: **Third Shift**. Primary category: "Business management
+   consultant". Add "Software company" as a second category if offered.
+2. When it asks about a location customers can visit, say **no**. That makes it a service-area business
+   with your address hidden. Service areas: Kitchener, Waterloo, Cambridge.
+3. Website: `https://thirdshift.ca/?utm_source=google&utm_medium=social&utm_campaign=bio` (the tags
+   let the CRM show leads that came from the profile).
+4. Verify the way Google offers (video, phone, email or postcard). For a video, Google lists what to show.
+5. Once verified, fill it in from `third-shift-marketing/docs/PROFILE-KIT.md` (description and photos), add
+   the five services with a line each from the service pages, and add the booking link from step 3.
+6. Tell the marketing bot it's live. It then connects the profile in Zernio and posts there weekly.
 
-### 7. Smaller items
+Either Google account can own it. If you make it as thirdshift.ca@gmail.com, add the Workspace user as an
+owner later, from the profile's settings (the people and access, or managers, page).
 
-- **Social links:** the footer and the structured data point at instagram.com/thirdshift.ca, x.com/thirdshiftca and facebook.com/thirdshift.ca. Confirm those are the handles, and add LinkedIn when the page exists (there's a commented-out line in the footer of `site/index.html`).
-- **Email at the domain:** hello@thirdshift.ca forwarding to the Gmail (GoDaddy email forwarding, or ImprovMX free). Then swap `NOTIFY_TO` and `REPLY_TO` in `backend/intake/Code.gs` and the addresses on the site.
+### 8. Bot check on the form (optional, free)
+
+**Cloudflare Turnstile** stops form spam if it starts: Cloudflare > Turnstile > Add site for
+thirdshift.ca. The site key goes in `TURNSTILE_SITE_KEY` in `config.js`, and the secret goes in the
+intake project's `TURNSTILE_SECRET` script property.
+
+### 9. Local listings
+
+Greater Kitchener Waterloo Chamber of Commerce, Communitech, the Waterloo Region Small Business Centre,
+and a LinkedIn company page. Each links back to the site.
+
+### 10. Smaller items
+
+- **Social links:** the footer and the structured data point at instagram.com/thirdshift.ca, x.com/thirdshiftca and facebook.com/thirdshift.ca. Add LinkedIn when the page exists (there's a commented-out line in the footer of `site/index.html`).
+- **Legal name:** the footer says "© 2026 Third Shift". Once the name is registered, it becomes "[Legal name] o/a Third Shift" there and in `LICENSE`.
+- **Pricing:** none on the site for now (Aaron, Oct 20). A "from $X" line can go on the home page and the service pages whenever you want one.
 - **IPv6 (optional):** in GoDaddy DNS, add AAAA records for @ pointing to 2606:50c0:8000::153, 2606:50c0:8001::153, 2606:50c0:8002::153 and 2606:50c0:8003::153.
 - **Keeping the code private:** the repo has to be public for free GitHub Pages. `LICENSE` says all rights reserved, which is what protects it legally. If you want the source hidden as well, a GitHub Pro plan lets Pages run from a private repo. The pages themselves are always visible in a browser.
+
+## Copy: signed off
+
+Aaron confirmed the site copy on Oct 20, 2026, as written: the "Who's behind it" paragraph (names no
+employer), "First builds typically ship within a few weeks", "We'll reply within one business day" (form,
+auto-reply and success message), "We meet in person" across Waterloo Region, and the "Built to fit" list.
+The service pages added the same day use only those claims. Anything new that promises a time, a price
+or a result needs his OK first.
 
 ## How it fits together
 
 - `site/` is the website. It's plain HTML, CSS and JavaScript with no build step. GitHub Actions runs the tests, then publishes this folder on every push to `main`.
+- The five service pages (`site/invoice-automation.html` and the others) are written from `content/services.mjs` by `tools/build-pages.mjs`. Change the words in `content/services.mjs`, run `npm run pages`, and commit both. A test fails if the two disagree. The pages are committed as built, so deploys still have no build step.
 - `backend/intake/` is the public form endpoint, an Apps Script bound to the CRM sheet. It saves the lead first, then files it as company, contact, deal and inquiry, and records where the visitor came from (campaign tags or referring site).
 - `backend/crm/` is the private CRM web app over the same sheet.
 - `social-kit/` holds the logos, banners and animated videos for social profiles. Its README says what goes where.
-- `tools/` holds the local preview server, the CRM preview, and the brand and video renderers.
+- `tools/` holds the local preview server, the CRM preview, the page builder, and the brand and video renderers.
 - `docs/SYSTEM.md` describes how the site, the sales bot and the marketing bot work together: who owns what, the shared CRM, campaign tags, and how each bot reports back.
 
 Why this stack: browsers only run HTML, CSS and JavaScript, so every site ends up as those three whatever
 it's written in. Python or Java would mean renting and patching a server for pages that don't need one.
-When the site needs many pages of its own (case studies, a blog), move `site/` to a static site
+If the site grows to many more pages of its own (case studies, a blog), move `site/` to a static site
 generator such as Astro: same output, same free hosting. Anything that needs a database or a login
 lives in the backend, as the intake and CRM already do.
 
@@ -97,6 +166,7 @@ The bots: the sales bot (prospecting and outreach, repo `third-shift-outreach`) 
 |---|---|
 | Preview the site | `npm run serve`, then http://127.0.0.1:8914 |
 | Run the tests | `npm test` |
+| Rebuild the service pages after changing `content/services.mjs` | `npm run pages` |
 | Publish | commit, then `git push` (live in about a minute) |
 | Preview the CRM with demo data | `node tools/crm-preview.mjs`, then http://127.0.0.1:8915 |
 | Redraw logos, icons and banners | `node tools/render-brand.mjs` |
@@ -110,10 +180,14 @@ The bots: the sales bot (prospecting and outreach, repo `third-shift-outreach`) 
 | CNAME | www | spacejam91.github.io |
 | TXT | _github-pages-challenge-spacejam91 | (GitHub's domain verification, leave it) |
 
+Workspace (step 2) and Search Console (step 6) each add a TXT record on `@`, and Workspace adds the MX
+record. None of them touch the records above.
+
 ## Design and security notes
 
 - The night network, the shift log and the dawn at the bottom carry the page. New sections should stay quiet around them.
+- Motion should mean something (a job getting done), not decorate. On Oct 20 the two crossing slogan ribbons above the form were replaced with one still line of the four promises, because Aaron found them busy.
 - Palette tokens are at the top of `site/assets/styles.css`. On wide monitors everything sized in rem scales up gently, from 16px at 1440 wide to 22px at the cap.
-- The log lines, the fast-forward summary and the videos show an example night. Once there's a real client, swap in real (anonymised) numbers.
-- Every page carries a Content-Security-Policy meta tag; `_headers` has the same rules for hosts that read it. Scripts are first-party only, and there are no trackers. The privacy page promises that, so keep it true.
+- The log lines, the fast-forward summary, the service pages' example logs and the videos show example nights. Once there's a real client, swap in real (anonymised) numbers.
+- Every page carries a Content-Security-Policy meta tag; `_headers` has the same rules for hosts that read it, and a test keeps them all in step. Scripts are first-party only, and there are no trackers. The privacy page promises that, so keep it true.
 - If the site is ever served from a domain that isn't thirdshift.ca, it shows a "This is a copy" note linking back here.
