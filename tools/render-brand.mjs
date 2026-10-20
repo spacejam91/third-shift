@@ -42,7 +42,8 @@ const JOBS = [
 ];
 const only = process.argv[2];
 
-const browser = await openBrowser(9334);
+// ClearType would leave red and green fringes on the text that platforms then smear when they recompress.
+const browser = await openBrowser(9334, ["--disable-lcd-text"]);
 
 const icoParts = {};
 try {
