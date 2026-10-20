@@ -4,7 +4,9 @@ import { initNight } from "./night.js";
 import { initLog } from "./log.js";
 import { initEffects } from "./effects.js";
 import { initCalculator } from "./calculator.js";
+import { initAudit } from "./audit.js";
 import { initForm } from "./form.js";
+import { BOOKING_URL } from "./config.js";
 
 const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
@@ -28,15 +30,44 @@ safely("clock", () => {
   setInterval(tick, 30000);
 });
 
+safely("booking", () => {
+  if (!/^https:\/\/[^\s]+$/.test(BOOKING_URL)) return;
+  for (const a of document.querySelectorAll("[data-book]")) {
+    a.href = BOOKING_URL;
+    a.target = "_blank";
+    a.rel = "noopener";
+  }
+});
+
 const log = safely("log", () => initLog({
   list: document.getElementById("shiftlog"),
   doneEl: document.getElementById("log-done"),
   heldEl: document.getElementById("log-held"),
 }));
 
-safely("night", () => {
+// "N jobs kicked off since you got here": appears after the visitor's third job, hides at the form.
+const chip = safely("chip", () => {
+  const box = document.getElementById("chip");
+  const n = document.getElementById("chip-n");
+  if (!box || !n) return null;
+  let count = 0, dismissed = false, atForm = false;
+  try { dismissed = sessionStorage.getItem("ts-chip") === "hidden"; } catch { /* storage blocked */ }
+  const show = () => { box.hidden = dismissed || atForm || count < 3; };
+  document.getElementById("chip-x")?.addEventListener("click", () => {
+    dismissed = true;
+    show();
+    try { sessionStorage.setItem("ts-chip", "hidden"); } catch { /* storage blocked */ }
+  });
+  const contact = document.getElementById("contact");
+  if (contact && "IntersectionObserver" in window) {
+    new IntersectionObserver(([e]) => { atForm = e.isIntersecting; show(); }, { threshold: 0.15 }).observe(contact);
+  }
+  return { bump() { count++; n.textContent = String(count); show(); } };
+});
+
+const night = safely("night", () => {
   const canvas = document.querySelector("canvas.night");
-  if (canvas) initNight(canvas, { reduced, onJob: () => log?.push() });
+  return canvas ? initNight(canvas, { reduced, onJob: () => log?.push(), onUserJob: () => chip?.bump() }) : null;
 });
 
 safely("effects", () => initEffects({ reduced, finePointer }));
@@ -44,3 +75,8 @@ safely("effects", () => initEffects({ reduced, finePointer }));
 const form = safely("form", () => initForm(document.getElementById("lead")));
 
 safely("calculator", () => initCalculator({ reduced, onSend: (text) => form?.prefill(text) }));
+
+safely("audit", () => initAudit({
+  onTick: (x, y) => night?.startJob(x, y),
+  onSend: (text) => form?.prefill(text),
+}));

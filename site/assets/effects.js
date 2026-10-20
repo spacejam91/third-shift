@@ -7,11 +7,107 @@ export function initEffects({ reduced = false, finePointer = false } = {}) {
   const root = document.documentElement;
   initScroll(root);
   initReveal(root, reduced);
+  initMobileCta();
+  if (!reduced) initScramble();
   if (reduced || !finePointer) return;
   initSpotlight(root);
   initGlow();
   initMagnetic();
   initTilt();
+  initCardTilt();
+  initRing();
+}
+
+// The phone call-to-action bar shows once the hero is gone and hides again at the form.
+function initMobileCta() {
+  const bar = document.getElementById("mobile-cta");
+  const hero = document.querySelector(".hero");
+  const contact = document.getElementById("contact");
+  if (!bar || !hero || !contact || !("IntersectionObserver" in window)) return;
+  const seen = { hero: true, contact: false };
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) seen[e.target === hero ? "hero" : "contact"] = e.isIntersecting;
+    bar.classList.toggle("is-on", !seen.hero && !seen.contact);
+  });
+  io.observe(hero);
+  io.observe(contact);
+}
+
+// Section labels decode from machine noise into words as they arrive, and again on hover.
+function initScramble() {
+  const GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/#";
+  const els = [...document.querySelectorAll(".kicker")];
+  if (!els.length || !("IntersectionObserver" in window)) return;
+
+  function run(el) {
+    const final = el.dataset.text;
+    cancelAnimationFrame(el._scramble || 0);
+    const start = performance.now();
+    const dur = 500 + final.length * 22;
+    const tick = (now) => {
+      const t = Math.min(1, (now - start) / dur);
+      const shown = Math.floor(t * final.length);
+      let out = final.slice(0, shown);
+      for (let i = shown; i < final.length; i++) out += final[i] === " " ? " " : GLYPHS[(Math.random() * GLYPHS.length) | 0];
+      el.textContent = out;
+      if (t < 1) el._scramble = requestAnimationFrame(tick);
+    };
+    el._scramble = requestAnimationFrame(tick);
+  }
+
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) {
+      if (!e.isIntersecting) continue;
+      run(e.target);
+      io.unobserve(e.target);
+    }
+  }, { threshold: 0.6 });
+  for (const el of els) {
+    el.dataset.text = el.textContent;
+    io.observe(el);
+    el.addEventListener("pointerenter", () => run(el));
+  }
+}
+
+// Service cards lean toward the pointer. Uses the rotate property (axis and angle) so it never
+// fights the transform the scroll reveal uses.
+function initCardTilt() {
+  for (const card of document.querySelectorAll(".card")) {
+    card.addEventListener("pointermove", (e) => {
+      const r = card.getBoundingClientRect();
+      const nx = (e.clientX - r.left) / r.width - 0.5;
+      const ny = (e.clientY - r.top) / r.height - 0.5;
+      const angle = Math.min(1, Math.hypot(nx, ny) * 1.6) * 5;
+      card.style.rotate = `${(-ny).toFixed(3)} ${nx.toFixed(3)} 0 ${angle.toFixed(2)}deg`;
+    });
+    card.addEventListener("pointerleave", () => { card.style.rotate = ""; });
+  }
+}
+
+// A soft ring that trails the mouse and swells over anything clickable.
+function initRing() {
+  const ring = document.querySelector(".ring");
+  if (!ring) return;
+  const HOT = "a, button, input, textarea, select, summary, label, [data-magnetic]";
+  let x = -100, y = -100, cx = x, cy = y, raf = 0;
+
+  function frame() {
+    cx += (x - cx) * 0.22;
+    cy += (y - cy) * 0.22;
+    ring.style.transform = `translate3d(${cx.toFixed(1)}px, ${cy.toFixed(1)}px, 0)`;
+    raf = Math.abs(x - cx) + Math.abs(y - cy) > 0.3 ? requestAnimationFrame(frame) : 0;
+  }
+  window.addEventListener("pointermove", (e) => {
+    if (e.pointerType !== "mouse") return;
+    x = e.clientX;
+    y = e.clientY;
+    if (!ring.classList.contains("is-on")) { cx = x; cy = y; ring.classList.add("is-on"); }
+    ring.classList.toggle("is-hot", !!(e.target.closest && e.target.closest(HOT)));
+    if (!raf) raf = requestAnimationFrame(frame);
+  }, { passive: true });
+  window.addEventListener("pointerdown", () => ring.classList.add("is-down"), { passive: true });
+  window.addEventListener("pointerup", () => ring.classList.remove("is-down"), { passive: true });
+  document.documentElement.addEventListener("pointerleave", () => ring.classList.remove("is-on"));
 }
 
 function initScroll(root) {
