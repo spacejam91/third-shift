@@ -4,7 +4,8 @@ Made by `node tools/render-brand.mjs` from `tools/brand/art.html`. Change the ar
 
 | File | Use it for | Size |
 |---|---|---|
-| `profile-picture.png` | Profile photo on LinkedIn (page and personal), Instagram, Facebook, X, Google Business Profile. Platforms crop it to a circle; the moon stays inside. | 1080 x 1080 |
+| `profile-picture.png` | Profile photo on LinkedIn (page and personal), Instagram, Facebook, X, Google Business Profile. A flat black crescent on white: no stars, glow or gradients, so it stays crisp when a platform shrinks it. Platforms crop it to a circle; the moon stays inside. | 1080 x 1080 |
+| `profile-picture-400.png` | The same, for uploads that want a small file | 400 x 400 |
 | `linkedin-cover-1584x396.png` | Background photo on a personal LinkedIn profile | 1584 x 396 |
 | `linkedin-page-cover-1128x191.png` | Cover image on the LinkedIn company page (exported at 2x for sharpness) | 2256 x 382 |
 | `facebook-cover-1640x624.png` | Facebook page cover. Text sits inside the area phones show. | 1640 x 624 |
@@ -14,6 +15,8 @@ Made by `node tools/render-brand.mjs` from `tools/brand/art.html`. Change the ar
 | `logo-for-light-backgrounds.png` | Logo with navy lettering, transparent background: proposals, invoices, Chamber and Communitech listings | 2135 x 476 |
 | `logo-mark.png` | The moon on its own, transparent | 1024 x 1024 |
 | `link-preview-1200x630.png` | The picture that shows when thirdshift.ca is shared in a post or message (already set on the site). Also good as a LinkedIn or Facebook post image. | 1200 x 630 |
+
+The covers, header and first post are flat too: a solid night background, the amber crescent and the line, with "AI automation · Ontario, Canada".
 
 Colours: night `#050913`, amber `#F2B055`, dawn `#FF8F4D`, light text `#ECF1F8`, navy text `#0B1222`.
 Type: Bricolage Grotesque (headings, logo), IBM Plex Mono (labels). Both free on Google Fonts.

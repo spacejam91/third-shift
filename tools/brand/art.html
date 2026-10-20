@@ -7,12 +7,16 @@
 <!--
   Every logo, icon, banner and share image is drawn by this one page, then exported by
   tools/render-brand.mjs. ?kind= picks the layout:
-    mark       the crescent alone (bg=night for app icons and profile pictures, bg=none for transparent)
+    flat       the crescent alone on one solid colour (fg=000000&bg=FFFFFF): the profile picture.
+               No stars, glow or gradients, so it stays crisp when a platform shrinks it to a small JPEG.
+    mark       the crescent alone (bg=night for app icons, bg=none for transparent)
     wordmark   crescent + "Third Shift" (theme=dark for dark backgrounds, theme=light for light ones)
     banner     wide social cover: network on the left, headline on the right
     square     1:1 post: mark, wordmark and the line
     og         1200x630 link preview
-  The night network is the same idea as site/assets/night.js, drawn once and still.
+  The night network is the same idea as site/assets/night.js, drawn once and still. banner and square
+  take flat=1 for the profile versions: a solid night background with a crescent in place of the
+  network, which is what keeps them sharp after X and Facebook recompress them.
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -60,6 +64,10 @@ canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 
 .square .text { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; text-align: center; }
 .square .shade { position: absolute; inset: 0; background: radial-gradient(closest-side, rgba(5, 9, 19, .82), rgba(5, 9, 19, .35) 70%, transparent); }
+
+.flat { background: #060A14; }
+.flat .head em { background: none; color: var(--amber); }
+.flat .moon.side { position: absolute; }
 
 .og .text { position: absolute; left: 7%; top: 50%; translate: 0 -50%; display: grid; justify-items: start; }
 .og .shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(5, 9, 19, .82) 25%, rgba(5, 9, 19, .35) 58%, transparent 80%); }
@@ -203,6 +211,25 @@ function buildMark() {
   stage.append(wrap);
 }
 
+function buildFlat() {
+  const fg = "#" + (q.get("fg") || "000000"), bg = "#" + (q.get("bg") || "FFFFFF");
+  const size = Math.round(Math.min(W, H) * +(q.get("scale") || .56));
+  stage.style.background = bg;
+  const wrap = el("div", "mark-wrap", moon(size, { color: fg }));
+  // the same optical centring as the mark: the crescent's weight sits left and low
+  wrap.style.transform = `translate(${(size * .03).toFixed(1)}px, ${(-size * .01).toFixed(1)}px)`;
+  stage.append(wrap);
+}
+
+// The crescent that stands in for the network on the flat banners and posts.
+function sideMoon(size, left, top) {
+  const m = moon(size);
+  m.classList.add("side");
+  m.style.left = left + "px";
+  m.style.top = top + "px";
+  return m;
+}
+
 function buildWordmark() {
   const light = q.get("theme") === "light";
   const w = el("div", "word" + (light ? " light" : ""), moon(null, { color: light ? "#E39A2E" : "#F2B055" }), "Third Shift");
@@ -211,16 +238,23 @@ function buildWordmark() {
 }
 
 function buildBanner() {
-  stage.className = "stage night banner";
+  const flat = q.get("flat") === "1";
+  stage.className = "stage banner " + (flat ? "flat" : "night");
   const u = H / 100;                         // 1% of height
   const tall = W / H < 4.2;
-  stage.append(drawNetwork({
-    sp: Math.max(16, H / (tall ? 8.5 : 5.2)), seed: 11,
-    strength: (x, y) => smooth((0.72 - x) / 0.5) * (0.35 + 0.65 * smooth(1 - Math.abs(y - .5) * 1.4)),
-    path: tall ? [[.06, .72], [.11, .58], [.17, .62], [.23, .44], [.3, .4], [.36, .26]] : [[.04, .7], [.09, .45], [.14, .55], [.2, .32], [.26, .38]],
-  }));
-  stage.append(el("div", "shade"));
-  const kick = el("div", "kicker", "AI automation · Kitchener-Waterloo");
+  if (flat) {
+    // Left of centre and above the middle, clear of where X and Facebook overlap the profile picture.
+    const ms = Math.round(H * (tall ? .46 : .6));
+    stage.append(sideMoon(ms, W * (tall ? .14 : .05), (H - ms) / 2 - H * (tall ? .05 : 0)));
+  } else {
+    stage.append(drawNetwork({
+      sp: Math.max(16, H / (tall ? 8.5 : 5.2)), seed: 11,
+      strength: (x, y) => smooth((0.72 - x) / 0.5) * (0.35 + 0.65 * smooth(1 - Math.abs(y - .5) * 1.4)),
+      path: tall ? [[.06, .72], [.11, .58], [.17, .62], [.23, .44], [.3, .4], [.36, .26]] : [[.04, .7], [.09, .45], [.14, .55], [.2, .32], [.26, .38]],
+    }));
+    stage.append(el("div", "shade"));
+  }
+  const kick = el("div", "kicker", "AI automation · Ontario, Canada");
   const head = el("h1", "head");
   head.append("The work that gets done while you ", el("em", null, "sleep."));
   const url = el("div", "url", "thirdshift.ca");
@@ -244,15 +278,18 @@ function buildBanner() {
 }
 
 function buildSquare() {
-  stage.className = "stage night square";
+  const flat = q.get("flat") === "1";
+  stage.className = "stage square " + (flat ? "flat" : "night");
   const u = W / 100;
-  stage.append(drawNetwork({
-    sp: W / 13, seed: 5,
-    strength: (x, y) => smooth((Math.hypot(x - .5, (y - .5) * 1.1) - .26) / .3),
-    path: [[.07, .95], [.14, .88], [.21, .92], [.28, .85], [.35, .89], [.42, .96]],
-  }));
-  stage.append(el("div", "shade"));
-  const m = moon(Math.round(u * 17), { glow: true });
+  if (!flat) {
+    stage.append(drawNetwork({
+      sp: W / 13, seed: 5,
+      strength: (x, y) => smooth((Math.hypot(x - .5, (y - .5) * 1.1) - .26) / .3),
+      path: [[.07, .95], [.14, .88], [.21, .92], [.28, .85], [.35, .89], [.42, .96]],
+    }));
+    stage.append(el("div", "shade"));
+  }
+  const m = moon(Math.round(u * 17), { glow: !flat });
   const lock = el("div", "lockup", "Third Shift");
   lock.style.fontSize = (u * 9.5) + "px";
   lock.style.margin = (u * 4) + "px 0 " + (u * 3) + "px";
@@ -262,7 +299,7 @@ function buildSquare() {
   line.style.fontWeight = "600";
   line.style.maxWidth = (u * 62) + "px";
   line.style.lineHeight = "1.08";
-  const kick = el("div", "kicker", "AI automation · Kitchener-Waterloo");
+  const kick = el("div", "kicker", "AI automation · Ontario, Canada");
   kick.style.fontSize = (u * 2.1) + "px";
   kick.style.marginTop = (u * 5) + "px";
   stage.append(el("div", "text", m, lock, line, kick));
@@ -295,7 +332,7 @@ function buildOg() {
   stage.append(log);
 }
 
-({ mark: buildMark, wordmark: buildWordmark, banner: buildBanner, square: buildSquare, og: buildOg })[kind]();
+({ flat: buildFlat, mark: buildMark, wordmark: buildWordmark, banner: buildBanner, square: buildSquare, og: buildOg })[kind]();
 
 // The exporter waits for this before it takes the picture.
 document.fonts.ready.then(() => requestAnimationFrame(() => { document.body.dataset.ready = "1"; }));

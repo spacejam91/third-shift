@@ -2,6 +2,7 @@
 // Exports every logo, icon, social banner and the link-preview image from tools/brand/art.html.
 //
 //   node tools/render-brand.mjs            (needs Microsoft Edge or Google Chrome installed)
+//   node tools/render-brand.mjs social-kit (only the files whose path contains that text)
 //
 // Drives a headless browser over the DevTools protocol so it can wait for the fonts, crop the
 // wordmarks tight, and keep transparent backgrounds transparent. Writes to social-kit/ (files to
@@ -27,23 +28,26 @@ const JOBS = [
   { out: "site/assets/og-image.png", w: 1200, h: 630, q: "kind=og" },
   { out: "social-kit/link-preview-1200x630.png", w: 1200, h: 630, q: "kind=og" },
 
-  // Social profiles
-  { out: "social-kit/profile-picture.png", w: 1080, h: 1080, q: "kind=mark&bg=night&scale=.46" },
+  // Social profiles: flat, so they stay crisp when the platforms shrink and recompress them.
+  { out: "social-kit/profile-picture.png", w: 1080, h: 1080, q: "kind=flat&fg=000000&bg=FFFFFF&scale=.62" },
+  { out: "social-kit/profile-picture-400.png", w: 400, h: 400, q: "kind=flat&fg=000000&bg=FFFFFF&scale=.62" },
   { out: "social-kit/logo-mark.png", w: 1024, h: 1024, q: "kind=mark&bg=none&scale=.92", clear: true },
   { out: "social-kit/logo-for-dark-backgrounds.png", w: 3000, h: 600, q: "kind=wordmark&theme=dark", clip: "#logo", clear: true },
   { out: "social-kit/logo-for-light-backgrounds.png", w: 3000, h: 600, q: "kind=wordmark&theme=light", clip: "#logo", clear: true },
-  { out: "social-kit/linkedin-cover-1584x396.png", w: 1584, h: 396, q: "kind=banner" },
-  { out: "social-kit/linkedin-page-cover-1128x191.png", w: 1128, h: 191, q: "kind=banner", dsf: 2 },
-  { out: "social-kit/x-header-1500x500.png", w: 1500, h: 500, q: "kind=banner" },
-  { out: "social-kit/facebook-cover-1640x624.png", w: 1640, h: 624, q: "kind=banner&inset=.19" },
-  { out: "social-kit/instagram-post-1080.png", w: 1080, h: 1080, q: "kind=square" },
+  { out: "social-kit/linkedin-cover-1584x396.png", w: 1584, h: 396, q: "kind=banner&flat=1" },
+  { out: "social-kit/linkedin-page-cover-1128x191.png", w: 1128, h: 191, q: "kind=banner&flat=1", dsf: 2 },
+  { out: "social-kit/x-header-1500x500.png", w: 1500, h: 500, q: "kind=banner&flat=1" },
+  { out: "social-kit/facebook-cover-1640x624.png", w: 1640, h: 624, q: "kind=banner&flat=1&inset=.19" },
+  { out: "social-kit/instagram-post-1080.png", w: 1080, h: 1080, q: "kind=square&flat=1" },
 ];
+const only = process.argv[2];
 
 const browser = await openBrowser(9334);
 
 const icoParts = {};
 try {
   for (const job of JOBS) {
+    if (only && !job.out.includes(only)) continue;
     await browser.load(`${art}?${job.q}`, job);
     await sleep(150);
 
@@ -64,8 +68,16 @@ try {
     console.log("wrote", job.out);
   }
 
-  // favicon.ico holding 16, 32 and 48 px PNGs (the ICO format allows PNG entries).
+  // favicon.ico holding 16, 32 and 48 px PNGs (the ICO format allows PNG entries). A partial run
+  // that skipped those sizes leaves the existing favicon alone.
   const parts = ["fav-16", "fav-32", "fav-48"].map((k) => icoParts[k]);
+  if (parts.every(Boolean)) writeIco(parts);
+} finally {
+  await browser.close();
+}
+process.exit(0);
+
+function writeIco(parts) {
   const header = Buffer.alloc(6 + parts.length * 16);
   header.writeUInt16LE(0, 0);
   header.writeUInt16LE(1, 2);
@@ -85,7 +97,4 @@ try {
   });
   fs.writeFileSync(path.join(root, "site", "favicon.ico"), Buffer.concat([header, ...parts.map((p) => p.png)]));
   console.log("wrote site/favicon.ico");
-} finally {
-  await browser.close();
 }
-process.exit(0);
