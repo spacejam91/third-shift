@@ -1,6 +1,6 @@
 # Third Shift: how the pieces work together
 
-Three bots, each its own working session, build and run Third Shift. Each one has its own lane and does only that work.
+The bots, each its own working session, build and run Third Shift. Each one has its own lane and does only that work.
 The bots report to **thirdshift**, which pulls everything together for the owner. Nobody does another
 lane's work. If a job seems to belong to two lanes, the lane table below decides. If it isn't
 listed, ask thirdshift.
@@ -12,12 +12,21 @@ listed, ask thirdshift.
 | Hub: site, intake, CRM core, brand | **thirdshift** | The `third-shift` repo: `site/`, `backend/intake/`, `backend/crm/` (apart from the Outreach view), `tools/`, `social-kit/`, `docs/`. Owns the CRM schema, deploys, and the owner's combined updates. | Doesn't prospect, email prospects or post to social. |
 | Sales | **sales bot** | The `third-shift-outreach` repo: finding companies, enriching them, drafting and sending outreach, follow-ups, tracking replies. Also the Outreach view inside the CRM screen and the server functions it calls, its own tabs in the CRM sheet, and the Suppression list. | Doesn't touch `site/`, `tools/`, `social-kit/` or brand files. Doesn't post to social or make marketing content. |
 | Marketing | **marketing bot** | Its own folder (`third-shift-marketing`): content calendar, post copy, social profile setup, scheduling. Uses the files in `social-kit/` as they are. | Doesn't touch `site/`, `backend/`, `tools/` or `social-kit/`. Doesn't email prospects or build lead lists. |
+| Community | **community bot** (from when the owner starts it) | Day-to-day talk on Third Shift's own social accounts: replies to comments, mentions and messages people send us, likes and follows, and short, useful replies in Ontario small-business and AI threads. Keeps its log in the shared notes folder. | Doesn't publish posts or change profiles (marketing), doesn't pitch, cold-message or build lead lists (sales), and commits to no repo. |
 | Business manager | **business manager bot** (coming) | To be set when the owner starts it. It gets its own lane and reports to thirdshift like the others, and this table is updated before it starts work. | Until then, no session takes on business-manager work. |
 
 Need something from another lane? Message its session; don't do the work yourself:
 - Need a site page, a CRM schema change, new brand art or a video? Ask thirdshift.
 - Need a prospect list or an email sent? Ask the sales bot.
 - Need a post? Ask the marketing bot.
+- Someone to answer in comments or mentions? Ask the community bot.
+
+### Community bot rules
+
+- **Every reply, like and follow is a draft** until the owner OKs it in the community bot's chat. On X that's about 5 follows and 2 or 3 replies a day at most; other platforms get the same restraint.
+- **It speaks as "we", for Third Shift.** It never names the owner or mentions a job, employer or background.
+- **When someone asks about working with us** (price, a call, their own process), it points them to the site or the booking link with `utm_campaign=reply`. It quotes no prices or timelines and tells thirdshift, which logs them in the CRM. From then on, the sales bot leaves them alone.
+- **It never sends the first message** to anyone in private. Cold contact is the sales bot's, and only by email.
 
 ## One source of truth: the CRM Google Sheet
 
@@ -45,6 +54,7 @@ Every link to thirdshift.ca that a bot publishes carries campaign tags, so the C
 |---|---|
 | Social posts | `?utm_source=<instagram, x, facebook, linkedin, tiktok>&utm_medium=social&utm_campaign=<post-slug>` |
 | Profile links | Same, with `utm_campaign=bio`, or `page-button` for the Facebook action button |
+| Community replies | Same, with `utm_campaign=reply` |
 | Google Business Profile | `?utm_source=google&utm_medium=social&utm_campaign=<post-slug or bio>` |
 | Outreach emails | `?utm_source=outreach&utm_medium=email&utm_campaign=cold-vN-<industry>` (the sales bot bumps N when the copy changes; `cold-v2` since Oct 20) |
 
@@ -74,7 +84,7 @@ Whichever page a visit starts on, the site keeps the first tags the visitor arri
 At the end of each block of work, each bot sends thirdshift one message in this shape:
 
 ```
-REPORT <sales bot | marketing bot>
+REPORT <sales bot | marketing bot | community bot>
 Done: what changed since the last report
 Committed: repo, commit, files (or "nothing yet")
 Needs from thirdshift: schema, site or asset requests (or "none")
