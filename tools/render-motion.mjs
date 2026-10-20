@@ -1,8 +1,10 @@
 // Copyright (c) 2026 Third Shift (thirdshift.ca). All rights reserved. See LICENSE.
 // Renders the animated videos in tools/brand/motion.html to MP4 for X, Instagram, TikTok and LinkedIn.
 //
-//   npm run motion                                  every video, into social-kit/motion/
-//   npm run motion -- story                         only the videos whose file name contains "story"
+//   npm run motion                                  every video: the black-on-white set into
+//                                                   social-kit/motion/, the night set into motion/night/
+//   npm run motion -- mono story                    only the videos matching every word: "mono" or
+//                                                   "night" picks a set, anything else a file name part
 //   npm run motion -- --stills 0,5,14.4 --to <folder>
 //                                                   still PNGs at those seconds instead, for checking
 //
@@ -26,22 +28,28 @@ const SUPERSAMPLE = 2;
 // is subsampled, and they would sit wrong on any text that moves.
 const CHROME_ARGS = ["--disable-lcd-text"];
 
-const VIDEOS = [
-  { out: "logo-reveal-1080x1080.mp4", w: 1080, h: 1080, scene: "reveal" },
-  { out: "logo-reveal-story-1080x1920.mp4", w: 1080, h: 1920, scene: "reveal" },
-  { out: "logo-reveal-wide-1920x1080.mp4", w: 1920, h: 1080, scene: "reveal" },
-  { out: "overnight-shift-1080x1350.mp4", w: 1080, h: 1350, scene: "shift" },
-  { out: "overnight-shift-story-1080x1920.mp4", w: 1080, h: 1920, scene: "shift" },
+const FILES = [
+  { name: "logo-reveal-1080x1080.mp4", w: 1080, h: 1080, scene: "reveal" },
+  { name: "logo-reveal-story-1080x1920.mp4", w: 1080, h: 1920, scene: "reveal" },
+  { name: "logo-reveal-wide-1920x1080.mp4", w: 1920, h: 1080, scene: "reveal" },
+  { name: "overnight-shift-1080x1350.mp4", w: 1080, h: 1350, scene: "shift" },
+  { name: "overnight-shift-story-1080x1920.mp4", w: 1080, h: 1920, scene: "shift" },
 ];
+// Social posts use black on white, like the profile pictures and covers; the night set keeps the site's
+// amber and night colours.
+const SETS = [
+  { set: "mono", dir: "", query: "&mono=1" },
+  { set: "night", dir: "night/", query: "" },
+];
+const VIDEOS = SETS.flatMap((s) => FILES.map((f) => ({ ...f, ...s, out: s.dir + f.name })));
 
 const args = process.argv.slice(2);
 const flag = (name) => { const k = args.indexOf(name); return k < 0 ? null : args.splice(k, 2)[1]; };
 const stills = flag("--stills");
 const stillsTo = flag("--to");
 const jobs = Math.max(1, Number(flag("--jobs")) || Math.min(VIDEOS.length, Math.floor(os.cpus().length / 4) || 1));
-const filter = args[0] || "";
-const todo = VIDEOS.filter((v) => v.out.includes(filter));
-if (!todo.length) throw new Error("No video matches " + filter);
+const todo = VIDEOS.filter((v) => args.every((word) => word === v.set || v.name.includes(word)));
+if (!todo.length) throw new Error("No video matches " + args.join(" "));
 
 function ffmpegPath() {
   if (process.env.FFMPEG) return process.env.FFMPEG;
@@ -89,7 +97,7 @@ function encoder(file, { w, h }, duration) {
 }
 
 async function render(v, port) {
-  const url = `${page}?scene=${v.scene}`;
+  const url = `${page}?scene=${v.scene}${v.query}`;
   const size = { w: v.w, h: v.h, dsf: stills ? 1 : SUPERSAMPLE };
   let browser = await openBrowser(port, CHROME_ARGS);
   try {
@@ -114,7 +122,7 @@ async function render(v, port) {
       const dir = path.resolve(stillsTo || path.join(root, "tmp-stills"));
       fs.mkdirSync(dir, { recursive: true });
       for (const t of stills.split(",").map(Number)) {
-        const file = path.join(dir, `${v.out.replace(".mp4", "")}-${t}s.png`);
+        const file = path.join(dir, `${v.set}-${v.name.replace(".mp4", "")}-${t}s.png`);
         fs.writeFileSync(file, await shoot(t));
         console.log("wrote", file);
       }
