@@ -201,6 +201,10 @@ Changed after sign-off, on the owner's word the same night:
 - Invoices aren't the headline: the hero line, the example log, the service cards and the overnight
   checklist lead with inquiries, quotes and reports, and invoices come fourth. The owner's point: we don't
   only automate accounting.
+- Running costs (owner's choice, Oct 20): software and AI accounts a build uses (Claude, Grok and so on)
+  are in the client's name and billed to the client directly. The one-page plan shows the expected monthly
+  running cost next to the fixed build price, and anything we front goes on its own line at cost. The cost
+  FAQ (home page and `PRICE` in `content/services.mjs`) and `llms.txt` say so.
 
 ## How it fits together
 

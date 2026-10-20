@@ -10,7 +10,7 @@
 
 // Two answers the home page already gives word for word; the industry pages reuse them too.
 export const SHIP = "First builds typically ship within a few weeks. We run it alongside your team until it’s trusted, then hand it over.";
-export const PRICE = "Every build has a fixed price, written on the one-page plan before any work starts. You know the number before you commit.";
+export const PRICE = "Every build has a fixed price, written on the one-page plan before any work starts, along with what it costs to run each month. Any software or AI accounts it uses are in your name and billed to you directly. You know both numbers before you commit.";
 export const MONEY = "No money is paid or sent without a person signing off, unless you decide otherwise.";
 
 export const SERVICES = [
