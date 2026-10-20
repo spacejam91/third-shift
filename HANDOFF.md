@@ -69,9 +69,10 @@ thirdshift.ca@gmail.com for now and swap the link later. It's a one-line change.
 
 **Done on Oct 20, under thirdshift.ca@gmail.com for now (steps 4, 5 and Search Console).** The form is
 live and tested end to end, the CRM is deployed and set up, and Search Console is verified with the
-sitemap read (12 pages). What's left on these: open the CRM (see "Opening the CRM" below), Bing, and,
-once Workspace exists, moving the sheet and both scripts across ("Moving to Workspace" below). The steps
-are kept for that move.
+sitemap read (12 pages). Bing was added from Search Console on the same day, and the setup test leads
+were cleared from the CRM. What's left on these: open the CRM (see "Opening the CRM" below) and, once
+Workspace exists, moving the sheet and both scripts across ("Moving to Workspace" below). The steps are
+kept for that move.
 
 **Updating the scripts:** `backend/intake/` and `backend/crm/` each hold a `.clasp.json` (git ignores it)
 pointing at the live project, so from either folder `npx @google/clasp@3.4.1 push` uploads the code. In
@@ -122,8 +123,11 @@ breadcrumbs, a sitemap with all twelve pages, robots.txt and llms.txt.
 
 Search Console was set up on Oct 20 as a URL-prefix property for `https://thirdshift.ca/` under
 thirdshift.ca@gmail.com, verified by the `google-site-verification` meta tag in `site/index.html` (keep
-that tag, or the property loses verification). The sitemap is submitted and read. The steps below are
-for adding the wider Domain property later, which also covers www and http.
+that tag, or the property loses verification). The sitemap is submitted and read. A stale
+`sitemap_index.xml` left by the domain's previous owner (2025) was removed. Bing Webmaster Tools was
+added on Oct 20 by importing from Search Console (signed in with Google as thirdshift.ca@gmail.com), and it
+has read the sitemap too. The steps below are for adding the wider Domain property later, which also
+covers www and http.
 
 **Google Search Console** (about 10 minutes, plus waiting for DNS):
 
@@ -135,8 +139,8 @@ for adding the wider Domain property later, which also covers www and http.
 5. Sitemaps > enter `sitemap.xml` > Submit.
 6. Optional: URL Inspection > paste each page's address > Request indexing. It speeds up the first visit.
 
-**Bing Webmaster Tools** (2 minutes, after Search Console is verified): go to bing.com/webmasters, sign
-in, and choose **Import from Google Search Console**. It brings the site and the sitemap across, and it
+**Bing Webmaster Tools** (done Oct 20; kept for reference): go to bing.com/webmasters, sign in, and
+choose **Import from Google Search Console**. It brings the site and the sitemap across, and it
 also covers DuckDuckGo and the search inside ChatGPT.
 
 ### 7. Google Business Profile
