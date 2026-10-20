@@ -125,7 +125,7 @@ export function renderPage(svc, collection = COLLECTIONS[0], policy = sitePolicy
 <meta property="og:image" content="https://thirdshift.ca/assets/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Third Shift: the work that gets done while you sleep. AI automation for small businesses in Kitchener-Waterloo.">
+<meta property="og:image:alt" content="Third Shift: the work that gets done while you sleep. AI automation for small businesses in Ontario.">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">
 ${structuredData(svc, url, collection)}
@@ -317,7 +317,7 @@ ${lines(others, (o) => `        <li><a href="${o.slug}"><strong>${esc(o.crumb)}<
     <p class="foot-line" data-reveal>Shift ends 7:00 AM.<br><span>Your team starts the day with it done.</span></p>
     <div class="foot-grid">
       <div>
-        <div>Third Shift — AI automation for small businesses, Kitchener-Waterloo, Ontario</div>
+        <div>Third Shift — AI systems implementation for small businesses, Ontario, Canada</div>
         <div>© 2026 Third Shift · <a href="privacy">Privacy</a></div>
       </div>
       <ul>
