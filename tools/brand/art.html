@@ -271,7 +271,10 @@ function buildBanner() {
   const head = el("h1", "head");
   head.append("The work that gets done while you ", el("em", null, "sleep."));
   const url = el("div", "url", "thirdshift.ca");
-  const text = el("div", "text" + (centred ? " center" : ""), kick, head, url);
+  // kicker=0 drops the small top line. Facebook shows covers from a 960 px copy stretched to
+  // about 1250 px, and small mono text is what goes soft first; the address then carries more weight.
+  const noKick = q.get("kicker") === "0";
+  const text = el("div", "text" + (centred ? " center" : ""), ...(noKick ? [] : [kick]), head, url);
   if (q.get("inset") && !centred) text.style.right = (+q.get("inset") * 100) + "%";
   // zoom=1.4 makes the text block larger, for covers that carry nothing but the text.
   const z = +(q.get("zoom") || 1);
@@ -288,6 +291,12 @@ function buildBanner() {
     head.style.whiteSpace = "nowrap";
     head.style.margin = (u * 4.5) + "px 0 " + (u * 5) + "px";
     url.style.fontSize = (u * 7) + "px";
+  }
+  if (noKick) {
+    url.style.fontSize = (parseFloat(url.style.fontSize) * 1.3) + "px";
+    url.style.fontWeight = "600";
+    // Centred with nothing beside it, the headline can use the width and stay on two lines.
+    if (centred) { text.style.width = (W * .9) + "px"; head.style.maxWidth = (W * .82) + "px"; }
   }
   stage.append(text);
 }
