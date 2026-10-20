@@ -130,7 +130,7 @@ function crmCreateFromLead_(ss, lead) {
   if (!deal) {
     deal = {
       id: crmId_("D"), title: lead.company, company_id: company.id, contact_id: contact.id, stage: "New",
-      source: lead.source, next_step: "Reply to the inquiry", next_date: crmNextBusinessDay_(now), created: now, updated: now,
+      source: "Website", next_step: "Reply to the inquiry", next_date: crmNextBusinessDay_(now), created: now, updated: now,
     };
     crmAppend_(deals, deal);
   } else {

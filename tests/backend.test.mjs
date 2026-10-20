@@ -325,3 +325,36 @@ test("morning summary: sends what's due, escaped; skips clear days and weekends"
   p.ctx.sendMorningSummary();
   assert.equal(p.env.mails.length, 1, "Saturday: nothing sent");
 });
+
+// ------------------------------------------------------------------ CRM screen
+
+test("CRM screen: data only reaches the page as text, and every server call exists", () => {
+  const html = fs.readFileSync(path.join(backendDir, "crm", "Index.html"), "utf8");
+  const script = html.slice(html.indexOf("<script>"), html.lastIndexOf("</script>"));
+  for (const sink of ["innerHTML", "outerHTML", "insertAdjacentHTML", "document.write", "eval(", "new Function"]) {
+    assert.ok(!script.includes(sink), `no ${sink} in the CRM screen`);
+  }
+  assert.ok(!/<script[^>]+src=/i.test(html), "no outside scripts");
+
+  const crm = fs.readFileSync(path.join(backendDir, "crm", "Crm.gs"), "utf8");
+  const calls = [...script.matchAll(/api\("(\w+)"/g)].map((m) => m[1]);
+  assert.ok(calls.length >= 5);
+  // The edit dialogs pass these two by name.
+  for (const name of new Set([...calls, "crmSaveContact", "crmSaveCompany"])) {
+    assert.ok(crm.includes("\nfunction " + name + "("), `${name} is defined in Crm.gs`);
+    assert.ok(!name.endsWith("_"), `${name} is callable from the page`);
+  }
+});
+
+test("CRM screen: the local preview's demo data loads through the real backend", () => {
+  const ss = new MockSpreadsheet("DEMO");
+  const p = loadProject(CRM, { ss, activeUser: "demo@thirdshift.ca", effectiveUser: "demo@thirdshift.ca" });
+  p.env.props.CRM_SHEET_ID = ss.id;
+  p.ctx.setupCrm();
+  const r = p.ctx.crmSaveDeal({ company_name: "Example Co", contact_name: "Pat", value: "1,200", source: "Referral" });
+  const data = JSON.parse(JSON.stringify(p.ctx.crmLoad()));
+  assert.equal(data.deals.length, 1);
+  assert.equal(data.deals[0].value, 1200);
+  assert.match(data.deals[0].created, /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/, "timestamps arrive as plain local strings");
+  assert.equal(data.deals[0].id, r.deal.id);
+});
