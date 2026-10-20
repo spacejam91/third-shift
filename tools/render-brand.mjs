@@ -37,9 +37,9 @@ const JOBS = [
   { out: "social-kit/linkedin-cover-1584x396.png", w: 1584, h: 396, q: "kind=banner&flat=1&mono=1&moon=0&align=center" },
   { out: "social-kit/linkedin-page-cover-1128x191.png", w: 1128, h: 191, q: "kind=banner&flat=1&mono=1&moon=0&align=center", dsf: 2 },
   { out: "social-kit/x-header-1500x500.png", w: 1500, h: 500, q: "kind=banner&flat=1&mono=1&moon=0&zoom=1.6&inset=.085", dsf: 2 },
-  // Facebook shows covers from a 960 px copy stretched to about 1250 px on desktop, so this one has
-  // fewer, bigger words: centred, no small top line, a heavier address.
-  { out: "social-kit/facebook-cover-1640x624.png", w: 1640, h: 624, q: "kind=banner&flat=1&mono=1&moon=0&align=center&kicker=0&zoom=1.65", dsf: 2 },
+  // Facebook shows covers from a 960 px copy stretched to about 1250 px on desktop, and shades the
+  // bottom edge, so this one carries no text: one small crescent, centred and a little high.
+  { out: "social-kit/facebook-cover-1640x624.png", w: 1640, h: 624, q: "kind=flat&fg=0A0A0A&bg=FFFFFF&scale=.22&lift=.05", dsf: 2 },
   { out: "social-kit/instagram-post-1080.png", w: 1080, h: 1080, q: "kind=square&flat=1&mono=1" },
 ];
 const only = process.argv[2];

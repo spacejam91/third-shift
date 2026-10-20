@@ -222,8 +222,10 @@ function buildFlat() {
   const size = Math.round(Math.min(W, H) * +(q.get("scale") || .56));
   stage.style.background = bg;
   const wrap = el("div", "mark-wrap", moon(size, { color: fg }));
-  // the same optical centring as the mark: the crescent's weight sits left and low
-  wrap.style.transform = `translate(${(size * .03).toFixed(1)}px, ${(-size * .01).toFixed(1)}px)`;
+  // the same optical centring as the mark: the crescent's weight sits left and low.
+  // lift=.05 raises it by 5% of the height, for covers whose bottom edge the platform shades.
+  const lift = H * +(q.get("lift") || 0);
+  wrap.style.transform = `translate(${(size * .03).toFixed(1)}px, ${(-size * .01 - lift).toFixed(1)}px)`;
   stage.append(wrap);
 }
 
