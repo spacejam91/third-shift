@@ -249,7 +249,9 @@ function buildBanner() {
   const flat = q.get("flat") === "1", mono = q.get("mono") === "1";
   // moon=0 leaves the crescent off: on X and Facebook the profile picture sits over the cover's bottom
   // left, so a second crescent there stacks two moons.
-  const noMoon = q.get("moon") === "0", centred = q.get("align") === "center";
+  // moon=top puts a small crescent above the text instead of beside it.
+  const topMoon = q.get("moon") === "top";
+  const noMoon = q.get("moon") === "0" || topMoon, centred = q.get("align") === "center";
   stage.className = "stage banner " + (flat ? "flat" : "night") + (mono ? " mono" : "");
   const u = H / 100;                         // 1% of height
   const tall = W / H < 4.2;
@@ -272,11 +274,23 @@ function buildBanner() {
   const kick = el("div", "kicker", "AI automation · Ontario, Canada");
   const head = el("h1", "head");
   head.append("The work that gets done while you ", el("em", null, "sleep."));
+  // line= replaces the headline ("|" breaks the line); url=0 drops the address.
+  if (q.get("line")) {
+    head.textContent = "";
+    q.get("line").split("|").forEach((part, i) => { if (i) head.append(document.createElement("br")); head.append(part); });
+  }
   const url = el("div", "url", "thirdshift.ca");
   // kicker=0 drops the small top line. Facebook shows covers from a 960 px copy stretched to
   // about 1250 px, and small mono text is what goes soft first; the address then carries more weight.
   const noKick = q.get("kicker") === "0";
-  const text = el("div", "text" + (centred ? " center" : ""), ...(noKick ? [] : [kick]), head, url);
+  const parts = [...(noKick ? [] : [kick]), head, ...(q.get("url") === "0" ? [] : [url])];
+  if (topMoon) {
+    const m = moon(Math.round(H * .17 * +(q.get("zoom") || 1)), { color: mono ? "#0A0A0A" : undefined });
+    m.style.marginBottom = (H * .045) + "px";
+    parts.unshift(m);
+  }
+  const text = el("div", "text" + (centred ? " center" : ""), ...parts);
+  if (q.get("lift")) text.style.top = `calc(50% - ${H * +q.get("lift")}px)`;
   if (q.get("inset") && !centred) text.style.right = (+q.get("inset") * 100) + "%";
   // zoom=1.4 makes the text block larger, for covers that carry nothing but the text.
   const z = +(q.get("zoom") || 1);
