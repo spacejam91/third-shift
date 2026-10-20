@@ -409,7 +409,39 @@ function setupCrm() {
     .forEach(function (t) { ScriptApp.deleteTrigger(t); });
   ScriptApp.newTrigger("sendMorningSummary").timeBased().atHour(7).everyDays(1).inTimezone(CRM_TZ).create();
 
-  Logger.log("CRM ready. Allowed users: " + props.getProperty("CRM_USERS"));
+  const moved = crmUseTorontoTime_(ss);
+  Logger.log("CRM ready. Allowed users: " + props.getProperty("CRM_USERS") + ". Sheet on Toronto time" + (moved ? " (" + moved + " times carried over)." : "."));
+}
+
+// Puts the sheet on Toronto time. A sheet stores clock times, so the moments already in it are read
+// first and written back after the switch; calendar dates (date-only columns, or midnight) keep their day.
+// The zone it already has is set again first: on 2026-10-20 a new sheet's times reached Apps Script
+// 7 hours early (a 5:38 AM inquiry showed as "8 h ago") until its zone had been set once.
+function crmUseTorontoTime_(ss) {
+  const from = ss.getSpreadsheetTimeZone();
+  ss.setSpreadsheetTimeZone(from);
+  SpreadsheetApp.flush();
+  if (from === CRM_TZ) return 0;
+  const moments = [];
+  ss.getSheets().forEach(function (sheet) {
+    if (sheet.getLastRow() < 2) return;
+    const range = sheet.getDataRange();
+    const values = range.getValues();
+    const formulas = range.getFormulas();
+    const head = values[0].map(String);
+    for (let r = 1; r < values.length; r++) {
+      for (let c = 0; c < values[r].length; c++) {
+        const v = values[r][c];
+        if (!(v instanceof Date) || formulas[r][c] || CRM_DATE_ONLY.indexOf(head[c]) !== -1) continue;
+        if (Utilities.formatDate(v, from, "HH:mm:ss.SSS") === "00:00:00.000") continue;
+        moments.push({ cell: sheet.getRange(r + 1, c + 1), value: v });
+      }
+    }
+  });
+  ss.setSpreadsheetTimeZone(CRM_TZ);
+  SpreadsheetApp.flush();
+  moments.forEach(function (m) { m.cell.setValue(m.value); });
+  return moments.length;
 }
 
 // ------------------------------------------------------------------ helpers

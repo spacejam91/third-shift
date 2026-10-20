@@ -268,6 +268,29 @@ test("setup builds every tab, a stage dropdown and exactly one morning trigger",
   assert.equal(p.env.triggers[0].hour, 7);
 });
 
+test("setup moves a sheet made on Pacific time to Toronto time without moving any lead", () => {
+  // The fake keeps clock times on a zone switch, like Sheets: 9:38 UTC shown as 2:38 becomes 2:38 Toronto.
+  const raw = new MockSpreadsheet("RAW", "America/Los_Angeles");
+  raw.insertSheet("T").getRange(1, 1).setValue(new Date("2026-10-20T09:38:00Z"));
+  raw.setSpreadsheetTimeZone("America/Toronto");
+  assert.equal(raw.getSheetByName("T").getRange(1, 1).getValues()[0][0].toISOString(), "2026-10-20T06:38:00.000Z");
+
+  const ss = new MockSpreadsheet("CRMSHEET", "America/Los_Angeles");
+  post(loadProject(INTAKE, { ss }).ctx, lead());
+  const p = crm({ ss, setup: false });
+  p.env.props.CRM_USERS = "owner@example.com";
+  const before = p.ctx.crmLoad();
+  const received = tab(ss, "Leads")[0].received.getTime();
+  p.ctx.setupCrm();
+  assert.equal(ss.getSpreadsheetTimeZone(), "America/Toronto");
+  const after = p.ctx.crmLoad();
+  assert.equal(after.deals[0].created, before.deals[0].created, "the inquiry keeps its moment");
+  assert.equal(after.deals[0].next_date, before.deals[0].next_date, "a calendar date keeps its day");
+  assert.equal(tab(ss, "Leads")[0].received.getTime(), received);
+  p.ctx.setupCrm();
+  assert.equal(p.ctx.crmLoad().deals[0].created, before.deals[0].created, "running setup again changes nothing");
+});
+
 test("intake leads show up in the CRM with plain-string dates", () => {
   const ss = new MockSpreadsheet("CRMSHEET");
   const intake = loadProject(INTAKE, { ss });

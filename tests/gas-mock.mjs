@@ -50,6 +50,12 @@ class MockRange {
     return this;
   }
   setValue(v) { this.sheet.put(this.r, this.c, v); return this; }
+  getFormulas() {
+    return this.getValues().map((vals, i) => vals.map((_, j) => {
+      const cell = (this.sheet.rows[this.r - 1 + i] || [])[this.c - 1 + j];
+      return cell && typeof cell === "object" && cell.formula ? cell.formula : "";
+    }));
+  }
   setFontWeight() { return this; }
   setDataValidation(rule) { this.sheet.validation = rule; return this; }
 }
@@ -74,6 +80,7 @@ class MockSheet {
   getMaxRows() { return Math.max(1000, this.rows.length); }
   appendRow(values) { const r = this.getLastRow() + 1; values.forEach((v, j) => this.put(r, j + 1, v)); }
   getRange(r, c, nr, nc) { return new MockRange(this, r, c, nr, nc); }
+  getDataRange() { return this.getRange(1, 1, Math.max(1, this.getLastRow()), Math.max(1, this.getLastColumn())); }
   setFrozenRows(n) { this.frozen = n; }
   // Test helper: rows as objects keyed by header, values as Sheets would show them.
   records() {
@@ -83,10 +90,30 @@ class MockSheet {
   }
 }
 
+// Milliseconds a zone's clock is ahead of UTC at a given moment.
+function zoneOffset(tz, ms) {
+  const p = Object.fromEntries(new Intl.DateTimeFormat("en-US", {
+    timeZone: tz, hourCycle: "h23", year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric", second: "numeric",
+  }).formatToParts(new Date(ms)).map((x) => [x.type, x.value]));
+  return Date.UTC(p.year, p.month - 1, p.day, p.hour, p.minute, p.second) - (ms - (((ms % 1000) + 1000) % 1000));
+}
+
 class MockSpreadsheet {
-  constructor(id = "SHEET123") { this.id = id; this.sheets = new Map(); }
+  constructor(id = "SHEET123", tz = "America/Toronto") { this.id = id; this.tz = tz; this.sheets = new Map(); }
   getSheetByName(n) { return this.sheets.get(n) || null; }
+  getSheets() { return [...this.sheets.values()]; }
   insertSheet(n) { const s = new MockSheet(n, this); this.sheets.set(n, s); return s; }
+  getSpreadsheetTimeZone() { return this.tz; }
+  // Sheets stores clock times, so switching zones keeps every date's clock time and moves its moment.
+  setSpreadsheetTimeZone(tz) {
+    const Ctor = this.DateCtor || Date;
+    for (const sheet of this.sheets.values()) for (const row of sheet.rows) row.forEach((v, j) => {
+      if (!isDate(v)) return;
+      const clock = v.getTime() + zoneOffset(this.tz, v.getTime());
+      row[j] = new Ctor(clock - zoneOffset(tz, clock - zoneOffset(tz, clock)));
+    });
+    this.tz = tz;
+  }
 }
 
 function formatDate(date, tz, fmt, forced) {
@@ -134,6 +161,7 @@ export function loadProject(files, opts = {}) {
     SpreadsheetApp: {
       getActiveSpreadsheet: () => ss,
       openById: (id) => { if (id !== ss.id) throw new Error("No sheet " + id); return ss; },
+      flush: () => {},
       newDataValidation: () => {
         const rule = { kind: "rule" };
         const b = { requireValueInList: (list) => { rule.list = list; return b; }, setAllowInvalid: () => b, build: () => rule };
