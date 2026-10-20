@@ -125,13 +125,15 @@ export function initNight(canvas, { onJob = () => {}, onUserJob = () => {}, redu
     return out;
   }
 
-  function pickTarget(from) {
+  // up: aim for a light well above the start (used when the contact form sends).
+  function pickTarget(from, up = false) {
     const fx = px(keyI(from), keyG(from)), fy = py(keyI(from), keyG(from));
     const [g0, g1] = visibleRows();
-    for (let tries = 0; tries < 24; tries++) {
+    for (let tries = 0; tries < 32; tries++) {
       const i = (rand() * cols) | 0, g = g0 + 1 + ((rand() * (g1 - g0 - 2)) | 0);
       const d = Math.hypot(px(i, g) - fx, py(i, g) - fy);
-      if (d > 220 && d < 560) return key(i, g);
+      if (up && fy - py(i, g) < 240) continue;
+      if (d > 220 && d < (up ? 760 : 560)) return key(i, g);
     }
     return key((rand() * cols) | 0, g0 + 2);
   }
@@ -157,8 +159,13 @@ export function initNight(canvas, { onJob = () => {}, onUserJob = () => {}, redu
     return path;
   }
 
-  function startJob(x, y, byUser = false) {
-    if (!cols || jobs.length >= MAX_JOBS) return;
+  // bright: full strength wherever it is on the page (the quiet floor below the hero doesn't apply).
+  function startJob(x, y, byUser = false, { bright = false, up = false } = {}) {
+    if (!cols) return;
+    if (jobs.length >= MAX_JOBS) {
+      if (!bright) return;
+      jobs.shift();
+    }
     let start;
     if (x == null) {
       // Ambient jobs mostly start where the network is bright.
@@ -171,11 +178,11 @@ export function initNight(canvas, { onJob = () => {}, onUserJob = () => {}, redu
     } else {
       start = nearest(x, y);
     }
-    const path = makePath(start, pickTarget(start));
+    const path = makePath(start, pickTarget(start, up));
     if (path.length < 3) return;
     heat.set(start, 1);
-    rings.push({ key: start, t: 0, big: false });
-    jobs.push({ path, seg: 0, t: 0 });
+    rings.push({ key: start, t: 0, big: bright, bright });
+    jobs.push({ path, seg: 0, t: 0, bright });
     if (byUser) onUserJob();
     wake();
   }
@@ -201,7 +208,7 @@ export function initNight(canvas, { onJob = () => {}, onUserJob = () => {}, redu
         }
       }
       if (job.seg >= job.path.length - 1) {
-        rings.push({ key: job.path[job.path.length - 1], t: 0, big: true });
+        rings.push({ key: job.path[job.path.length - 1], t: 0, big: true, bright: job.bright });
         jobs.splice(q, 1);
         onJob();
       }
@@ -307,7 +314,7 @@ export function initNight(canvas, { onJob = () => {}, onUserJob = () => {}, redu
       const a = job.path[job.seg], b = job.path[Math.min(job.seg + 1, job.path.length - 1)];
       const ax = px(keyI(a), keyG(a)), ay = py(keyI(a), keyG(a));
       const hx = ax + (px(keyI(b), keyG(b)) - ax) * job.t, hy = ay + (py(keyI(b), keyG(b)) - ay) * job.t;
-      const strength = lerp(0.42, 1, depth(hy));
+      const strength = job.bright ? 1 : lerp(0.42, 1, depth(hy));
       let lx = hx, ly = hy;
       for (let k = 0; k < 5 && job.seg - k >= 0; k++) {
         const p = job.path[job.seg - k];
@@ -329,7 +336,7 @@ export function initNight(canvas, { onJob = () => {}, onUserJob = () => {}, redu
     for (const ring of rings) {
       const e = 1 - (1 - ring.t) ** 3;
       const rx = px(keyI(ring.key), keyG(ring.key)), ry = py(keyI(ring.key), keyG(ring.key));
-      ctx.strokeStyle = rgba(AMBER, ((1 - ring.t) * 0.8 * lerp(0.45, 1, depth(ry))).toFixed(3));
+      ctx.strokeStyle = rgba(AMBER, ((1 - ring.t) * 0.8 * (ring.bright ? 1 : lerp(0.45, 1, depth(ry)))).toFixed(3));
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.arc(rx, ry, 3 + e * (ring.big ? 30 : 16), 0, TAU);
@@ -397,7 +404,7 @@ export function initNight(canvas, { onJob = () => {}, onUserJob = () => {}, redu
   if (reduced) {
     window.addEventListener("resize", resize, { passive: true });
     window.addEventListener("scroll", () => { scrollY = window.scrollY; shift = scrollY * PARALLAX; drawStatic(); }, { passive: true });
-    return { startJob() {} };
+    return { startJob() {}, launch() {} };
   }
 
   let resizeTimer = 0;
@@ -411,5 +418,13 @@ export function initNight(canvas, { onJob = () => {}, onUserJob = () => {}, redu
   wake();
 
   // startJob(x, y) in viewport coordinates, for other parts of the page to set off a job.
-  return { startJob: (x, y) => startJob(x, y, true) };
+  return {
+    startJob: (x, y) => startJob(x, y, true),
+    // A burst of bright jobs heading up the page from (x, y): the contact form going out.
+    launch(x, y) {
+      startJob(x, y, false, { bright: true, up: true });
+      setTimeout(() => startJob(x, y, false, { bright: true, up: true }), 140);
+      setTimeout(() => startJob(x, y, false, { bright: true }), 300);
+    },
+  };
 }

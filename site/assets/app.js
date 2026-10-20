@@ -39,10 +39,28 @@ safely("booking", () => {
   }
 });
 
+// The opening line's tasks ("clear your invoices", ...) underline as the log does that kind of job.
+const lede = safely("lede", () => {
+  const tasks = new Map([...document.querySelectorAll(".lede .task")].map((el) => [el.dataset.kind, el]));
+  const timers = new Map();
+  return {
+    flash(kind) {
+      const el = tasks.get(kind);
+      if (!el) return;
+      el.classList.remove("is-done");
+      void el.offsetWidth;            // restart the sweep if it was already showing
+      el.classList.add("is-done");
+      clearTimeout(timers.get(kind));
+      timers.set(kind, setTimeout(() => el.classList.remove("is-done"), 2600));
+    },
+  };
+});
+
 const log = safely("log", () => initLog({
   list: document.getElementById("shiftlog"),
   doneEl: document.getElementById("log-done"),
   heldEl: document.getElementById("log-held"),
+  onKind: (kind) => lede?.flash(kind),
 }));
 
 // "N jobs kicked off since you got here": appears after the visitor's third job, hides at the form.
@@ -72,7 +90,9 @@ const night = safely("night", () => {
 
 safely("effects", () => initEffects({ reduced, finePointer }));
 
-const form = safely("form", () => initForm(document.getElementById("lead")));
+const form = safely("form", () => initForm(document.getElementById("lead"), {
+  onLaunch: (x, y) => { if (!reduced) night?.launch(x, y); },
+}));
 
 safely("calculator", () => initCalculator({ reduced, onSend: (text) => form?.prefill(text) }));
 

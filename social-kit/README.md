@@ -1,4 +1,4 @@
-# Third Shift brand files
+# Third Shift social kit
 
 Made by `node tools/render-brand.mjs` from `tools/brand/art.html`. Change the art page and run it again to regenerate everything.
 
@@ -13,6 +13,7 @@ Made by `node tools/render-brand.mjs` from `tools/brand/art.html`. Change the ar
 | `logo-for-dark-backgrounds.png` | Logo with light lettering, transparent background: slides, dark documents, email signatures on dark themes | 2135 x 476 |
 | `logo-for-light-backgrounds.png` | Logo with navy lettering, transparent background: proposals, invoices, Chamber and Communitech listings | 2135 x 476 |
 | `logo-mark.png` | The moon on its own, transparent | 1024 x 1024 |
+| `link-preview-1200x630.png` | The picture that shows when thirdshift.ca is shared in a post or message (already set on the site). Also good as a LinkedIn or Facebook post image. | 1200 x 630 |
 
 Colours: night `#050913`, amber `#F2B055`, dawn `#FF8F4D`, light text `#ECF1F8`, navy text `#0B1222`.
 Type: Bricolage Grotesque (headings, logo), IBM Plex Mono (labels). Both free on Google Fonts.

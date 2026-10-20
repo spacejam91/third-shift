@@ -3,8 +3,8 @@
 //   node tools/render-brand.mjs            (needs Microsoft Edge or Google Chrome installed)
 //
 // Drives a headless browser over the DevTools protocol so it can wait for the fonts, crop the
-// wordmarks tight, and keep transparent backgrounds transparent. Writes to brand/ (files to upload
-// to social profiles) and site/ (favicons, app icons, the share image).
+// wordmarks tight, and keep transparent backgrounds transparent. Writes to social-kit/ (files to
+// upload to social profiles) and site/ (favicons, app icons, the share image).
 
 import { spawn } from "node:child_process";
 import fs from "node:fs";
@@ -25,17 +25,18 @@ const JOBS = [
   { out: "tmp:fav-32", w: 32, h: 32, q: "kind=mark&bg=none&scale=1", clear: true },
   { out: "tmp:fav-48", w: 48, h: 48, q: "kind=mark&bg=none&scale=1", clear: true },
   { out: "site/assets/og-image.png", w: 1200, h: 630, q: "kind=og" },
+  { out: "social-kit/link-preview-1200x630.png", w: 1200, h: 630, q: "kind=og" },
 
   // Social profiles
-  { out: "brand/profile-picture.png", w: 1080, h: 1080, q: "kind=mark&bg=night&scale=.46" },
-  { out: "brand/logo-mark.png", w: 1024, h: 1024, q: "kind=mark&bg=none&scale=.92", clear: true },
-  { out: "brand/logo-for-dark-backgrounds.png", w: 3000, h: 600, q: "kind=wordmark&theme=dark", clip: "#logo", clear: true },
-  { out: "brand/logo-for-light-backgrounds.png", w: 3000, h: 600, q: "kind=wordmark&theme=light", clip: "#logo", clear: true },
-  { out: "brand/linkedin-cover-1584x396.png", w: 1584, h: 396, q: "kind=banner" },
-  { out: "brand/linkedin-page-cover-1128x191.png", w: 1128, h: 191, q: "kind=banner", dsf: 2 },
-  { out: "brand/x-header-1500x500.png", w: 1500, h: 500, q: "kind=banner" },
-  { out: "brand/facebook-cover-1640x624.png", w: 1640, h: 624, q: "kind=banner&inset=.19" },
-  { out: "brand/instagram-post-1080.png", w: 1080, h: 1080, q: "kind=square" },
+  { out: "social-kit/profile-picture.png", w: 1080, h: 1080, q: "kind=mark&bg=night&scale=.46" },
+  { out: "social-kit/logo-mark.png", w: 1024, h: 1024, q: "kind=mark&bg=none&scale=.92", clear: true },
+  { out: "social-kit/logo-for-dark-backgrounds.png", w: 3000, h: 600, q: "kind=wordmark&theme=dark", clip: "#logo", clear: true },
+  { out: "social-kit/logo-for-light-backgrounds.png", w: 3000, h: 600, q: "kind=wordmark&theme=light", clip: "#logo", clear: true },
+  { out: "social-kit/linkedin-cover-1584x396.png", w: 1584, h: 396, q: "kind=banner" },
+  { out: "social-kit/linkedin-page-cover-1128x191.png", w: 1128, h: 191, q: "kind=banner", dsf: 2 },
+  { out: "social-kit/x-header-1500x500.png", w: 1500, h: 500, q: "kind=banner" },
+  { out: "social-kit/facebook-cover-1640x624.png", w: 1640, h: 624, q: "kind=banner&inset=.19" },
+  { out: "social-kit/instagram-post-1080.png", w: 1080, h: 1080, q: "kind=square" },
 ];
 
 const BROWSERS = [

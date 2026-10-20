@@ -23,6 +23,7 @@ export function initCalculator({ reduced = false, onSend = () => {} } = {}) {
   };
   const send = document.getElementById("calc-send");
   if (!hours || !rate || !fits.length || !out.hours) return null;
+  const nights = initNights(document.getElementById("nights"), document.getElementById("r-nights"));
 
   const shown = { hours: 0, dollars: 0, weeks: 0 };
   let animRaf = 0, liveTimer = 0;
@@ -70,6 +71,7 @@ export function initCalculator({ reduced = false, onSend = () => {} } = {}) {
     fill(hours);
     fill(rate);
     animateTo({ hours: res.hoursBack, dollars: res.dollars, weeks: res.weeks });
+    nights.set(Math.round(res.hoursBack / 8));
 
     const [lead, rest] = VERDICTS[res.level];
     const strong = document.createElement("strong");
@@ -97,4 +99,45 @@ export function initCalculator({ reduced = false, onSend = () => {} } = {}) {
   Object.assign(shown, { hours: first.hoursBack, dollars: first.dollars, weeks: first.weeks });
   update();
   return { update };
+}
+
+// A year of nights as a 7 x 52 grid of dots; one lights for every eight-hour shift the work adds up to.
+// The grid fills the first time it scrolls into view, then follows the sliders.
+function initNights(grid, num) {
+  const DOTS = 364;
+  const dots = [];
+  let lit = 0, want = 0, ready = !grid || !("IntersectionObserver" in window);
+  if (grid) {
+    const frag = document.createDocumentFragment();
+    for (let i = 0; i < DOTS; i++) dots.push(frag.appendChild(document.createElement("i")));
+    grid.append(frag);
+    if (!ready) {
+      const io = new IntersectionObserver(([e]) => {
+        if (!e.isIntersecting) return;
+        io.disconnect();
+        ready = true;
+        paint();
+      }, { threshold: 0.4 });
+      io.observe(grid);
+    }
+  }
+  function paint() {
+    const target = Math.min(DOTS, want);
+    if (!dots.length || target === lit) return;
+    const up = target > lit;
+    const lo = Math.min(target, lit), hi = Math.max(target, lit);
+    // Only the dots that change get a stagger, so small slider moves feel immediate.
+    for (let i = lo; i < hi; i++) {
+      dots[i].style.setProperty("--k", String(up ? i - lo : hi - 1 - i));
+      dots[i].classList.toggle("on", up);
+    }
+    lit = target;
+  }
+  return {
+    set(n) {
+      want = Math.max(0, n);
+      if (num) num.textContent = String(want);
+      if (ready) paint();
+    },
+  };
 }

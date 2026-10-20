@@ -1,6 +1,7 @@
 // Site logic that runs without a browser: the calculator math and the shift-log clock.
 
 import { test } from "node:test";
+import fs from "node:fs";
 import assert from "node:assert/strict";
 import { estimate, summarize, formatMoney, formatWeeks } from "../site/assets/estimate.js";
 import { _internal } from "../site/assets/log.js";
@@ -11,6 +12,9 @@ test("calculator defaults match the numbers printed in the HTML", () => {
   assert.equal(formatMoney(r.dollars), "$13,824");
   assert.equal(formatWeeks(r.weeks), "9.2");
   assert.equal(r.level, "strong");
+  assert.equal(Math.round(r.hoursBack / 8), 43, "nights-back count");
+  const html = fs.readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
+  assert.ok(html.includes('id="r-nights">43<'), "the HTML prints the same nights count");
 });
 
 test("calculator levels and guards", () => {

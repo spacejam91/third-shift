@@ -7,7 +7,9 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const TIMEOUT_MS = 15000;
 const TURNSTILE_SRC = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
 
-export function initForm(form) {
+// onLaunch(x, y) fires when a message actually goes out, from the Send button's centre, so the
+// night canvas can send it across the page as a job.
+export function initForm(form, { onLaunch = () => {} } = {}) {
   if (!form) return null;
   const status = document.getElementById("status");
   const send = document.getElementById("send");
@@ -76,6 +78,9 @@ export function initForm(form) {
 
     send.disabled = true;
     send.textContent = "Sending";
+    send.classList.add("is-sending");
+    const at = send.getBoundingClientRect();
+    onLaunch(at.left + at.width / 2, at.top + at.height / 2);
     data.source = location.hostname || "thirdshift.ca";
     data.submitted_at = new Date().toISOString();
     data.elapsed_ms = Math.round(performance.now() - openedAt);
@@ -101,6 +106,7 @@ export function initForm(form) {
       say("Couldn’t send just now. Try again, or email thirdshift.ca@gmail.com.", true);
       send.disabled = false;
       send.textContent = "Send";
+      send.classList.remove("is-sending");
       token = "";
       if (widgetId != null && window.turnstile) window.turnstile.reset(widgetId);
     } finally {
@@ -114,10 +120,22 @@ export function initForm(form) {
     box.tabIndex = -1;
     const strong = document.createElement("strong");
     strong.textContent = "Sent.";
-    box.append(strong, "We’ll reply within one business day. If it’s urgent, email thirdshift.ca@gmail.com.");
-    form.replaceChildren(box);
-    // The live status line went with the form, so move focus to the confirmation for screen readers.
-    box.focus();
+    const line = document.createElement("span");
+    line.className = "sent-line";
+    line.textContent = "It’s on tonight’s shift. We’ll reply within one business day. If it’s urgent, email thirdshift.ca@gmail.com.";
+    box.append(strong, line);
+    const swap = () => form.replaceChildren(box);
+    // The form morphs into the confirmation where the browser supports view transitions.
+    // Then the live status line has gone with the form, so focus moves to the confirmation for screen
+    // readers, and a second burst of light marks it delivered.
+    const after = () => {
+      box.focus();
+      const at = box.getBoundingClientRect();
+      if (at.width) onLaunch(at.left + at.width / 2, at.top + at.height / 2);
+    };
+    const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!calm && document.startViewTransition) document.startViewTransition(swap).finished.finally(after);
+    else { swap(); after(); }
   }
 
   return {

@@ -113,9 +113,9 @@
           <span class="line"><span>gets done while</span></span>
           <span class="line"><span>you <em>sleep.</em></span></span>
         </h1>
-        <p class="lede">Third Shift builds the automations that clear your invoices, answer your inquiries, chase your quotes and build your reports overnight, so your team starts the day with it done.</p>
+        <p class="lede">Third Shift builds the automations that <span class="task" data-kind="ap">clear your invoices</span>, <span class="task" data-kind="leads">answer your inquiries</span>, <span class="task" data-kind="quotes">chase your quotes</span> and <span class="task" data-kind="reports">build your reports</span> overnight, so your team starts the day with it done.</p>
         <div class="actions">
-          <a class="btn btn-lg" href="#contact" data-magnetic data-book>Book a free 20-minute call</a>
+          <a class="btn btn-lg comet" href="#contact" data-magnetic data-book>Book a free 20-minute call</a>
           <a class="link-quiet" href="#calculator">See what you'd get back</a>
         </div>
         <p class="hint" aria-hidden="true"><span class="hint-fine">Move across the night. Every light you wake up is a job getting done.</span><span class="hint-touch">Tap the night. Every light is a job getting done.</span></p>
@@ -280,6 +280,10 @@
           <div class="stat stat-big"><span class="stat-num" id="r-dollars">$13,824</span><span class="stat-lbl">of staff time back a year</span></div>
           <div class="stat"><span class="stat-num" id="r-hours">346</span><span class="stat-lbl">hours a year</span></div>
           <div class="stat"><span class="stat-num" id="r-weeks">9.2</span><span class="stat-lbl">working weeks</span></div>
+        </div>
+        <div class="nights">
+          <div class="nights-grid" id="nights" aria-hidden="true"></div>
+          <p class="nights-cap">That’s <span class="nights-num" id="r-nights">43</span> eight-hour shifts a year. Each lit dot is one night of the year.</p>
         </div>
         <p class="verdict" id="r-verdict" data-level="strong"><strong>Strong candidate.</strong> This is the kind of work we’d build first.</p>
         <p class="sr-only" id="calc-live" aria-live="polite"></p>
@@ -451,6 +455,8 @@
       </ul>
     </div>
   </div>
+  <!-- Dawn over the town: effects.js puts up the buildings and lights the windows as the footer arrives. -->
+  <svg class="skyline" id="skyline" viewBox="0 0 1440 160" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false"></svg>
 </footer>
 
 <aside class="chip" id="chip" aria-live="polite" hidden>

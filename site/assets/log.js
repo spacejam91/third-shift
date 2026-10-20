@@ -14,20 +14,23 @@ const money = () => (r(40, 2400) + r(0, 99) / 100).toLocaleString("en-CA", { min
 const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 const vendors = ["a packaging supplier", "the freight carrier", "a new parts vendor", "the cleaning contractor"];
 
+// [kind, text]. The kind matches a phrase in the hero's opening line (ap, leads, quotes, reports).
 const JOBS = [
-  () => `Picked up ${r(4, 31)} supplier invoices from the AP inbox`,
-  () => `Matched invoice ${r(10400, 98900)} to PO ${r(4100, 4999)} and posted it`,
-  () => `Matched ${r(12, 48)} invoices to purchase orders, queued for payment`,
-  () => `Sent a follow-up on quote Q-${r(1200, 1899)}, ${r(5, 14)} days old`,
-  () => `Logged a website inquiry in the CRM, reply sent`,
-  () => { const n = r(18, 64), left = r(0, 2); return left ? `Matched ${n} bank lines, ${left} left for review` : `Matched all ${n} bank lines`; },
-  () => `Pulled ${r(8, 30)} timesheets into payroll`,
-  () => `Reconciled ${r(20, 90)} card transactions to receipts`,
-  () => `Updated ${pick(days)}’s cash position report`,
-  () => `Chased ${r(2, 9)} overdue customer invoices, statements attached`,
-  () => `Synced ${r(10, 60)} online orders to the ledger`,
-  () => `Filed ${r(4, 20)} receipts from the expenses inbox`,
-  () => `Booked ${r(2, 6)} discovery calls from last week’s inquiries`,
+  ["ap", () => `Picked up ${r(4, 31)} supplier invoices from the AP inbox`],
+  ["ap", () => `Matched invoice ${r(10400, 98900)} to PO ${r(4100, 4999)} and posted it`],
+  ["ap", () => `Matched ${r(12, 48)} invoices to purchase orders, queued for payment`],
+  ["quotes", () => `Sent a follow-up on quote Q-${r(1200, 1899)}, ${r(5, 14)} days old`],
+  ["leads", () => `Logged a website inquiry in the CRM, reply sent`],
+  ["", () => { const n = r(18, 64), left = r(0, 2); return left ? `Matched ${n} bank lines, ${left} left for review` : `Matched all ${n} bank lines`; }],
+  ["", () => `Pulled ${r(8, 30)} timesheets into payroll`],
+  ["", () => `Reconciled ${r(20, 90)} card transactions to receipts`],
+  ["reports", () => `Updated ${pick(days)}’s cash position report`],
+  ["", () => `Chased ${r(2, 9)} overdue customer invoices, statements attached`],
+  ["", () => `Synced ${r(10, 60)} online orders to the ledger`],
+  ["ap", () => `Filed ${r(4, 20)} receipts from the expenses inbox`],
+  ["leads", () => `Booked ${r(2, 6)} discovery calls from last week’s inquiries`],
+  ["reports", () => `Built the weekly sales report, ready for 7 AM`],
+  ["quotes", () => `Chased ${r(2, 7)} open quotes, ${r(1, 2)} accepted overnight`],
 ];
 const HELD = [
   () => `Invoice ${r(10400, 98900)} held for review: $${money()} over the PO`,
@@ -50,7 +53,7 @@ function minutesFromText(text) {
   return ((h * 60 + Number(m[2])) - SHIFT_START + 1440) % 1440;
 }
 
-export function initLog({ list, doneEl, heldEl }) {
+export function initLog({ list, doneEl, heldEl, onKind = () => {} }) {
   const seeded = list.querySelectorAll("li");
   let minutes = seeded.length ? minutesFromText(seeded[seeded.length - 1].querySelector("time").textContent) : 0;
   let done = Number(doneEl.textContent) || seeded.length;
@@ -91,7 +94,9 @@ export function initLog({ list, doneEl, heldEl }) {
       held = 0;
     }
     const isHeld = Math.random() < 0.16;
-    row(clockText(minutes), (isHeld ? pick(HELD) : pick(JOBS))(), isHeld ? "flag" : "");
+    const [kind, text] = isHeld ? ["", pick(HELD)] : pick(JOBS);
+    row(clockText(minutes), text(), isHeld ? "flag" : "");
+    if (kind) onKind(kind);
     done++;
     if (isHeld) held++;
     counters();
