@@ -191,6 +191,158 @@ function crmSaveCompany(input) {
   });
 }
 
+// ------------------------------------------------------------------ sales agent (Outreach and Actions tabs)
+
+// The sales agent is its own Apps Script project. It keeps prospects on the Outreach tab and its
+// drafted replies, call bookings and check-ins on the Actions tab of this spreadsheet. The screen
+// only records a decision (and any edits) on a draft; the agent acts on it at its next run, within
+// 15 minutes, and does all the sending. The two projects never write the same cells.
+
+const OUTREACH_KEEP_DAYS = 30;     // closed prospects and finished actions stay on the screen this long
+const OUTREACH_PASSED_DAYS = 7;    // businesses it looked at and passed over, for a week
+const OUTREACH_TEXT = Object.freeze(["subject", "body1", "body2", "body3"]);
+const OUTREACH_LIVE = Object.freeze(["Draft", "Approved", "Active"]);
+const OUTREACH_CLOSED = Object.freeze(["Finished", "Unsubscribed", "Bounced", "Skipped", "Stopped"]);
+const OUTREACH_PASSED = Object.freeze(["Excluded", "No email"]);
+
+function crmOutreachLoad() {
+  assertUser_();
+  const ss = openCrm_();
+  const today = crmToday_();
+  const outreach = ss.getSheetByName("Outreach");
+  if (!outreach) return { ready: false, today: today };
+  const keep = daysAgo_(OUTREACH_KEEP_DAYS);
+  const passed = daysAgo_(OUTREACH_PASSED_DAYS);
+  const counts = {};
+  let sentToday = 0;
+  const rows = [];
+  crmRows_(outreach).forEach(function (o) {
+    counts[o.status] = (counts[o.status] || 0) + 1;
+    ["sent1", "sent2", "sent3"].forEach(function (k) { if (String(o[k]).slice(0, 10) === today) sentToday++; });
+    const touched = String(o.updated || o.created).slice(0, 10);
+    const show = OUTREACH_LIVE.indexOf(o.status) !== -1 ||
+      (o.status === "Replied" && touched >= keep) ||
+      (OUTREACH_CLOSED.indexOf(o.status) !== -1 && touched >= keep) ||
+      (OUTREACH_PASSED.indexOf(o.status) !== -1 && touched >= passed);
+    if (!show) return;
+    const rec = out_(o);
+    delete rec.about;
+    delete rec.thread_id;
+    delete rec.message_id;
+    if (OUTREACH_LIVE.indexOf(o.status) === -1 && o.status !== "Replied") OUTREACH_TEXT.slice(1).forEach(function (k) { delete rec[k]; });
+    rows.push(rec);
+  });
+  const actions = salesRows_(ss, "Actions").filter(function (a) {
+    return a.status === "Draft" || a.status === "Approved" || String(a.updated || a.created).slice(0, 10) >= keep;
+  }).map(function (a) {
+    const rec = out_(a);
+    delete rec.thread_id;
+    delete rec.in_reply_to;
+    return rec;
+  });
+  const allRuns = salesRows_(ss, "Runs");
+  const daily = allRuns.filter(function (r) { return r.job === "daily"; }).pop();
+  return {
+    ready: true,
+    today: today,
+    outreach: rows,
+    actions: actions,
+    runs: allRuns.slice(-20).reverse().map(out_),
+    lastDaily: daily ? out_(daily) : null,
+    counts: counts,
+    sentToday: sentToday,
+    suppressed: salesRows_(ss, "Suppression").length,
+  };
+}
+
+// Approve, skip or just save edits to a first-email draft. `updated` is the value the screen
+// showed; edits are refused once the agent or another tab has moved the row on.
+function crmOutreachDecide(input) {
+  assertUser_();
+  input = obj_(input);
+  const decision = decision_(input.decision);
+  return withLock_(function () {
+    const sheet = salesSheet_(openCrm_(), "Outreach");
+    const row = byId_(sheet, str_(input.id, 40));
+    return { outreach: out_(decideDraft_(sheet, row, input, decision, OUTREACH_TEXT)) };
+  });
+}
+
+// "Approve all" from the To approve list. Anything that stopped being an open draft is left alone.
+function crmOutreachApproveAll(ids) {
+  assertUser_();
+  if (!Array.isArray(ids) || ids.length > 200) throw new Error("Bad request.");
+  return withLock_(function () {
+    const sheet = salesSheet_(openCrm_(), "Outreach");
+    const rows = crmRows_(sheet);
+    const done = [];
+    ids.forEach(function (id) {
+      const row = rows.filter(function (r) { return r.id === String(id); })[0];
+      if (!row || row.status !== "Draft" || String(row.approved).trim()) return;
+      done.push(out_(decideDraft_(sheet, row, {}, "approve", [])));
+    });
+    return { outreach: done, skipped: ids.length - done.length };
+  });
+}
+
+// The same for a drafted reply, call booking or check-in on the Actions tab.
+function crmActionDecide(input) {
+  assertUser_();
+  input = obj_(input);
+  const decision = decision_(input.decision);
+  return withLock_(function () {
+    const sheet = salesSheet_(openCrm_(), "Actions");
+    const row = byId_(sheet, str_(input.id, 40));
+    return { action: out_(decideDraft_(sheet, row, input, decision, ["subject", "body"])) };
+  });
+}
+
+// decision: "approve", "skip", "save" (edits only) or "undo" (take back an approve or skip the
+// agent hasn't acted on yet).
+function decideDraft_(sheet, row, input, decision, fields) {
+  if (row.status !== "Draft") throw new Error("CHANGED: this is no longer a draft (now " + row.status + "). Reload to see the latest.");
+  if (decision === "undo") {
+    const undo = { approved: "", updated: new Date() };
+    crmUpdateRow_(sheet, row._row, undo);
+    return Object.assign({}, row, undo);
+  }
+  if (String(row.approved).trim()) throw new Error("CHANGED: this draft was already " + (/^skip/i.test(row.approved) ? "skipped" : "approved") + ". The sales agent picks it up within 15 minutes.");
+  checkFresh_(row, input.updated);
+  // Text first and the decision last: crmUpdateRow_ writes cell by cell, and the agent acts on
+  // `approved`, so it must never see a "yes" next to half-saved text.
+  const patch = {};
+  fields.forEach(function (k) {
+    if (!(k in input)) return;
+    const v = str_(input[k], k === "subject" ? 200 : 4000, k !== "subject");
+    if (!v && String(row[k] || "").trim()) throw new Error(k === "subject" ? "The subject can't be empty." : "An email can't be empty. Skip it instead.");
+    if (v !== String(row[k] == null ? "" : row[k])) patch[k] = v;
+  });
+  patch.updated = new Date();
+  if (decision !== "save") patch.approved = decision === "approve" ? "yes" : "skip";
+  crmUpdateRow_(sheet, row._row, patch);
+  return Object.assign({}, row, patch);
+}
+
+function decision_(v) {
+  if (["approve", "skip", "save", "undo"].indexOf(v) === -1) throw new Error("Bad request.");
+  return v;
+}
+
+function salesSheet_(ss, name) {
+  const sheet = ss.getSheetByName(name);
+  if (!sheet) throw new Error("The " + name + " tab is missing. Run setupOutreach in the sales agent project.");
+  return sheet;
+}
+
+function salesRows_(ss, name) {
+  const sheet = ss.getSheetByName(name);
+  return sheet ? crmRows_(sheet) : [];
+}
+
+function daysAgo_(n) {
+  return Utilities.formatDate(new Date(Date.now() - n * 864e5), CRM_TZ, "yyyy-MM-dd");
+}
+
 // ------------------------------------------------------------------ morning summary
 
 // Weekday mornings at 7 (trigger installed by setupCrm): what needs a reply, a follow-up or a task
@@ -205,7 +357,8 @@ function sendMorningSummary() {
   const tasks = crmRows_(crmSheet_(ss, "Activities")).filter(function (a) {
     return a.type === "Task" && a.done !== "yes" && a.due && a.due <= today;
   });
-  const fresh = deals.filter(function (d) { return d.stage === "New"; });
+  // Cold-outreach prospects also sit at "New"; the sales agent's own summary covers those.
+  const fresh = deals.filter(function (d) { return d.stage === "New" && d.source !== "Cold outreach"; });
   const due = deals.filter(function (d) { return d.stage !== "New" && d.next_date && d.next_date <= today; });
   if (!fresh.length && !due.length && !tasks.length) return;
 

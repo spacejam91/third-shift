@@ -85,15 +85,20 @@ a:hover { text-decoration-color: var(--amber); }
 .search input::-webkit-search-cancel-button { filter: invert(.6); }
 kbd { font: 500 .68rem var(--mono); color: var(--faint); border: 1px solid var(--line-2); border-radius: 5px; padding: .08rem .35rem; }
 .me { font: 400 .72rem var(--mono); color: var(--faint); max-width: 16ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-@media (max-width: 1100px) { .me { display: none; } }
-@media (max-width: 860px) {
+/* Five tabs fit beside the brand and search from about 1220px; below that they get their own row. */
+@media (max-width: 1360px) { .me { display: none; } }
+@media (max-width: 1220px) {
   .bar { grid-template-columns: 1fr auto; }
-  .tabs { grid-column: 1 / -1; grid-row: 2; justify-self: stretch; }
+  .tabs { grid-column: 1 / -1; grid-row: 2; justify-self: start; }
+}
+@media (max-width: 860px) {
+  .tabs { justify-self: stretch; }
   .search { width: 170px; }
 }
 @media (max-width: 520px) {
-  .tabs { display: grid; grid-template-columns: repeat(4, 1fr); }
-  .tabs button { justify-content: center; padding: .45rem .25rem; font-size: .88rem; gap: .3rem; }
+  .tabs { justify-content: space-between; gap: 0; padding: .2rem; }
+  .tabs button { justify-content: center; padding: .45rem .32rem; font-size: .78rem; gap: .2rem; }
+  .tabs .pill { font-size: .58rem; padding: .16rem .3rem; }
   .search { display: none; }
   .bar.searching .search { display: flex; position: absolute; inset: .7rem 1rem auto; width: auto; background: var(--night-1); z-index: 2; }
 }
@@ -263,6 +268,53 @@ td.dim { color: var(--faint); }
   .table-wrap td[data-suffix]::after { content: attr(data-suffix); }
 }
 
+/* ------------------------------------------------------------------ outreach */
+.out-head { display: flex; align-items: baseline; justify-content: space-between; gap: .5rem 1.4rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.out-head h1 { margin: 0; font-size: 1.35rem; letter-spacing: -.02em; font-weight: 650; }
+.out-stats { display: flex; flex-wrap: wrap; gap: .3rem 1.2rem; margin: 0; color: var(--muted); font-size: .88rem; }
+.out-stats b { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+.out-stats .warn { color: var(--err); }
+.subnav { display: flex; gap: .35rem; flex-wrap: wrap; margin-bottom: 1.1rem; }
+.subnav button { display: inline-flex; align-items: center; gap: .45rem; height: 34px; padding: 0 .85rem; border-radius: 9px; border: 1px solid var(--line); background: transparent; color: var(--muted); font-size: .9rem; transition: color .2s, border-color .2s, background .2s; }
+.subnav button:hover { color: var(--ink); }
+.subnav button[aria-pressed="true"] { color: var(--ink); border-color: var(--line-2); background: var(--panel-3); }
+.subnav .n { font: 500 .7rem var(--mono); color: var(--faint); }
+.subnav button[aria-pressed="true"] .n { color: var(--amber-hot); }
+.out-h2 { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin: 1.5rem .15rem .75rem; }
+.out-h2:first-child { margin-top: .2rem; }
+.out-h2 h2 { display: flex; align-items: baseline; gap: .55rem; margin: 0; font-size: 1rem; font-weight: 600; }
+.out-h2 .n { font: 500 .74rem var(--mono); color: var(--faint); }
+.out-note { margin: -.3rem .15rem .8rem; color: var(--faint); font-size: .86rem; }
+.drafts { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 430px), 1fr)); gap: .8rem; }
+.draft { display: grid; gap: .55rem; align-content: start; min-width: 0; padding: 1rem 1.05rem; border-radius: var(--r); background: var(--panel); border: 1px solid var(--line); }
+.enter .draft { animation: rise .5s var(--ease) both; }
+.draft.is-hot { border-color: rgba(242, 176, 85, .38); box-shadow: 0 0 40px -26px var(--amber); }
+.draft-top { display: flex; align-items: baseline; justify-content: space-between; gap: .7rem; min-width: 0; }
+.draft-top strong { font-size: 1.05rem; font-weight: 600; overflow-wrap: anywhere; }
+.draft-top a { flex: none; font-size: .84rem; }
+.draft-meta { color: var(--muted); font-size: .86rem; overflow-wrap: anywhere; }
+.draft-why { margin: 0; color: var(--ink-2); font-size: .9rem; overflow-wrap: anywhere; }
+.draft-why b { margin-right: .45rem; font: 500 .64rem var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--faint); }
+.mail { padding: .7rem .8rem; border-radius: 10px; background: rgba(5, 9, 19, .5); border: 1px solid var(--line); min-width: 0; }
+.mail-label { margin-bottom: .3rem; font: 500 .64rem var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--faint); }
+.mail-subj { font-weight: 600; font-size: .92rem; overflow-wrap: anywhere; }
+.mail-body { margin-top: .35rem; color: var(--ink-2); font-size: .9rem; white-space: pre-wrap; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 8; -webkit-box-orient: vertical; overflow: hidden; }
+.mails .mail-body, .draft-more .mail-body { display: block; }
+.mails { display: grid; gap: .7rem; }
+.draft-more { display: grid; gap: .55rem; }
+.draft-foot { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; padding-top: .15rem; }
+.draft-foot .spacer { flex: 1; }
+.linkish { border: 0; background: none; padding: 0; color: var(--amber); font-size: .86rem; text-align: left; justify-self: start; }
+.linkish:hover { color: var(--amber-hot); text-decoration: underline; text-underline-offset: .2em; }
+.callout { padding: .55rem .75rem; border-radius: 9px; background: var(--amber-soft); color: var(--amber-hot); font-size: .9rem; }
+.st { font: 500 .74rem var(--mono); color: var(--c, var(--muted)); white-space: nowrap; }
+.k-reply { --c: #8ED0EE; }
+.k-call { --c: #F2B055; }
+.k-nudge { --c: #9DB7E8; }
+td.wrap { white-space: normal; max-width: 640px; overflow-wrap: anywhere; }
+table.static tbody tr { cursor: default; }
+.dr-out { grid-column: 1 / -1; }
+
 /* ------------------------------------------------------------------ dialogs */
 dialog { padding: 0; border: 0; color: var(--ink); background: transparent; max-width: none; max-height: none; }
 dialog::backdrop { background: rgba(2, 5, 12, .62); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); }
@@ -325,6 +377,7 @@ legend { padding: 0; margin-bottom: .6rem; font: 500 .7rem var(--mono); letter-s
 .task-line .tl-body { margin-top: 0; }
 .tl.is-done .tl-body { color: var(--faint); text-decoration: line-through; }
 .t-inquiry { --c: #FFD08A; }
+.t-reply { --c: #FFD08A; }
 .t-stage { --c: #B9A2F2; }
 .t-note { --c: #9DB7E8; }
 .t-call { --c: #7FD1AE; }
@@ -364,6 +417,7 @@ legend { padding: 0; margin-bottom: .6rem; font: 500 .7rem var(--mono); letter-s
     <button type="button" data-view="pipeline">Pipeline</button>
     <button type="button" data-view="contacts">Contacts</button>
     <button type="button" data-view="companies">Companies</button>
+    <button type="button" data-view="outreach">Outreach <span class="pill" id="out-n" hidden></span></button>
   </nav>
   <div class="bar-right">
     <label class="search">
@@ -418,7 +472,8 @@ function messageOf(err) {
 // ------------------------------------------------------------------ small helpers
 
 const $ = (sel, root = document) => root.querySelector(sel);
-const VIEWS = ["today", "pipeline", "contacts", "companies"];
+const VIEWS = ["today", "pipeline", "contacts", "companies", "outreach"];
+const COLD = "Cold outreach";
 
 // Builds DOM. Strings become text nodes, so nothing from the sheet is ever parsed as HTML.
 function h(tag, props, ...kids) {
@@ -524,7 +579,7 @@ function due(date, done = false) {
 
 // ------------------------------------------------------------------ state
 
-const S = { data: null, view: "today", q: "", loadedAt: 0, animate: true, flash: null, openDeal: null, counted: false };
+const S = { data: null, view: "today", q: "", loadedAt: 0, animate: true, flash: null, openDeal: null, counted: false, out: null, outErr: "", outAt: 0, outTab: "approve", outOpen: new Set() };
 let IX = null;
 
 try { const v = localStorage.getItem("ts-crm-view"); if (VIEWS.includes(v)) S.view = v; } catch { /* storage blocked */ }
@@ -587,7 +642,7 @@ function render() {
   const view = $("#view");
   const scroller = view.querySelector(".board");
   const keepX = scroller ? scroller.scrollLeft : 0;
-  const node = { today: viewToday, pipeline: viewPipeline, contacts: viewContacts, companies: viewCompanies }[S.view]();
+  const node = { today: viewToday, pipeline: viewPipeline, contacts: viewContacts, companies: viewCompanies, outreach: viewOutreach }[S.view]();
   view.replaceChildren(node);
   const board = view.querySelector(".board");
   if (board && !S.animate) board.scrollLeft = keepX;
@@ -603,7 +658,8 @@ function render() {
 function attention() {
   const today = S.data.today;
   const open = S.data.deals.filter(isOpen);
-  const fresh = open.filter((d) => d.stage === "New");
+  // Cold-outreach prospects also start at "New"; they're handled on the Outreach tab.
+  const fresh = open.filter((d) => d.stage === "New" && d.source !== COLD);
   const followUps = open.filter((d) => d.stage !== "New" && d.next_date && d.next_date <= today);
   const tasks = openTasks().filter((a) => a.due && a.due <= today);
   const late = followUps.filter((d) => d.next_date < today).length + tasks.filter((a) => a.due < today).length;
@@ -618,6 +674,10 @@ function renderTabs() {
   const pill = $("#today-n");
   pill.hidden = !n;
   pill.textContent = String(n);
+  const w = outreachWaiting();
+  const outPill = $("#out-n");
+  outPill.hidden = !w;
+  outPill.textContent = String(w);
 }
 
 function renderMetrics() {
@@ -726,10 +786,12 @@ function viewToday() {
   ].sort(by((x) => x.date));
 
   const n = a.total;
+  const w = outreachWaiting();
   return h("div", { class: S.animate ? "enter" : "" },
     h("div", { class: "hello" },
       h("h1", null, greeting()),
-      h("p", null, longFmt.format(naive(today)), " · ", n ? `${n} ${n === 1 ? "thing needs" : "things need"} you` : "Nothing needs you right now")),
+      h("p", null, longFmt.format(naive(today)), " · ", n ? `${n} ${n === 1 ? "thing needs" : "things need"} you` : "Nothing needs you right now",
+        w ? [" · ", h("button", { type: "button", class: "linkish", onclick: () => { setOutTab("approve"); setView("outreach"); } }, `${w} outreach ${w === 1 ? "draft" : "drafts"} to approve`)] : null)),
     h("div", { class: "today-grid" },
       panel("New inquiries", "New", fresh, inquiryItem, "No new inquiries. When the website form brings one in, it lands here."),
       panel("Follow-ups due", "Contacted", followUps, followItem, "No follow-ups due."),
@@ -862,6 +924,419 @@ function viewCompanies() {
     editCompany, S.q ? "No companies match that search." : "No companies yet.");
 }
 
+// ------------------------------------------------------------------ Outreach (the sales agent)
+
+// The sales agent keeps its prospects and drafts on its own tabs of the sheet. A decision made here
+// is written to the sheet, and the agent acts on it at its next run, within 15 minutes.
+
+const OUT_TABS = [["approve", "To approve"], ["replies", "Replies"], ["sequence", "In sequence"], ["closed", "Closed"], ["runs", "Runs"]];
+const OUT_CLOSED = ["Finished", "Unsubscribed", "Bounced", "Skipped", "Stopped", "Excluded", "No email"];
+const REPLY_LABEL = {
+  interested: "Interested", question: "Has a question", not_now: "Not right now", not_interested: "Not interested",
+  unsubscribe: "Asked to be removed", wrong_person: "Pointed to someone else", other: "Replied", "booked a call": "Booked a call",
+};
+const ACTION_LABEL = { reply: "Reply", call: "Call booking", nudge: "Check-in" };
+const ADDRESS_LABEL = { owner: "owner's published address", role: "business inbox", freemail: "business inbox" };
+const MAIL_LABEL = ["First email", "Follow-up, if no reply", "Last note"];
+const callFmt = new Intl.DateTimeFormat("en-CA", { timeZone: "UTC", weekday: "long", month: "long", day: "numeric", hour: "numeric", minute: "2-digit" });
+
+try { const t = localStorage.getItem("ts-crm-outtab"); if (OUT_TABS.some((x) => x[0] === t)) S.outTab = t; } catch { /* storage blocked */ }
+
+async function loadOutreach() {
+  try {
+    S.out = await api("crmOutreachLoad");
+    S.outAt = Date.now();
+    S.outErr = "";
+  } catch (err) {
+    if (!S.out) S.outErr = messageOf(err);
+  }
+  if (S.data) render();
+}
+
+// Still a draft and nobody has decided yet.
+const waiting = (x) => x.status === "Draft" && !String(x.approved || "").trim();
+
+function outreachWaiting() {
+  if (!S.out || !S.out.ready) return 0;
+  return S.out.outreach.filter(waiting).length + S.out.actions.filter(waiting).length;
+}
+
+function outreachLists() {
+  const o = S.out;
+  const rows = o.outreach.filter((r) => matches(r.company, r.email, r.city, r.industry, r.subject, r.reply_summary, r.closed_reason));
+  const acts = o.actions.filter((a) => matches(a.company, a.to, a.subject, a.note));
+  const newest = (key) => (a, b) => String(b[key] || b.updated || "").localeCompare(String(a[key] || a.updated || ""));
+  const kindOrder = { call: 0, reply: 1, nudge: 2 };
+  return {
+    actions: acts.filter(waiting).sort((a, b) => (kindOrder[a.kind] ?? 3) - (kindOrder[b.kind] ?? 3) || String(a.created).localeCompare(String(b.created))),
+    drafts: rows.filter(waiting).sort(by((r) => r.created)),
+    replies: rows.filter((r) => r.status === "Replied").sort(newest("replied")),
+    answers: acts.filter((a) => !waiting(a)).sort(newest("updated")),
+    sequence: rows.filter((r) => r.status === "Approved" || r.status === "Active" || (r.status === "Draft" && !waiting(r)))
+      .sort(by((r) => (r.status === "Draft" ? "0" : "1") + (r.next_send || ""))),
+    closed: rows.filter((r) => OUT_CLOSED.includes(r.status)).sort(newest("updated")),
+    runs: o.runs.filter((r) => matches(r.job, r.summary, r.errors)),
+  };
+}
+
+function viewOutreach() {
+  if (!S.out) {
+    if (!S.outErr) return h("div", { class: "loading" }, h("div", { class: "sk" }), h("div", { class: "sk tall" }));
+    return h("div", { class: "problem" }, h("h1", null, "Outreach didn't load"), h("p", null, S.outErr),
+      h("button", { type: "button", class: "btn", onclick: () => { S.outErr = ""; render(); loadOutreach(); } }, "Try again"));
+  }
+  if (!S.out.ready) {
+    return h("div", { class: "problem" }, h("h1", null, "The sales agent isn't set up yet"),
+      h("p", null, "Its tabs appear in this spreadsheet once setupOutreach has run in the sales agent's project. The steps are in that project's README."));
+  }
+  const L = outreachLists();
+  const counts = { approve: L.actions.length + L.drafts.length, replies: L.replies.length, sequence: L.sequence.length, closed: L.closed.length };
+  const body = { approve: outApprove, replies: outReplies, sequence: outSequence, closed: outClosed, runs: outRuns }[S.outTab](L);
+  return h("div", { class: S.animate ? "enter" : "" },
+    h("div", { class: "out-head" }, h("h1", null, "Outreach"), outStats()),
+    h("nav", { class: "subnav", "aria-label": "Outreach lists" }, OUT_TABS.map(([key, label]) =>
+      h("button", { type: "button", "aria-pressed": String(S.outTab === key), onclick: () => setOutTab(key) }, label, key in counts ? h("span", { class: "n" }, counts[key]) : null))),
+    body);
+}
+
+function setOutTab(key) {
+  S.outTab = key;
+  try { localStorage.setItem("ts-crm-outtab", key); } catch { /* storage blocked */ }
+  if (S.view === "outreach") { S.animate = true; render(); }
+}
+
+function lastBusinessDay(d) {
+  let x = addDays(d, -1);
+  while ([0, 6].includes(new Date(naive(x)).getUTCDay())) x = addDays(x, -1);
+  return x;
+}
+
+// The agent's pulse: a weekday with no 7 AM run by 8 means something is off (paused triggers, an error).
+function outStats() {
+  const o = S.out, c = o.counts || {};
+  const today = S.data.today;
+  const weekday = ![0, 6].includes(new Date(naive(today)).getUTCDay());
+  const expected = weekday && +torontoNow().slice(11, 13) >= 8 ? today : lastBusinessDay(today);
+  const last = o.lastDaily;
+  const late = !last || last.at.slice(0, 10) < expected;
+  return h("p", { class: "out-stats" },
+    late
+      ? h("span", { class: "warn" }, last ? `No daily run since ${shortDate(last.at)}` : "The daily run hasn't happened yet")
+      : h("span", null, "Daily run ", h("b", null, ago(last.at))),
+    h("span", null, "Sent today ", h("b", null, o.sentToday || 0)),
+    h("span", null, "In sequence ", h("b", null, (c.Approved || 0) + (c.Active || 0))),
+    h("span", null, "Replies ", h("b", null, c.Replied || 0)),
+    h("span", null, "Unsubscribed or blocked ", h("b", null, o.suppressed || 0)));
+}
+
+function sectionHead(title, n, extra) {
+  return h("div", { class: "out-h2" }, h("h2", null, title, n == null ? null : h("span", { class: "n" }, n)), extra || null);
+}
+
+function outApprove(L) {
+  if (!L.actions.length && !L.drafts.length) {
+    return h("p", { class: "empty" }, S.q ? "Nothing waiting matches that search." : "Nothing waiting. New first emails land here after the 7 AM run, and answers to replies as they come in.");
+  }
+  return h("div", null,
+    L.actions.length ? [sectionHead("Answers to send", L.actions.length), h("div", { class: "drafts" }, L.actions.map(actionCard))] : null,
+    L.drafts.length ? [
+      sectionHead("First emails", L.drafts.length, L.drafts.length > 1 ? h("button", { type: "button", class: "btn btn-sm", onclick: () => approveAll(L.drafts) }, `Approve all ${L.drafts.length}`) : null),
+      h("p", { class: "out-note" }, "Approved emails go out between 9 and 4 on business days, a few at a time, within the daily limit. Follow-ups stop the moment they reply."),
+      h("div", { class: "drafts" }, L.drafts.map(draftCard)),
+    ] : null);
+}
+
+function mailBlock(label, subject, body) {
+  return h("div", { class: "mail" }, h("div", { class: "mail-label" }, label), subject ? h("div", { class: "mail-subj" }, subject) : null, h("div", { class: "mail-body" }, body || ""));
+}
+
+function extLink(url, text) {
+  return /^https?:\/\/[^\s]+$/i.test(url || "") ? h("a", { href: url, target: "_blank", rel: "noopener noreferrer" }, text) : null;
+}
+
+function dealButton(dealId) {
+  return IX.deal.get(dealId) ? h("button", { type: "button", class: "linkish", onclick: () => openDeal(dealId) }, "Open deal") : null;
+}
+
+function draftCard(o) {
+  const extra = [2, 3].filter((n) => o["body" + n]);
+  const open = S.outOpen.has(o.id);
+  const toggle = extra.length ? h("button", { type: "button", class: "linkish", "aria-expanded": String(open), onclick: () => { if (open) S.outOpen.delete(o.id); else S.outOpen.add(o.id); render(); } },
+    open ? "Hide the follow-ups" : `Show the ${extra.length} follow-up${extra.length === 1 ? "" : "s"}`) : null;
+  const published = extLink(o.email_source_url, "where it's published");
+  return h("article", { class: "draft", dataset: { id: o.id } },
+    h("div", { class: "draft-top" }, h("strong", null, o.company), webLink(o.website)),
+    h("div", { class: "draft-meta" }, [o.city, o.industry].filter(Boolean).join(" · ")),
+    h("div", { class: "draft-meta" }, mailLink(o.email), o.email_kind ? " · " + (ADDRESS_LABEL[o.email_kind] || o.email_kind) : "", published ? [" · ", published] : null),
+    o.reason ? h("p", { class: "draft-why" }, h("b", null, "Why"), o.reason) : null,
+    mailBlock(MAIL_LABEL[0], o.subject, o.body1),
+    open ? h("div", { class: "draft-more" }, extra.map((n) => mailBlock(MAIL_LABEL[n - 1], "Re: " + o.subject, o["body" + n]))) : null,
+    toggle,
+    o.error ? h("p", { class: "hint warn" }, o.error) : null,
+    h("div", { class: "draft-foot" },
+      h("button", { type: "button", class: "btn btn-sm", onclick: () => decideOutreach(o, "approve") }, "Approve"),
+      h("button", { type: "button", class: "btn btn-ghost btn-sm", onclick: () => editOutreach(o) }, "Edit"),
+      h("button", { type: "button", class: "btn btn-ghost btn-sm", onclick: () => decideOutreach(o, "skip") }, "Skip"),
+      h("span", { class: "spacer" }),
+      dealButton(o.deal_id)));
+}
+
+function callText(a) {
+  if (!a.call_start) return "";
+  const mins = a.call_end ? Math.round((naive(a.call_end) - naive(a.call_start)) / 60000) : 0;
+  return callFmt.format(naive(a.call_start)) + (mins > 0 ? ` (${mins} min)` : "");
+}
+
+function actionCard(a) {
+  const o = S.out.outreach.find((r) => r.id === a.outreach_id);
+  const verb = a.kind === "call" ? "Book and send" : a.kind === "nudge" ? "Send check-in" : "Send reply";
+  return h("article", { class: "draft is-hot k-" + a.kind, dataset: { id: a.id } },
+    h("div", { class: "draft-top" }, h("strong", null, a.company), h("span", { class: "badge" }, ACTION_LABEL[a.kind] || a.kind)),
+    h("div", { class: "draft-meta" }, "To ", mailLink(a.to), a.note ? " · " + a.note : ""),
+    o && o.reply_summary ? h("p", { class: "draft-why" }, h("b", null, "They said"), o.reply_summary) : null,
+    a.kind === "call" ? h("div", { class: "callout" }, "Call ", callText(a), ". Approving puts it in your calendar and sends them an invite.") : null,
+    mailBlock(a.kind === "call" ? "Confirmation email" : "Email", a.subject, a.body),
+    a.error ? h("p", { class: "hint warn" }, a.error) : null,
+    h("div", { class: "draft-foot" },
+      h("button", { type: "button", class: "btn btn-sm", onclick: () => decideAction(a, "approve") }, verb),
+      h("button", { type: "button", class: "btn btn-ghost btn-sm", onclick: () => editAction(a) }, "Edit"),
+      h("button", { type: "button", class: "btn btn-ghost btn-sm", onclick: () => decideAction(a, "skip") }, "Skip"),
+      h("span", { class: "spacer" }),
+      dealButton(a.deal_id)));
+}
+
+// ---- decisions
+
+function decideOutreach(o, decision, edits) {
+  return decide(o, decision, edits, (payload) => api("crmOutreachDecide", payload), "outreach", (d) => decideOutreach(o, d));
+}
+
+function decideAction(a, decision, edits) {
+  return decide(a, decision, edits, (payload) => api("crmActionDecide", payload), "action", (d) => decideAction(a, d));
+}
+
+// Shows the decision straight away, then saves it; a failed save puts the card back.
+async function decide(rec, decision, edits, send, key, again) {
+  const before = Object.assign({}, rec);
+  Object.assign(rec, edits || {});
+  if (decision !== "save") rec.approved = decision === "approve" ? "yes" : decision === "skip" ? "skip" : "";
+  render();
+  try {
+    const r = await send(Object.assign({ id: rec.id, decision, updated: before.updated }, edits || {}));
+    Object.assign(rec, r[key]);
+    render();
+    const name = rec.company || "Draft";
+    if (decision === "approve") toast(`${name} approved. The sales agent takes it from here.`, { action: { label: "Undo", fn: () => again("undo") } });
+    else if (decision === "skip") toast(`${name} skipped`, { action: { label: "Undo", fn: () => again("undo") } });
+    else toast(decision === "undo" ? "Undone" : "Saved");
+    return true;
+  } catch (err) {
+    for (const k of Object.keys(rec)) if (!(k in before)) delete rec[k];
+    Object.assign(rec, before);
+    render();
+    fail(err);
+    return false;
+  }
+}
+
+async function approveAll(list) {
+  if (!confirm(`Approve all ${list.length} first emails? They still go out a few at a time, within the daily limit.`)) return;
+  for (const o of list) o.approved = "yes";
+  render();
+  try {
+    const r = await api("crmOutreachApproveAll", list.map((o) => o.id));
+    for (const rec of r.outreach) {
+      const o = S.out.outreach.find((x) => x.id === rec.id);
+      if (o) Object.assign(o, rec);
+    }
+    toast(`${r.outreach.length} approved${r.skipped ? `, ${r.skipped} had changed and were left alone` : ""}. The sales agent takes it from here.`);
+    if (r.skipped) loadOutreach();
+  } catch (err) {
+    for (const o of list) o.approved = "";
+    fail(err);
+  }
+  render();
+}
+
+// ---- edit and view dialogs
+
+function draftForm(title, sub, fields, rec, onSubmit) {
+  const err = h("p", { class: "form-err", role: "alert" });
+  const control = (f) => f.rows
+    ? h("textarea", { name: f.name, rows: String(f.rows), maxlength: "4000" }, rec[f.name] || "")
+    : input({ name: f.name, value: rec[f.name] || "", maxlength: 200, autocomplete: "off" });
+  const buttons = [h("button", { class: "btn btn-ghost", type: "submit", value: "save" }, "Save"), h("button", { class: "btn", type: "submit", value: "approve" }, "Save and approve")];
+  const form = h("form", { class: "modal-body", novalidate: true },
+    h("header", { class: "modal-head" }, h("h2", null, title), closeButton(modal)),
+    h("p", { class: "hint" }, sub),
+    fields.map((f) => field(f.label, control(f))),
+    err,
+    h("footer", { class: "modal-foot" }, h("button", { class: "btn btn-ghost", type: "button", onclick: () => tryClose(modal) }, "Cancel"), buttons));
+  trackDirty(form);
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const decision = e.submitter && e.submitter.value === "approve" ? "approve" : "save";
+    for (const el of form.querySelectorAll("[aria-invalid]")) el.removeAttribute("aria-invalid");
+    const edits = {};
+    for (const f of fields) {
+      const el = form.elements[f.name];
+      const v = el.value.trim();
+      if (!v) {
+        el.setAttribute("aria-invalid", "true");
+        el.focus();
+        err.textContent = f.rows ? "An email can't be empty. Skip it instead." : "The subject can't be empty.";
+        return;
+      }
+      if (v !== String(rec[f.name] || "").trim()) edits[f.name] = v;
+    }
+    if (decision === "save" && !Object.keys(edits).length) { modal.close(); return; }
+    err.textContent = "";
+    for (const b of buttons) b.disabled = true;
+    if (await onSubmit(decision, edits)) {
+      form.dataset.dirty = "";
+      modal.close();
+    } else {
+      for (const b of buttons) b.disabled = false;
+    }
+  });
+  openModal(form, "textarea");
+}
+
+const FOOTER_NOTE = "Your name, mailing address and the unsubscribe link go under it automatically when it's sent.";
+
+function editOutreach(o) {
+  const fields = [{ name: "subject", label: "Subject" }];
+  [1, 2, 3].forEach((n) => { if (n === 1 || o["body" + n]) fields.push({ name: "body" + n, label: MAIL_LABEL[n - 1], rows: n === 1 ? 9 : 6 }); });
+  draftForm(o.company, `To ${o.email}. Follow-ups go out a few business days apart, only if they haven't replied. ${FOOTER_NOTE}`, fields, o,
+    (decision, edits) => decideOutreach(o, decision, edits));
+}
+
+function editAction(a) {
+  const when = a.kind === "call" ? ` Call ${callText(a)}; to change the time, skip this and reply yourself.` : "";
+  draftForm(`${ACTION_LABEL[a.kind] || "Email"} to ${a.company}`, `To ${a.to}.${when} ${FOOTER_NOTE}`,
+    [{ name: "subject", label: "Subject" }, { name: "body", label: "Email", rows: 10 }], a,
+    (decision, edits) => decideAction(a, decision, edits));
+}
+
+function statusText(o) {
+  switch (o.status) {
+    case "Draft": return o.approved ? (/^skip/i.test(o.approved) ? "Skipped, being filed" : "Approved, queued for sending") : "Waiting for your approval";
+    case "Approved": return "First email goes out next";
+    case "Active": return `Email ${Number(o.step) || 1} of 3 sent`;
+    case "Replied": return REPLY_LABEL[o.reply_kind] || "Replied";
+    case "Finished": return "All 3 sent, no reply";
+    case "Excluded": case "No email": return "Passed over";
+    default: return o.status;
+  }
+}
+
+function statusClass(o) {
+  if (o.status === "Draft") return "s-new";
+  if (o.status === "Approved" || o.status === "Active") return "s-contacted";
+  if (o.status === "Replied") return o.reply_kind === "not_interested" || o.reply_kind === "unsubscribe" ? "s-lost" : "s-call-booked";
+  return "s-lost";
+}
+
+const statusTag = (o) => h("span", { class: "st " + statusClass(o) }, statusText(o));
+
+function showEmails(o) {
+  if (waiting(o)) { editOutreach(o); return; }
+  const mails = [1, 2, 3].filter((n) => o["body" + n]).map((n) =>
+    mailBlock(MAIL_LABEL[n - 1] + (o["sent" + n] ? " · sent " + shortDate(o["sent" + n]) : " · not sent"), n === 1 ? o.subject : "Re: " + o.subject, o["body" + n]));
+  const deal = IX.deal.get(o.deal_id);
+  openModal(h("div", { class: "modal-body" },
+    h("header", { class: "modal-head" }, h("h2", null, o.company), closeButton(modal)),
+    h("div", { class: "draft-meta" }, mailLink(o.email), " · ", statusTag(o)),
+    o.reply_summary ? h("p", { class: "draft-why" }, h("b", null, "They said"), o.reply_summary) : null,
+    o.closed_reason ? h("p", { class: "draft-why" }, h("b", null, "Why it ended"), o.closed_reason) : null,
+    o.reason ? h("p", { class: "draft-why" }, h("b", null, "Why we wrote"), o.reason) : null,
+    mails.length ? h("div", { class: "mails" }, mails) : null,
+    h("footer", { class: "modal-foot" },
+      deal ? h("button", { type: "button", class: "btn btn-ghost", onclick: () => { modal.close(); openDeal(deal.id); } }, "Open deal") : null,
+      h("button", { type: "button", class: "btn", onclick: () => modal.close() }, "Close"))));
+}
+
+// The agent's side of a cold-outreach deal, in the deal drawer.
+function outreachNote(deal) {
+  if (!S.out || !S.out.ready || deal.source !== COLD) return null;
+  const o = S.out.outreach.find((r) => r.deal_id === deal.id);
+  if (!o) return null;
+  return h("div", { class: "who dr-out" },
+    h("div", { class: "who-label" }, "Sales agent", h("button", { type: "button", onclick: () => showEmails(o) }, waiting(o) ? "Review the draft" : "See the emails")),
+    h("strong", null, statusText(o) + (o.status === "Active" && o.next_send ? ", next " + shortDate(o.next_send) : "")),
+    o.reason ? h("span", { title: o.reason }, o.reason) : null);
+}
+
+// ---- the other lists
+
+function miniTable(headers, rows, cells, onOpen) {
+  return h("div", { class: "table-wrap" }, h("table", { class: onOpen ? null : "static" },
+    h("thead", null, h("tr", null, headers.map((x) => h("th", { scope: "col" }, x)))),
+    h("tbody", null, rows.map((rec) => {
+      const tr = h("tr", onOpen ? { tabindex: "0" } : null, cells(rec));
+      if (onOpen) {
+        tr.addEventListener("click", (e) => { if (!e.target.closest("a")) onOpen(rec); });
+        tr.addEventListener("keydown", (e) => { if (e.key === "Enter") onOpen(rec); });
+      }
+      return tr;
+    }))));
+}
+
+function replyItem(o) {
+  return h("button", { type: "button", class: "item", dataset: { id: o.id }, onclick: () => showEmails(o) },
+    h("div", { class: "item-top" }, h("strong", null, o.company), h("span", { class: "when" }, ago(o.replied || o.updated))),
+    h("div", { class: "item-sub" }, statusTag(o), o.email ? " · " + o.email : ""),
+    o.reply_summary ? h("div", { class: "item-sub" }, h("q", null, o.reply_summary)) : null);
+}
+
+function actionStatus(a) {
+  if (a.status === "Draft") return /^skip/i.test(a.approved) ? "Skipped" : "Approved, sending soon";
+  return { Approved: "Sending on the next run", Done: "Sent", Skipped: "Skipped", Stale: "Dropped", Failed: "Failed" }[a.status] || a.status;
+}
+
+function outReplies(L) {
+  return h("div", null,
+    sectionHead("Replies", L.replies.length),
+    L.replies.length ? h("div", { class: "list" }, L.replies.map(replyItem))
+      : h("p", { class: "empty" }, S.q ? "No replies match that search." : "No replies in the last 30 days."),
+    L.answers.length ? [
+      sectionHead("Answers, bookings and check-ins", L.answers.length),
+      miniTable(["Company", "What", "Status", "Note", "When"], L.answers,
+        (a) => [td(a.company, "main"), td(ACTION_LABEL[a.kind] || a.kind), h("td", null, h("span", { class: "st k-" + a.kind }, actionStatus(a))), td(a.error || a.note, "dim"), td(ago(a.updated || a.created), "dim")],
+        (a) => { if (IX.deal.get(a.deal_id)) openDeal(a.deal_id); }),
+    ] : null);
+}
+
+function outSequence(L) {
+  return h("div", null,
+    sectionHead("In sequence", L.sequence.length),
+    h("p", { class: "out-note" }, "Approved first emails and the follow-ups after them. A reply, an unsubscribe, or you moving the deal stops the rest."),
+    L.sequence.length
+      ? miniTable(["Company", "Email", "Where it's at", "Next email"], L.sequence,
+        (o) => [td(o.company, "main"), h("td", null, mailLink(o.email)), h("td", null, statusTag(o)), h("td", null, o.status === "Active" && o.next_send ? due(o.next_send) : "")], showEmails)
+      : h("p", { class: "empty" }, S.q ? "Nothing in sequence matches that search." : "Nobody is mid-sequence right now."));
+}
+
+function outClosed(L) {
+  return h("div", null,
+    sectionHead("Closed", L.closed.length),
+    h("p", { class: "out-note" }, "The last 30 days. Businesses the agent looked at and passed over stay for a week, with the reason."),
+    L.closed.length
+      ? miniTable(["Company", "Outcome", "Why", "When"], L.closed,
+        (o) => [td(o.company, "main"), h("td", null, statusTag(o)), td(o.closed_reason || o.error, "dim"), td(shortDate(o.updated || o.created), "dim")], showEmails)
+      : h("p", { class: "empty" }, S.q ? "Nothing closed matches that search." : "Nothing closed in the last 30 days."));
+}
+
+function outRuns(L) {
+  return h("div", null,
+    sectionHead("Recent runs", null),
+    h("p", { class: "out-note" }, "The 7 AM daily run finds and drafts; the 15-minute runs send, read replies and book calls. Quiet runs aren't listed."),
+    L.runs.length
+      ? miniTable(["When", "Run", "What happened", "Problems"], L.runs,
+        (r) => [td(ago(r.at), "dim"), td(r.job), td(r.summary, "wrap"), td(r.errors, "wrap dim")], null)
+      : h("p", { class: "empty" }, "No runs logged yet."));
+}
+
 // ------------------------------------------------------------------ dialogs
 
 const drawer = $("#drawer");
@@ -948,7 +1423,7 @@ function fillDrawer() {
 
   drawer.replaceChildren(h("div", { class: "dr" },
     head,
-    h("div", { class: "dr-people" }, contactBox, companyBox),
+    h("div", { class: "dr-people" }, contactBox, companyBox, outreachNote(deal)),
     dealForm(deal),
     h("section", { class: "dr-log" }, h("h3", null, "Activity"), activityForm(deal), h("ol", { class: "timeline", id: "timeline" }))));
   fillTimeline();
@@ -1271,6 +1746,7 @@ function fail(err) {
 // ------------------------------------------------------------------ loading
 
 async function load({ quiet = false } = {}) {
+  loadOutreach();
   try {
     S.data = await api("crmLoad");
     S.loadedAt = Date.now();
@@ -1298,6 +1774,7 @@ function setView(v) {
   if (v !== S.view) S.animate = true;
   S.view = v;
   try { localStorage.setItem("ts-crm-view", v); } catch { /* storage blocked */ }
+  if (v === "outreach" && Date.now() - S.outAt > 60000) loadOutreach();
   render();
   window.scrollTo(0, 0);
 }
@@ -1321,7 +1798,7 @@ document.addEventListener("keydown", (e) => {
   if (e.target.closest && e.target.closest("input, textarea, select, [contenteditable]")) return;
   if (e.key === "/") { e.preventDefault(); $("#bar").classList.add("searching"); q.focus(); }
   else if (e.key === "n") { e.preventDefault(); newDeal(); }
-  else if (/^[1-4]$/.test(e.key)) setView(VIEWS[+e.key - 1]);
+  else if (/^[1-5]$/.test(e.key)) setView(VIEWS[+e.key - 1]);
 });
 
 // Coming back to the tab after a while picks up anything the website form added meanwhile.
