@@ -18,14 +18,16 @@ const BROWSERS = [
 
 export const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-export async function openBrowser(port) {
+// extraArgs go on the browser's command line, e.g. "--disable-lcd-text" for the videos
+export async function openBrowser(port, extraArgs = []) {
   const exe = BROWSERS.find((p) => p && fs.existsSync(p));
   if (!exe) throw new Error("Install Microsoft Edge or Google Chrome first.");
   const profile = fs.mkdtempSync(path.join(os.tmpdir(), "ts-brand-"));
   const child = spawn(exe, ["--headless=new", "--disable-gpu", "--hide-scrollbars", "--force-color-profile=srgb",
     // a headless window counts as hidden; without these it gets throttled and stalls long renders
     "--disable-background-timer-throttling", "--disable-renderer-backgrounding", "--disable-backgrounding-occluded-windows",
-    "--disable-features=CalculateNativeWinOcclusion,IntensiveWakeUpThrottling", `--remote-debugging-port=${port}`, `--user-data-dir=${profile}`, "about:blank"], { stdio: "ignore" });
+    "--disable-features=CalculateNativeWinOcclusion,IntensiveWakeUpThrottling", ...extraArgs,
+    `--remote-debugging-port=${port}`, `--user-data-dir=${profile}`, "about:blank"], { stdio: "ignore" });
 
   let url = null;
   for (let i = 0; i < 60 && !url; i++) {

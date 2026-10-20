@@ -222,7 +222,7 @@ The bots: the sales bot (prospecting and outreach, repo `third-shift-outreach`) 
 | Publish | commit, then `git push` (live in about a minute) |
 | Preview the CRM with demo data | `node tools/crm-preview.mjs`, then http://127.0.0.1:8915 |
 | Redraw logos, icons and banners | `node tools/render-brand.mjs` |
-| Re-render the animated videos | `node tools/render-motion.mjs` (needs ffmpeg) |
+| Re-render the animated videos | `npm run motion` (about a minute; needs Chrome and ffmpeg, see `social-kit/README.md`) |
 
 ## DNS at GoDaddy (for reference)
 
