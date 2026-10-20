@@ -271,12 +271,14 @@ function buildBanner() {
   const url = el("div", "url", "thirdshift.ca");
   const text = el("div", "text" + (centred ? " center" : ""), kick, head, url);
   if (q.get("inset") && !centred) text.style.right = (+q.get("inset") * 100) + "%";
+  // zoom=1.4 makes the text block larger, for covers that carry nothing but the text.
+  const z = +(q.get("zoom") || 1);
   if (tall) {
-    kick.style.fontSize = (u * 3.6) + "px";
-    head.style.fontSize = (u * 13) + "px";
-    head.style.maxWidth = (W * .52) + "px";
-    head.style.margin = (u * 3.4) + "px 0 " + (u * 4) + "px";
-    url.style.fontSize = (u * 4.2) + "px";
+    kick.style.fontSize = (u * 3.6 * z) + "px";
+    head.style.fontSize = (u * 13 * z) + "px";
+    head.style.maxWidth = (W * .52 * z) + "px";
+    head.style.margin = (u * 3.4 * z) + "px 0 " + (u * 4 * z) + "px";
+    url.style.fontSize = (u * 4.2 * z) + "px";
   } else {
     // very wide and short (LinkedIn page cover): one line
     kick.style.fontSize = (u * 6.4) + "px";
