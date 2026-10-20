@@ -2,9 +2,10 @@
 // Renders the animated videos in tools/brand/motion.html to MP4 for X, Instagram, TikTok and LinkedIn.
 //
 //   npm run motion                                  every video: the black-on-white set into
-//                                                   social-kit/motion/, the night set into motion/night/
+//                                                   social-kit/motion/, the night set into motion/night/,
+//                                                   one night per industry page into motion/industries/
 //   npm run motion -- mono story                    only the videos matching every word: "mono" or
-//                                                   "night" picks a set, anything else a file name part
+//                                                   "night" picks a set, anything else a path part
 //   npm run motion -- --stills 0,5,14.4 --to <folder>
 //                                                   still PNGs at those seconds instead, for checking
 //
@@ -19,6 +20,7 @@ import os from "node:os";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { openBrowser } from "./browser.mjs";
+import { INDUSTRIES } from "../content/industries.mjs";
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 const page = pathToFileURL(path.join(root, "tools", "brand", "motion.html")).href;
@@ -41,14 +43,29 @@ const SETS = [
   { set: "mono", dir: "", query: "&mono=1" },
   { set: "night", dir: "night/", query: "" },
 ];
-const VIDEOS = SETS.flatMap((s) => FILES.map((f) => ({ ...f, ...s, out: s.dir + f.name })));
+// One example night per "Who it's for" page, black on white, for posts aimed at that kind of business.
+// The list comes from the pages themselves, so a new page needs its night in motion.html before this runs.
+const INDUSTRY_SIZES = [
+  { size: "1080x1350", w: 1080, h: 1350 },
+  { size: "story-1080x1920", w: 1080, h: 1920 },
+];
+const VIDEOS = [
+  ...SETS.flatMap((s) => FILES.map((f) => ({ ...f, ...s, out: s.dir + f.name }))),
+  ...INDUSTRIES.flatMap(({ slug }) => INDUSTRY_SIZES.map(({ size, w, h }) => {
+    const name = `overnight-shift-${slug}-${size}.mp4`;
+    return { name, w, h, scene: "shift", set: "mono", query: `&mono=1&night=${slug}`, out: "industries/" + name };
+  })),
+];
 
 const args = process.argv.slice(2);
 const flag = (name) => { const k = args.indexOf(name); return k < 0 ? null : args.splice(k, 2)[1]; };
 const stills = flag("--stills");
 const stillsTo = flag("--to");
 const jobs = Math.max(1, Number(flag("--jobs")) || Math.min(VIDEOS.length, Math.floor(os.cpus().length / 4) || 1));
-const todo = VIDEOS.filter((v) => args.every((word) => word === v.set || v.name.includes(word)));
+// A set's name picks that set only (so "night" doesn't also catch "overnight-shift"); any other word is
+// part of a path, folder included ("industries", "trades", "story").
+const setNames = new Set(SETS.map((s) => s.set));
+const todo = VIDEOS.filter((v) => args.every((word) => (setNames.has(word) ? v.set === word : v.out.includes(word))));
 if (!todo.length) throw new Error("No video matches " + args.join(" "));
 
 function ffmpegPath() {
@@ -102,6 +119,8 @@ async function render(v, port) {
   let browser = await openBrowser(port, CHROME_ARGS);
   try {
     await browser.load(url, size);
+    const problem = await browser.evaluate("document.body.dataset.error || \"\"");
+    if (problem) throw new Error(`${v.out}: ${problem}`);
     const duration = await browser.evaluate("window.DURATION");
     // Frames depend only on t, so if the browser dies part-way, a fresh one picks up the same frame.
     const shoot = async (t, tries = 3) => {
