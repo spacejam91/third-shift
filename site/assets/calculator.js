@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Third Shift (thirdshift.ca). All rights reserved. See LICENSE.
 // The "What is the repetitive work costing you?" calculator.
 
 import { estimate, formatHours, formatMoney, formatWeeks, summarize } from "./estimate.js";

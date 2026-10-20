@@ -1,0 +1,14 @@
+# Third Shift
+
+> AI automation for small businesses in Kitchener-Waterloo, Ontario. Third Shift builds automations that clear supplier invoices, answer inquiries, chase quotes and build reports overnight, so the team starts the day with it done.
+
+- Who it's for: owner-run businesses in Waterloo Region (Kitchener, Waterloo, Cambridge) with roughly 5 to 100 people: distributors, trades, clinics, professional services, manufacturers.
+- How it starts: a free 20-minute call, then a one-page plan with a fixed price and a delivery date.
+- How it's built: people approve anything that moves money, data stays in the client's own systems, read-only access wherever possible, and every run is logged.
+- Works with: Gmail, Outlook, QuickBooks, Xero, Sage, NetSuite, Excel, Google Sheets, HubSpot, Shopify, Slack, Stripe.
+- Contact: thirdshift.ca@gmail.com, or the form at https://thirdshift.ca/#contact
+
+## Pages
+
+- [Home](https://thirdshift.ca/): services, the overnight audit, the cost calculator, how a build starts, FAQ
+- [Privacy](https://thirdshift.ca/privacy): what is collected through the site and how to have it deleted

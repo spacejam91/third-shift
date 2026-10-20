@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Third Shift (thirdshift.ca). All rights reserved. See LICENSE.
 // The night behind the whole page: a field of lights on a fixed canvas. Lights near the pointer
 // wake up and link to their neighbours; moving across the page (or clicking an empty spot) sends a
 // job travelling from light to light, and each job that arrives calls onJob(), which writes a line
@@ -404,7 +405,7 @@ export function initNight(canvas, { onJob = () => {}, onUserJob = () => {}, redu
   if (reduced) {
     window.addEventListener("resize", resize, { passive: true });
     window.addEventListener("scroll", () => { scrollY = window.scrollY; shift = scrollY * PARALLAX; drawStatic(); }, { passive: true });
-    return { startJob() {}, launch() {} };
+    return { startJob() {}, launch() {}, pulse() {} };
   }
 
   let resizeTimer = 0;
@@ -426,5 +427,7 @@ export function initNight(canvas, { onJob = () => {}, onUserJob = () => {}, redu
       setTimeout(() => startJob(x, y, false, { bright: true, up: true }), 140);
       setTimeout(() => startJob(x, y, false, { bright: true }), 300);
     },
+    // One bright job from (x, y) that isn't counted as the visitor's: the fast-forwarded night.
+    pulse: (x, y) => startJob(x, y, false, { bright: true }),
   };
 }

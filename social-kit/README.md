@@ -19,3 +19,17 @@ Colours: night `#050913`, amber `#F2B055`, dawn `#FF8F4D`, light text `#ECF1F8`,
 Type: Bricolage Grotesque (headings, logo), IBM Plex Mono (labels). Both free on Google Fonts.
 
 The site's own icons (`site/favicon.ico`, `site/apple-touch-icon.png`, `site/icon-192.png`, `site/icon-512.png`) and the link preview (`site/assets/og-image.png`) come from the same script.
+
+## Animated logos (`motion/`)
+
+Made by `node tools/render-motion.mjs` from `tools/brand/motion.html` (needs ffmpeg: `winget install Gyan.FFmpeg.Essentials`). All are H.264 MP4 at 30 fps with a silent audio track, which every platform accepts.
+
+| File | Use it for | Length |
+|---|---|---|
+| `motion/logo-reveal-1080x1080.mp4` | Instagram and LinkedIn feed, X. Night falls, jobs run across the network to the moon, then the name, the line and thirdshift.ca. | 9 s |
+| `motion/logo-reveal-story-1080x1920.mp4` | Instagram Reels and Stories, TikTok, YouTube Shorts | 9 s |
+| `motion/logo-reveal-wide-1920x1080.mp4` | X, LinkedIn and YouTube in landscape | 9 s |
+| `motion/overnight-shift-1080x1350.mp4` | Instagram 4:5 feed. An example night in the shift log, 11 PM to 7 AM, ending on the logo at dawn. It says "Example shift" on screen; keep captions to the same framing. | 14.5 s |
+| `motion/overnight-shift-story-1080x1920.mp4` | The same night for Reels, Stories and TikTok | 14.5 s |
+
+To preview the animation in a browser while editing, open `tools/brand/motion.html?scene=reveal&play=1` (or `scene=shift`).

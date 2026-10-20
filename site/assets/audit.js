@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Third Shift (thirdshift.ca). All rights reserved. See LICENSE.
 // The "Which of these does your team still do by hand?" checklist.
 
 const VERDICTS = [

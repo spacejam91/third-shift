@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Third Shift (thirdshift.ca). All rights reserved. See LICENSE.
 /**
  * Third Shift — lead intake (Google Apps Script, bound to the "Third Shift CRM" spreadsheet)
  *
@@ -56,6 +57,11 @@ function doPost(e) {
       message: clean_(data.message, 4000, true),
       source: clean_(data.source, 80) || "thirdshift.ca",
       submitted: clean_(data.submitted_at, 40),
+      // Where the visitor came from: the campaign tags on the link they arrived by, and the referring site.
+      utm_source: clean_(data.utm_source, 80),
+      utm_medium: clean_(data.utm_medium, 80),
+      utm_campaign: clean_(data.utm_campaign, 120),
+      referrer: clean_(data.referrer, 120),
     };
     if (!lead.name || !lead.email || !lead.company || !lead.message) return json_({ ok: false, error: "missing_fields" });
     if (!isEmail_(lead.email)) return json_({ ok: false, error: "bad_email" });
@@ -71,6 +77,7 @@ function doPost(e) {
       const row = crmAppend_(leads, {
         received: new Date(), name: lead.name, email: lead.email, company: lead.company, phone: lead.phone,
         message: lead.message, source: lead.source, submitted: lead.submitted,
+        utm_source: lead.utm_source, utm_medium: lead.utm_medium, utm_campaign: lead.utm_campaign, referrer: lead.referrer,
         status: check === "unverified" ? "New (bot check unavailable)" : "New",
       });
       try {
@@ -104,7 +111,8 @@ function doGet() {
 }
 
 // Company matched by name, contact by email; a contact with an open deal gets the new inquiry on
-// that deal instead of a duplicate card. Returns the deal id.
+// that deal instead of a duplicate card, keeping the deal's source (an outreach deal stays Outreach,
+// and the sales bot sees the Inquiry and stops its emails). Returns the deal id.
 function crmCreateFromLead_(ss, lead) {
   const now = new Date();
   const companies = crmSheet_(ss, "Companies");
@@ -130,15 +138,36 @@ function crmCreateFromLead_(ss, lead) {
   if (!deal) {
     deal = {
       id: crmId_("D"), title: lead.company, company_id: company.id, contact_id: contact.id, stage: "New",
-      source: "Website", next_step: "Reply to the inquiry", next_date: crmNextBusinessDay_(now), created: now, updated: now,
+      source: dealSource_(lead), next_step: "Reply to the inquiry", next_date: crmNextBusinessDay_(now), created: now, updated: now,
     };
     crmAppend_(deals, deal);
   } else {
-    crmUpdateRow_(deals, deal._row, { updated: now });
+    crmUpdateRow_(deals, deal._row, { next_step: "Reply to the inquiry", next_date: crmNextBusinessDay_(now), updated: now });
   }
 
   crmAppend_(activities, { id: crmId_("A"), deal_id: deal.id, type: "Inquiry", summary: lead.message, created: now });
   return deal.id;
+}
+
+// The deal's source, for the CRM: the link's campaign tag (docs/SYSTEM.md), else the referring site,
+// else Website.
+const SOURCE_NAMES = {
+  outreach: "Outreach", instagram: "Instagram", ig: "Instagram", x: "X", twitter: "X", facebook: "Facebook", fb: "Facebook",
+  linkedin: "LinkedIn", tiktok: "TikTok", google: "Google", bing: "Bing", youtube: "YouTube",
+};
+const REFERRER_SOURCES = [
+  [/(^|\.)instagram\.com$/, "Instagram"], [/(^|\.)(x\.com|twitter\.com|t\.co)$/, "X"], [/(^|\.)(facebook\.com|fb\.com)$/, "Facebook"],
+  [/(^|\.)(linkedin\.com|lnkd\.in)$/, "LinkedIn"], [/(^|\.)tiktok\.com$/, "TikTok"], [/(^|\.)google\.[a-z.]+$/, "Google"],
+  [/(^|\.)bing\.com$/, "Bing"], [/(^|\.)(duckduckgo\.com)$/, "DuckDuckGo"], [/(^|\.)youtube\.com$/, "YouTube"],
+];
+function dealSource_(lead) {
+  const tag = crmNorm_(lead.utm_source);
+  if (tag) return SOURCE_NAMES[tag] || String(lead.utm_source).slice(0, 40);
+  const host = crmNorm_(lead.referrer).replace(/^www\./, "");
+  for (let i = 0; i < REFERRER_SOURCES.length; i++) {
+    if (REFERRER_SOURCES[i][0].test(host)) return REFERRER_SOURCES[i][1];
+  }
+  return "Website";
 }
 
 function notify_(lead) {

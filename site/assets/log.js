@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Third Shift (thirdshift.ca). All rights reserved. See LICENSE.
 // The "Tonight's shift" panel. The rows in the HTML are the opening of the night; every job that
 // finishes on the hero canvas adds the next one, on a simulated clock that runs from 11 PM to 7 AM
 // and then starts a new shift. Text is built with textContent only.
@@ -7,6 +8,8 @@ const SHIFT_LENGTH = 8 * 60;          // to 7:00 AM
 const SUMMARY_AT = SHIFT_LENGTH - 5;  // 6:55 AM
 const MAX_ROWS = 12;
 const ROW_GAP_MS = 650;
+// Fast-forward: a whole night in about six seconds, quick at first and quicker toward dawn.
+const FF_GAP_START = 230, FF_GAP_END = 85;
 
 const r = (lo, hi) => lo + Math.floor(Math.random() * (hi - lo + 1));
 const pick = (list) => list[Math.floor(Math.random() * list.length)];
@@ -61,6 +64,7 @@ export function initLog({ list, doneEl, heldEl, onKind = () => {} }) {
   const smooth = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const queue = [];
   let busy = false;
+  let racing = false;
 
   function row(time, text, cls) {
     const li = document.createElement("li");
@@ -84,26 +88,34 @@ export function initLog({ list, doneEl, heldEl, onKind = () => {} }) {
     heldEl.textContent = String(held);
   }
 
-  function next() {
-    minutes += r(3, 9);
-    if (minutes >= SUMMARY_AT) {
-      row(clockText(SUMMARY_AT), "Morning summary sent to three inboxes");
-      row(null, "Shift complete. Next one starts 11 PM", "divider");
-      minutes = r(1, 4);
-      done = 0;
-      held = 0;
-    }
+  function endShift() {
+    row(clockText(SUMMARY_AT), "Morning summary sent to three inboxes");
+    row(null, "Shift complete. Next one starts 11 PM", "divider");
+    minutes = r(1, 4);
+    done = 0;
+    held = 0;
+  }
+
+  // Writes one job at the current clock; returns its kind ("" for general jobs) and whether it was held.
+  function job() {
     const isHeld = Math.random() < 0.16;
     const [kind, text] = isHeld ? ["", pick(HELD)] : pick(JOBS);
     row(clockText(minutes), text(), isHeld ? "flag" : "");
-    if (kind) onKind(kind);
     done++;
     if (isHeld) held++;
     counters();
+    return { kind, isHeld };
+  }
+
+  function next() {
+    minutes += r(3, 9);
+    if (minutes >= SUMMARY_AT) endShift();
+    const { kind } = job();
+    if (kind) onKind(kind);
   }
 
   function pump() {
-    if (busy || !queue.length) return;
+    if (racing || busy || !queue.length) return;
     busy = true;
     queue.shift();
     next();
@@ -112,9 +124,49 @@ export function initLog({ list, doneEl, heldEl, onKind = () => {} }) {
 
   return {
     push() {
-      if (queue.length >= 3) return;
+      if (racing || queue.length >= 3) return;
       queue.push(1);
       pump();
+    },
+
+    // Runs a whole night from 11 PM to the morning summary, fast. onRow(kind, progress 0..1, clock)
+    // fires for every job. Resolves with the night's tally; the live log carries on afterwards.
+    fastForward({ onRow = () => {} } = {}) {
+      if (racing) return Promise.resolve(null);
+      racing = true;
+      queue.length = 0;
+      row(null, "Fast-forward: a whole night", "divider");
+      minutes = 0;
+      done = 0;
+      held = 0;
+      counters();
+      const tally = { done: 0, held: 0 };
+      const step = () => {
+        minutes += r(8, 15);
+        const { kind, isHeld } = job();
+        tally.done++;
+        if (isHeld) tally.held++;
+        onRow(kind, Math.min(1, minutes / SUMMARY_AT), clockText(minutes));
+      };
+      const finish = () => {
+        // done and held reset for the next night, but the footer keeps showing this one's totals
+        endShift();
+        racing = false;
+        return tally;
+      };
+      if (!smooth) {
+        while (minutes < SUMMARY_AT - 15) step();
+        return Promise.resolve(finish());
+      }
+      return new Promise((resolve) => {
+        const tick = () => {
+          step();
+          if (minutes >= SUMMARY_AT - 15) { resolve(finish()); return; }
+          const p = minutes / SUMMARY_AT;
+          setTimeout(tick, FF_GAP_START + (FF_GAP_END - FF_GAP_START) * p);
+        };
+        tick();
+      });
     },
   };
 }

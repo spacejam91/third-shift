@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Third Shift (thirdshift.ca). All rights reserved. See LICENSE.
 // Savings estimate behind the calculator. Pure functions, no DOM, so tests can import them.
 
 export const WEEKS_PER_YEAR = 48;

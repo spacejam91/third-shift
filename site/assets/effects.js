@@ -1,7 +1,10 @@
+// Copyright (c) 2026 Third Shift (thirdshift.ca). All rights reserved. See LICENSE.
 // Page-wide effects: the night-to-dawn sky, header state, scroll reveals, the steps progress line,
 // and the pointer effects (spotlight, glowing borders, magnetic buttons, tilting log panel).
 // Every effect writes CSS custom properties or transforms through the CSSOM, which the
 // Content-Security-Policy allows without 'unsafe-inline'.
+
+import { initSkyline } from "./skyline.js";
 
 export function initEffects({ reduced = false, finePointer = false } = {}) {
   const root = document.documentElement;
@@ -94,76 +97,6 @@ function initComet() {
 // Dawn over the town at the foot of the page. Buildings are placed from a fixed seed so the skyline
 // is the same on every visit; windows switch on as the footer scrolls into view (--dawn-p), each at
 // its own moment (--t), like people arriving to find the work already done.
-function initSkyline(reduced) {
-  const svg = document.getElementById("skyline");
-  const foot = svg && svg.closest("footer");
-  if (!svg || !foot) return;
-  const NS = "http://www.w3.org/2000/svg";
-  const W = 1440, H = 160;
-  let seed = 20261020;
-  const rnd = () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; };
-  const make = (tag, attrs, cls) => {
-    const el = document.createElementNS(NS, tag);
-    for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, typeof v === "number" ? v.toFixed(1) : v);
-    if (cls) el.setAttribute("class", cls);
-    return el;
-  };
-  const bldgs = make("g", {}, "bldgs");
-  const wins = make("g", {}, "wins");
-  const beacons = make("g", {}, "beacons");
-
-  let x = -12;
-  while (x < W + 12) {
-    const w = 30 + Math.floor(rnd() * 64);
-    // two clusters of taller buildings, like the two downtowns
-    const mid = x + w / 2;
-    const core = Math.max(Math.exp(-(((mid - W * 0.63) / 160) ** 2)), 0.8 * Math.exp(-(((mid - W * 0.27) / 130) ** 2)));
-    const h = 20 + rnd() * 26 + core * (36 + rnd() * 78);
-    bldgs.append(make("rect", { x, y: H - h, width: w, height: h + 2 }));
-    if (h > 70 && rnd() < 0.45) bldgs.append(make("rect", { x: x + w * 0.3, y: H - h - 9, width: w * 0.4, height: 10 }));
-    if (h > 92 && rnd() < 0.55) {
-      const ax = x + w * (0.3 + rnd() * 0.4);
-      bldgs.append(make("rect", { x: ax, y: H - h - 26, width: 1.6, height: 26 }));
-      beacons.append(make("circle", { cx: ax + 0.8, cy: H - h - 27, r: 1.7 }));
-    }
-    const cols = Math.max(1, Math.floor((w - 8) / 9));
-    const rows = Math.floor((h - 14) / 11);
-    for (let r = 0; r < rows; r++) {
-      for (let c = 0; c < cols; c++) {
-        if (rnd() > 0.42) continue;
-        const win = make("rect", { x: x + 5 + c * 9, y: H - h + 8 + r * 11, width: 4, height: 5 }, "win");
-        win.style.setProperty("--t", (0.12 + rnd() * 0.8).toFixed(3));
-        wins.append(win);
-      }
-    }
-    x += w + (rnd() < 0.3 ? 4 + rnd() * 16 : 1);
-  }
-  // A train light running along the bottom of the town.
-  const track = make("rect", { x: 0, y: H - 3, width: W, height: 1 }, "track");
-  const train = make("rect", { x: -60, y: H - 6.5, width: 54, height: 3, rx: 1.5 }, "train");
-  svg.append(bldgs, wins, beacons, track, train);
-
-  let queued = false;
-  const update = () => {
-    queued = false;
-    const r = foot.getBoundingClientRect();
-    const p = Math.min(1, Math.max(0, (window.innerHeight - r.top) / Math.max(1, r.height)));
-    svg.style.setProperty("--dawn-p", p.toFixed(3));
-  };
-  const queue = () => { if (!queued) { queued = true; requestAnimationFrame(update); } };
-  let on = false;
-  if ("IntersectionObserver" in window) {
-    new IntersectionObserver(([e]) => {
-      on = e.isIntersecting;
-      svg.classList.toggle("is-live", on && !reduced);
-      if (on) queue();
-    }).observe(svg);
-  }
-  window.addEventListener("scroll", () => { if (on) queue(); }, { passive: true });
-  window.addEventListener("resize", () => { if (on) queue(); }, { passive: true });
-  update();
-}
-
 // Service cards lean toward the pointer. Uses the rotate property (axis and angle) so it never
 // fights the transform the scroll reveal uses.
 function initCardTilt() {

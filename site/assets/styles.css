@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Third Shift (thirdshift.ca). All rights reserved. See LICENSE. */
 /* Third Shift — site styles
  *
  * The page is one night: deep navy at the top, a sunrise glow by the footer.
@@ -23,7 +24,7 @@
   --dawn: #FF8F4D;
   --on-amber: #0B1222;
   --err: #FF8A73;
-  --max: 1180px;
+  --max: 73.75rem;      /* 1180px at 16px; grows with the root size on big monitors */
   --r: 18px;
   --ease: cubic-bezier(.2, .7, .2, 1);
   --mono: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
@@ -33,12 +34,15 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 88px; -webkit-text-size-adjust: 100%; }
+/* Big monitors: everything sized in rem scales up gently instead of sitting small in the middle.
+   16px up to 1440px wide, 18px at 1920px, about 20.7px at 2560px, capped at 22px. */
+@media (min-width: 1440px) { html { font-size: min(calc(10px + .4167vw), 22px); } }
 body {
   margin: 0;
   background: var(--night-0);
   color: var(--ink);
   font-family: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
-  font-size: 17px;
+  font-size: 1.0625rem;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -133,9 +137,11 @@ a { color: inherit; }
   -webkit-backdrop-filter: blur(14px) saturate(1.2);
   backdrop-filter: blur(14px) saturate(1.2);
 }
-.top-in { display: flex; align-items: center; justify-content: space-between; height: 72px; gap: 1rem; }
+/* The bar runs edge to edge: the name sits top-left and the links top-right on any width. */
+.top .wrap { width: 100%; padding-inline: clamp(1.25rem, 3vw, 3.25rem); }
+.top-in { display: flex; align-items: center; justify-content: space-between; height: 4.5rem; gap: 1rem; }
 .mark { display: inline-flex; align-items: center; gap: .65rem; text-decoration: none; font-weight: 600; font-size: 1.15rem; letter-spacing: -.01em; }
-.mark svg { width: 26px; height: 26px; }
+.mark svg { width: 1.625rem; height: 1.625rem; }
 .mark-moon { fill: var(--amber); }
 .top nav { display: flex; gap: 1.8rem; align-items: center; font-size: .95rem; }
 .nav-link {
@@ -144,7 +150,9 @@ a { color: inherit; }
   padding-bottom: 2px; transition: color .2s ease, background-size .3s var(--ease);
 }
 .nav-link:hover { color: var(--ink); background-size: 100% 1px; }
-@media (max-width: 760px) { .nav-link { display: none; } }
+/* The section links need about 1000px; below that the bar keeps just the name and the call button. */
+@media (max-width: 999px) { .nav-link { display: none; } }
+.mark, .top nav a { white-space: nowrap; }
 
 /* ---------------------------------------------------------------- Buttons */
 
@@ -170,13 +178,17 @@ a { color: inherit; }
 
 .hero {
   position: relative;
-  margin-top: -72px;
-  padding: calc(72px + clamp(2.5rem, 7vh, 5rem)) 0 clamp(5rem, 11vh, 8rem);
-  min-height: min(100svh, 1000px);
+  margin-top: -4.5rem;
+  padding: calc(4.5rem + clamp(2.5rem, 7vh, 5rem)) 0 clamp(5rem, 11vh, 8rem);
+  min-height: min(100svh, 62.5rem);
   display: grid; align-items: center;
   isolation: isolate;
+  /* the headline's shadow reaches past the column; clip it here so phones don't zoom out */
+  overflow-x: clip;
 }
 .hero-in { display: grid; gap: 3rem; align-items: center; }
+/* Grid items default to their widest unbreakable content; let them shrink to a phone width. */
+.hero-in > * { min-width: 0; }
 /* A soft shadow behind the headline so lights passing underneath never fight the text. */
 .hero-copy { position: relative; }
 .hero-copy::before {
@@ -270,11 +282,11 @@ h1 em {
 .log-rows li.flag span::before { content: ""; display: inline-block; width: .5em; height: .5em; border-radius: 50%; background: #F2B55A; margin-right: .5em; vertical-align: middle; box-shadow: 0 0 10px #F2B55A; }
 .log-rows li.divider { grid-template-columns: 1fr; color: #6E81A0; text-align: center; font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; padding-block: .6rem; }
 .js .log-rows li:not(.live) { animation: rowIn .6s var(--ease) both; }
-.js .log-rows li:not(.live):nth-child(1) { animation-delay: .5s; }
-.js .log-rows li:not(.live):nth-child(2) { animation-delay: .9s; }
-.js .log-rows li:not(.live):nth-child(3) { animation-delay: 1.3s; }
-.js .log-rows li:not(.live):nth-child(4) { animation-delay: 1.7s; }
-.js .log-rows li:not(.live):nth-child(5) { animation-delay: 2.1s; }
+.js .log-rows li:not(.live):nth-child(1) { animation-delay: .85s; }
+.js .log-rows li:not(.live):nth-child(2) { animation-delay: 1.25s; }
+.js .log-rows li:not(.live):nth-child(3) { animation-delay: 1.65s; }
+.js .log-rows li:not(.live):nth-child(4) { animation-delay: 2.05s; }
+.js .log-rows li:not(.live):nth-child(5) { animation-delay: 2.45s; }
 .log-rows li.live { animation: rowIn .5s var(--ease) both, flash 1.6s ease-out both; }
 @keyframes rowIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 @keyframes flash { from { background: rgba(242, 176, 85, .16); } to { background: transparent; } }
@@ -283,6 +295,54 @@ h1 em {
 .cursor::after { content: "▍"; color: #F2B55A; animation: blink 1.1s steps(1) infinite; margin-left: .15em; }
 @keyframes blink { 50% { opacity: 0; } }
 @media (max-width: 520px) { .log { font-size: .78rem; padding: 1rem 1rem 1.1rem; } .log-rows { height: 15rem; } }
+
+/* What the shift is connected to, switching on one by one as the panel opens. */
+.log-boot { list-style: none; margin: 0 0 .5rem; padding: 0 0 .6rem; display: flex; flex-wrap: wrap; gap: .25rem 1rem; font-size: .74em; color: #7F91AE; border-bottom: 1px dashed rgba(236, 241, 248, .09); }
+.log-boot li { display: inline-flex; align-items: center; gap: .45em; }
+.log-boot li::before { content: ""; flex: none; width: .5em; height: .5em; border-radius: 50%; background: #6FD39A; box-shadow: 0 0 8px rgba(111, 211, 154, .75); }
+.log-boot li.hold::before { background: var(--amber); box-shadow: 0 0 8px rgba(242, 176, 85, .8); }
+.log-boot b { font-weight: 500; color: #C9D6E8; }
+.js .log-boot li { animation: rowIn .45s var(--ease) both; }
+.js .log-boot li::before { animation: lampOn .8s steps(1) both; animation-delay: inherit; }
+.js .log-boot li:nth-child(1) { animation-delay: .1s; }
+.js .log-boot li:nth-child(2) { animation-delay: .25s; }
+.js .log-boot li:nth-child(3) { animation-delay: .4s; }
+.js .log-boot li:nth-child(4) { animation-delay: .55s; }
+@keyframes lampOn { 0% { opacity: .15; } 35% { opacity: 1; } 50% { opacity: .3; } 65%, 100% { opacity: 1; } }
+
+/* Fast-forward: the button, the dawn coming up inside the panel, and the morning summary. */
+.ff {
+  display: inline-flex; align-items: center; gap: .55em; padding: .26rem .8rem .26rem .7rem; border-radius: 999px;
+  font: inherit; font-size: .92em; color: var(--amber-hot); background: rgba(242, 176, 85, .08); border: 1px solid rgba(242, 176, 85, .45);
+  cursor: pointer; transition: background-color .2s, border-color .2s, box-shadow .2s;
+}
+.ff::before { content: ""; flex: none; width: .95em; height: .62em; background: currentColor; clip-path: polygon(0 0, 50% 50%, 50% 0, 100% 50%, 50% 100%, 50% 50%, 0 100%); }
+.ff:hover { background: rgba(242, 176, 85, .16); border-color: var(--amber); box-shadow: 0 0 18px -4px rgba(242, 176, 85, .6); }
+.ff:focus-visible { outline: 2px solid var(--amber-hot); outline-offset: 2px; }
+.ff:disabled { cursor: progress; }
+.ff:disabled::before { animation: blink .5s steps(1) infinite; }
+.log::after {
+  content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+  background: radial-gradient(130% 70% at 50% 118%, rgba(255, 143, 77, .34), rgba(242, 176, 85, .09) 50%, transparent 72%);
+  opacity: var(--ff, 0); transition: opacity .35s;
+}
+.ff-card {
+  position: absolute; inset: 3rem .75rem .75rem; z-index: 2; display: grid; align-content: center; gap: .6rem;
+  padding: 1.1rem 1.25rem; border-radius: 14px; outline: none;
+  background: linear-gradient(180deg, #161828, #0C0F1C);
+  border: 1px solid rgba(255, 208, 138, .38);
+  box-shadow: 0 24px 60px -24px rgba(0, 0, 0, .95), 0 0 46px -12px rgba(255, 143, 77, .45);
+  animation: rowIn .55s var(--ease) both;
+}
+.ff-time { margin: 0; font-size: 1.7em; font-weight: 500; color: var(--amber-hot); letter-spacing: .02em; }
+.ff-head { margin: 0; color: var(--ink); }
+.ff-list { list-style: none; margin: 0; padding: 0; display: grid; gap: .3rem; color: #C3CFE0; }
+.ff-list li::before { content: ""; display: inline-block; width: .45em; height: .45em; margin-right: .6em; border-radius: 50%; background: var(--amber); vertical-align: .1em; }
+.ff-list b { color: var(--ink); font-weight: 500; font-variant-numeric: tabular-nums; }
+.ff-note { margin: .1rem 0 0; font-size: .86em; color: #7F91AE; }
+.ff-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem 1.2rem; margin-top: .35rem; }
+.ff-actions button { font: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+.ff-actions .btn { font-family: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif; }
 
 /* ---------------------------------------------------------------- Tool band */
 
@@ -362,7 +422,7 @@ h3 { letter-spacing: -.012em; }
 .viz::after { content: ""; position: absolute; inset: 0; pointer-events: none; background-image: radial-gradient(rgba(236, 241, 248, .07) 1px, transparent 1px); background-size: 16px 16px; }
 .js .card:not(.is-in) .viz * { animation-play-state: paused; }
 
-/* Each card's illustration is a small product at work. Loops are seamless: whatever is on screen
+/* Each card's illustration is a small product at work. Loops join up cleanly: whatever is on screen
    at 100% is invisible or identical at 0%, so nothing ever parks or snaps. Base styles are the
    finished picture, which is what reduced-motion visitors see. */
 .viz[data-label]::before {
@@ -546,7 +606,7 @@ h3 { letter-spacing: -.012em; }
   transition: border-color .25s, background-color .25s, transform .25s var(--ease), box-shadow .25s;
 }
 .tick:hover { border-color: rgba(242, 176, 85, .45); transform: translateY(-2px); box-shadow: 0 14px 30px -18px rgba(242, 176, 85, .5); }
-.tick input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.tick input { position: absolute; left: 0; top: 0; opacity: 0; width: 1px; height: 1px; }
 .tick-box { position: relative; flex: none; width: 22px; height: 22px; border-radius: 6px; border: 1.5px solid var(--line-2); transition: background-color .2s, border-color .2s, box-shadow .3s; }
 .tick-box::after { content: ""; position: absolute; left: 6px; top: 2px; width: 6px; height: 11px; border: solid var(--on-amber); border-width: 0 2.5px 2.5px 0; transform: rotate(45deg) scale(0); transition: transform .25s var(--ease); }
 .tick-text { font-size: .98rem; line-height: 1.35; color: var(--ink-2); }
@@ -793,6 +853,8 @@ textarea { min-height: 8.5rem; resize: vertical; }
   .spot, .hint, .scroll-cue { display: none; }
   .cursor::after { animation: none; }
   .btn, .log { will-change: auto; }
+  .ribbon-track { animation: none !important; }
+  .stamp { animation: none !important; opacity: .92 !important; }
 }
 
 /* ---------------------------------------------------------------- Night-to-dawn details */
@@ -853,19 +915,75 @@ textarea { min-height: 8.5rem; resize: vertical; }
 
 /* Dawn over the town at the foot of the page (effects.js builds it). */
 .foot { overflow: hidden; }
-.skyline { display: block; width: 100%; height: clamp(118px, 11vw, 160px); margin-top: clamp(2.5rem, 6vw, 4rem); margin-bottom: -3rem; --dawn-p: 0; }
-.skyline .bldgs { fill: #03060d; }
-.skyline .win { fill: #FFD08A; opacity: clamp(0, calc((var(--dawn-p) - var(--t)) * 14), .9); transition: opacity .3s ease; }
+.skyline { display: block; width: 100%; height: clamp(130px, 13.9vw, 320px); margin-top: clamp(2.5rem, 6vw, 4rem); margin-bottom: -3rem; --dawn-p: 0; }
+.skyline .back { fill: #0B1527; }
+.skyline .back-panes { fill: #0F1A30; }
+.skyline .front { fill: #03060D; }
+.skyline .panes { fill: #0A1222; }
+/* Windows (whole floors, and a few on their own) light as the footer comes into view. */
+.skyline .lit path { fill: #FFD08A; opacity: clamp(0, calc((var(--dawn-p) - var(--t)) * 14), .9); transition: opacity .3s ease; }
+.skyline .back-lit path { fill: #F2B055; opacity: clamp(0, calc((var(--dawn-p) - var(--t)) * 14), .38); transition: opacity .3s ease; }
 .skyline .beacons { fill: #FF5A4E; opacity: .85; }
 .skyline.is-live .beacons circle { animation: beacon 2.6s steps(1) infinite; }
+.skyline.is-live .beacons circle:nth-child(3n) { animation-delay: .9s; }
+.skyline.is-live .beacons circle:nth-child(3n+1) { animation-delay: 1.7s; }
 .skyline .track { fill: rgba(242, 176, 85, .14); }
 .skyline .train { fill: #FFE3B5; opacity: 0; filter: drop-shadow(0 0 4px rgba(255, 214, 150, .9)); }
 .skyline.is-live .train { animation: train 13s linear infinite 1s; }
+/* The tower's word: dots sweep on, then a glint runs through them. */
+.skyline .word rect { fill: #FFD08A; opacity: clamp(0, calc((var(--dawn-p) - var(--t)) * 12), 1); transition: opacity .35s ease; }
+.skyline.is-live .word rect { animation: glint 5.5s ease-in-out infinite; animation-delay: calc(var(--c) * 55ms); }
+@keyframes glint { 0%, 72%, 100% { fill: #FFD08A; } 82% { fill: #FFF7EA; } }
 @keyframes beacon { 50% { opacity: .15; } }
 @keyframes train { 0% { transform: translateX(0); opacity: 0; } 4%, 92% { opacity: 1; } 100% { transform: translateX(1560px); opacity: 0; } }
 
 @media (prefers-reduced-motion: reduce) {
   .comet::before, .skyline .train { display: none; }
-  .skyline .beacons circle { animation: none; }
+  .skyline .beacons circle, .skyline .word rect { animation: none; }
   .nights-grid i, .lede .task { transition: none; }
+}
+
+/* ---------------------------------------------------------------- Ribbons and stamps */
+
+/* Two slogan ribbons crossing before the form: amber one way, night-blue the other. */
+.ribbons { position: relative; height: clamp(8rem, 14vw, 13rem); margin-block: clamp(-3.5rem, -4vw, -2rem); overflow: hidden; overflow: clip; pointer-events: none; }
+.ribbon { position: absolute; left: -6%; width: 112%; top: 50%; display: flex; overflow: hidden; white-space: nowrap; }
+.ribbon-front {
+  z-index: 1; padding: .72rem 0; transform: translateY(-50%) rotate(-3.2deg);
+  background: linear-gradient(90deg, var(--amber) 0%, var(--amber-hot) 50%, var(--amber) 100%); color: #0B1222;
+  box-shadow: 0 18px 44px -18px rgba(242, 176, 85, .6), 0 0 0 1px rgba(255, 236, 200, .4) inset;
+  font-weight: 700; font-size: clamp(1.02rem, 1.7vw, 1.3rem); letter-spacing: -.01em; font-variation-settings: "opsz" 72;
+}
+.ribbon-back {
+  padding: .55rem 0; transform: translateY(-50%) rotate(3deg);
+  background: #0D1730; border-block: 1px solid var(--line-2); color: var(--amber-hot);
+  font-family: var(--mono); font-size: .76rem; letter-spacing: .16em; text-transform: uppercase;
+}
+.ribbon-track { flex: none; display: flex; animation: marquee 42s linear infinite; }
+.ribbon-back .ribbon-track { animation-duration: 60s; animation-direction: reverse; }
+.ribbon-track span { display: inline-flex; align-items: center; }
+.ribbon-track span::after { content: ""; width: .38em; height: .38em; margin: 0 1.15em; border-radius: 50%; background: currentColor; opacity: .55; }
+
+/* Rubber stamps on the promises that matter: they thump down as their step or card arrives. */
+.stamp {
+  display: inline-block; margin-top: 1rem; padding: .34rem .75rem .3rem;
+  font-family: var(--mono); font-size: .74rem; font-weight: 500; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--amber-hot); border: 2px solid currentColor; border-radius: 6px; rotate: -6deg; opacity: .92;
+  box-shadow: inset 0 0 0 1px rgba(255, 208, 138, .22), 0 0 18px -6px rgba(242, 176, 85, .5);
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='60'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 -2.2 1.75'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='60'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 -2.2 1.75'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.fx [data-reveal] .stamp { opacity: 0; }
+.fx [data-reveal].is-in .stamp { animation: stampDown .5s .55s cubic-bezier(.2, 1.5, .45, 1) both; }
+@keyframes stampDown {
+  from { opacity: 0; transform: scale(1.9); rotate: -15deg; }
+  55% { opacity: 1; }
+  to { opacity: .92; transform: none; rotate: -6deg; }
+}
+
+/* Shown only when the site is served from a domain that isn't Third Shift's (see app.js). */
+.origin-note {
+  position: fixed; left: 50%; top: .75rem; z-index: 90; translate: -50% 0;
+  padding: .5rem 1rem; border-radius: 999px; font-size: .85rem; font-weight: 600; text-decoration: none;
+  color: var(--on-amber); background: var(--amber); box-shadow: 0 10px 30px -10px rgba(0, 0, 0, .8);
 }

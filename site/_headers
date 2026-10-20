@@ -1,5 +1,6 @@
-# Cloudflare Pages response headers (this file is read at deploy and never served).
-# tools/serve.py applies the same rules locally, so a CSP mistake shows up in preview first.
+# Response headers for hosts that read a _headers file (Cloudflare Pages, Netlify). The live site is on
+# GitHub Pages, which ignores this file, so every page also carries its CSP in a meta tag; keep the two
+# in step. tools/serve.py applies these rules locally, so a CSP mistake shows up in preview first.
 #
 # The script-src hash is the one inline script in index.html (it adds the "js" class before
 # first paint). Change that line and the hash must be recomputed; tools/csp_hash.py prints it.

@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Third Shift (thirdshift.ca). All rights reserved. See LICENSE.
 // Site logic that runs without a browser: the calculator math and the shift-log clock.
 
 import { test } from "node:test";
@@ -5,6 +6,9 @@ import fs from "node:fs";
 import assert from "node:assert/strict";
 import { estimate, summarize, formatMoney, formatWeeks } from "../site/assets/estimate.js";
 import { _internal } from "../site/assets/log.js";
+
+const html = fs.readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
+const decode = (s) => s.replace(/&amp;/g, "&").replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
 
 test("calculator defaults match the numbers printed in the HTML", () => {
   const r = estimate({ hoursPerWeek: 12, hourlyCost: 40, fit: "mostly" });
@@ -42,4 +46,35 @@ test("shift clock runs 11 PM to 7 AM", () => {
   assert.equal(minutesFromText("11:02 PM"), 2);
   assert.equal(clockText(minutesFromText("3:30 AM")), "3:30 AM");
   assert.equal(minutesFromText("garbage"), 0);
+});
+
+test("search markup: title and description fit, structured data parses", () => {
+  const title = decode(html.match(/<title>([^<]*)<\/title>/)[1]);
+  const desc = html.match(/<meta name="description" content="([^"]*)"/)[1];
+  assert.ok(title.length <= 65, `title is ${title.length} characters`);
+  assert.ok(desc.length >= 110 && desc.length <= 160, `description is ${desc.length} characters`);
+  assert.match(html, /<link rel="canonical" href="https:\/\/thirdshift\.ca\/">/);
+  const ld = JSON.parse(html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
+  const types = ld["@graph"].map((n) => n["@type"]);
+  assert.deepEqual(types.sort(), ["FAQPage", "ProfessionalService", "WebSite"]);
+});
+
+test("the FAQ in the structured data says exactly what the page says", () => {
+  const ld = JSON.parse(html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
+  const faq = ld["@graph"].find((n) => n["@type"] === "FAQPage").mainEntity;
+  const onPage = [...html.matchAll(/<details>\s*<summary>([\s\S]*?)<\/summary>\s*<p>([\s\S]*?)<\/p>/g)].map((m) => [decode(m[1]), decode(m[2])]);
+  const norm = (s) => s.replace(/[\u2018\u2019]/g, "'");
+  assert.equal(faq.length, onPage.length);
+  faq.forEach((q, i) => {
+    assert.equal(norm(q.name), norm(onPage[i][0]));
+    assert.equal(norm(q.acceptedAnswer.text), norm(onPage[i][1]), q.name);
+  });
+});
+
+test("every page in the sitemap exists", () => {
+  const xml = fs.readFileSync(new URL("../site/sitemap.xml", import.meta.url), "utf8");
+  for (const [, loc] of xml.matchAll(/<loc>https:\/\/thirdshift\.ca\/([^<]*)<\/loc>/g)) {
+    const file = loc === "" ? "index.html" : loc + ".html";
+    assert.ok(fs.existsSync(new URL("../site/" + file, import.meta.url)), file);
+  }
 });

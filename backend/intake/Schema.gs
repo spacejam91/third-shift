@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Third Shift (thirdshift.ca). All rights reserved. See LICENSE.
 /**
  * Third Shift CRM — sheet schema and row helpers.
  *
@@ -8,7 +9,7 @@
  */
 
 const CRM_SHEETS = Object.freeze({
-  Leads: ["received", "name", "email", "company", "phone", "message", "source", "submitted", "status", "deal_id"],
+  Leads: ["received", "name", "email", "company", "phone", "message", "source", "submitted", "status", "deal_id", "utm_source", "utm_medium", "utm_campaign", "referrer"],
   Companies: ["id", "name", "website", "industry", "size", "city", "notes", "created", "updated"],
   Contacts: ["id", "name", "email", "phone", "title", "company_id", "notes", "created", "updated"],
   Deals: ["id", "title", "company_id", "contact_id", "stage", "value", "source", "next_step", "next_date", "created", "updated", "closed", "lost_reason"],

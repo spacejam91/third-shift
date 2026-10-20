@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Third Shift (thirdshift.ca). All rights reserved. See LICENSE.
 // Site settings. These values are public by design: they ship to every visitor.
 
 // The lead-intake Apps Script web app URL (Deploy → Manage deployments → Web app URL).

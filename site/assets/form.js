@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Third Shift (thirdshift.ca). All rights reserved. See LICENSE.
 // The lead form: validation, the optional Turnstile bot check, and the POST to Apps Script.
 
 import { LEAD_ENDPOINT, TURNSTILE_SITE_KEY } from "./config.js";
@@ -6,11 +7,38 @@ const REQUIRED = ["name", "email", "company", "message"];
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const TIMEOUT_MS = 15000;
 const TURNSTILE_SRC = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+const ARRIVAL_KEY = "ts-arrival";
+const TAGS = ["utm_source", "utm_medium", "utm_campaign"];
+
+// Where this visit came from: the campaign tags on the link the visitor arrived by and the site that
+// sent them, kept for the tab's session so they survive a look at the privacy page. They go out with
+// the form so the CRM shows which posts and emails bring leads (docs/SYSTEM.md). The tags are then
+// taken off the address bar so a shared link doesn't carry them.
+function arrival() {
+  try {
+    const kept = JSON.parse(sessionStorage.getItem(ARRIVAL_KEY) || "null");
+    if (kept) return kept;
+  } catch { /* storage blocked */ }
+  const url = new URL(location.href);
+  const found = { referrer: "" };
+  for (const k of TAGS) found[k] = (url.searchParams.get(k) || "").slice(0, 120);
+  try {
+    const from = document.referrer ? new URL(document.referrer).host : "";
+    if (from && from !== location.host) found.referrer = from.slice(0, 120);
+  } catch { /* no usable referrer */ }
+  try { sessionStorage.setItem(ARRIVAL_KEY, JSON.stringify(found)); } catch { /* storage blocked */ }
+  if (TAGS.some((k) => url.searchParams.has(k))) {
+    TAGS.forEach((k) => url.searchParams.delete(k));
+    try { history.replaceState(history.state, "", url.pathname + url.search + url.hash); } catch { /* sandboxed */ }
+  }
+  return found;
+}
 
 // onLaunch(x, y) fires when a message actually goes out, from the Send button's centre, so the
 // night canvas can send it across the page as a job.
 export function initForm(form, { onLaunch = () => {} } = {}) {
   if (!form) return null;
+  const came = arrival();
   const status = document.getElementById("status");
   const send = document.getElementById("send");
   const slot = document.getElementById("ts-slot");
@@ -84,6 +112,7 @@ export function initForm(form, { onLaunch = () => {} } = {}) {
     data.source = location.hostname || "thirdshift.ca";
     data.submitted_at = new Date().toISOString();
     data.elapsed_ms = Math.round(performance.now() - openedAt);
+    for (const [k, v] of Object.entries(came)) if (v) data[k] = v;
     if (token) data.cf_token = token;
 
     const ctrl = new AbortController();

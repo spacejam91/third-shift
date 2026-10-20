@@ -1,12 +1,17 @@
 <!DOCTYPE html>
+<!-- Copyright (c) 2026 Third Shift (thirdshift.ca). All rights reserved. See LICENSE. -->
 <html lang="en-CA">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-WZRJfWvsnNCPcxzZwvyhovnZGqhZaC+8gPGPRbx6wTk=' https://challenges.cloudflare.com; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; manifest-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; frame-src https://challenges.cloudflare.com; form-action 'self'; base-uri 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="author" content="Third Shift">
+<meta name="copyright" content="© 2026 Third Shift, thirdshift.ca. All rights reserved.">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Third Shift — AI automation for small businesses in Kitchener-Waterloo</title>
-<meta name="description" content="Third Shift builds AI automation for small businesses in Kitchener-Waterloo: invoices, lead intake, follow-ups and reporting, running overnight so your team starts the day with it done.">
+<title>Small Business AI Automation in Kitchener-Waterloo | Third Shift</title>
+<meta name="description" content="AI automation for Kitchener-Waterloo small businesses: invoices, inquiries, quote follow-ups and reports, done overnight. Fixed price. People approve the money.">
+<meta name="geo.region" content="CA-ON">
+<meta name="geo.placename" content="Kitchener-Waterloo">
 <link rel="canonical" href="https://thirdshift.ca/">
 <link rel="icon" href="favicon.ico" sizes="32x32">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -38,9 +43,25 @@
       "image": "https://thirdshift.ca/assets/og-image.png",
       "email": "thirdshift.ca@gmail.com",
       "description": "AI automation for small businesses in Kitchener-Waterloo: supplier invoices and payables, lead intake and follow-up, reporting, and the routines one person carries in their head.",
+      "slogan": "The work that gets done while you sleep.",
       "address": { "@type": "PostalAddress", "addressLocality": "Kitchener", "addressRegion": "ON", "addressCountry": "CA" },
-      "areaServed": { "@type": "AdministrativeArea", "name": "Region of Waterloo, Ontario" },
-      "knowsAbout": ["Accounts payable automation", "Invoice processing", "Lead intake automation", "Business reporting", "AI automation"],
+      "areaServed": [
+        { "@type": "City", "name": "Kitchener" },
+        { "@type": "City", "name": "Waterloo" },
+        { "@type": "City", "name": "Cambridge" },
+        { "@type": "AdministrativeArea", "name": "Region of Waterloo, Ontario" }
+      ],
+      "knowsAbout": ["Accounts payable automation", "Invoice processing", "Lead intake automation", "Business reporting", "AI automation", "Workflow automation"],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Automations",
+        "itemListElement": [
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Supplier invoice and payables automation", "description": "Invoices picked up from email and vendor portals, matched to purchase orders, posted to the accounting system and queued for payment. Anything that doesn't match waits for a person." } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Lead intake and follow-up automation", "description": "Website, email and form inquiries logged in the CRM with a reply sent, and open quotes chased on a schedule." } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Reporting automation", "description": "Weekly and monthly reports built overnight from the systems a business already uses, ready before the team starts." } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Routine process automation", "description": "The recurring jobs one person carries in their head, written down and run on a schedule with a log of every run." } }
+        ]
+      },
       "sameAs": [
         "https://www.instagram.com/thirdshift.ca",
         "https://x.com/thirdshiftca",
@@ -50,13 +71,21 @@
     {
       "@type": "FAQPage",
       "mainEntity": [
-        { "@type": "Question", "name": "What does a build cost?", "acceptedAnswer": { "@type": "Answer", "text": "Every build has a fixed price, written on a one-page plan before any work starts. You know the number before you commit." } },
+        { "@type": "Question", "name": "What does a build cost?", "acceptedAnswer": { "@type": "Answer", "text": "Every build has a fixed price, written on the one-page plan before any work starts. You know the number before you commit." } },
         { "@type": "Question", "name": "Do we need new software?", "acceptedAnswer": { "@type": "Answer", "text": "Usually not. We connect the email, spreadsheets and accounting system you already use. If a new tool would genuinely help, we say so and why." } },
-        { "@type": "Question", "name": "Will AI make mistakes with our numbers?", "acceptedAnswer": { "@type": "Answer", "text": "The AI reads and sorts; rules and checks do the math. Anything outside the rules, like an invoice that doesn't match its purchase order, is held for a person." } },
+        { "@type": "Question", "name": "Will AI make mistakes with our numbers?", "acceptedAnswer": { "@type": "Answer", "text": "The AI reads and sorts; rules and checks do the math. Anything outside the rules, like an invoice that doesn't match its purchase order, is held for a person. You see every exception." } },
         { "@type": "Question", "name": "What happens when something breaks?", "acceptedAnswer": { "@type": "Answer", "text": "Every automation is monitored and logs each run. When something fails or looks wrong, it stops and tells a person instead of guessing." } },
         { "@type": "Question", "name": "How long does a first build take?", "acceptedAnswer": { "@type": "Answer", "text": "First builds typically ship within a few weeks. We run it alongside your team until it's trusted, then hand it over." } },
-        { "@type": "Question", "name": "Do you only work in Kitchener-Waterloo?", "acceptedAnswer": { "@type": "Answer", "text": "We're based in Kitchener-Waterloo and meet clients in person across Waterloo Region. If you're farther out, ask." } }
+        { "@type": "Question", "name": "Do you only work in Kitchener-Waterloo?", "acceptedAnswer": { "@type": "Answer", "text": "We're based in Kitchener-Waterloo and meet clients in person across Waterloo Region: Kitchener, Waterloo and Cambridge. If you're farther out, ask." } }
       ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://thirdshift.ca/#website",
+      "name": "Third Shift",
+      "url": "https://thirdshift.ca/",
+      "inLanguage": "en-CA",
+      "publisher": { "@id": "https://thirdshift.ca/#business" }
     }
   ]
 }
@@ -126,6 +155,12 @@
           <strong>Tonight’s shift</strong>
           <span><span id="clock">—</span> Kitchener</span>
         </header>
+        <ul class="log-boot" aria-label="Connected for tonight">
+          <li>AP inbox <b>read-only</b></li>
+          <li>Accounting <b>connected</b></li>
+          <li>CRM <b>connected</b></li>
+          <li class="hold">Payments <b>a person approves</b></li>
+        </ul>
         <ol id="shiftlog" class="log-rows">
           <li><time>11:02 PM</time><span>Picked up 38 supplier invoices from the AP inbox</span></li>
           <li><time>11:09 PM</time><span>Matched 36 to purchase orders and posted them</span></li>
@@ -134,7 +169,8 @@
           <li><time>1:15 AM</time><span>Logged 9 website inquiries in the CRM, replies sent</span></li>
         </ol>
         <footer class="log-foot">
-          <span class="cursor">Shift ends 7:00 AM</span>
+          <span class="cursor" id="log-ends">Shift ends 7:00 AM</span>
+          <button type="button" class="ff" id="ff" hidden>Fast-forward to 7 AM</button>
           <span><span id="log-done">5</span> done · <span id="log-held">2</span> need a human</span>
         </footer>
       </aside>
@@ -304,11 +340,13 @@
           <span class="step-n" aria-hidden="true">1</span>
           <h3>A 20-minute call</h3>
           <p>You walk through what eats up your team’s week. We tell you plainly what’s worth automating and what isn’t.</p>
+          <span class="stamp" aria-hidden="true">Free call</span>
         </li>
         <li data-reveal>
           <span class="step-n" aria-hidden="true">2</span>
           <h3>A one-page plan</h3>
           <p>The first automation, what it connects to, a fixed price and a delivery date. You decide from there.</p>
+          <span class="stamp" aria-hidden="true">Fixed price</span>
         </li>
         <li data-reveal>
           <span class="step-n" aria-hidden="true">3</span>
@@ -330,6 +368,7 @@
         <li data-reveal>
           <h3>People approve the money</h3>
           <p>Nothing pays, posts or sends money without a person signing off, unless you decide otherwise. New or changed bank details are always held for a call-back.</p>
+          <span class="stamp" aria-hidden="true">Human sign-off</span>
         </li>
         <li data-reveal>
           <h3>Your data stays in your systems</h3>
@@ -392,11 +431,23 @@
         </details>
         <details>
           <summary>Do you only work in Kitchener-Waterloo?</summary>
-          <p>We’re based in Kitchener-Waterloo and meet clients in person across Waterloo Region. If you’re farther out, ask.</p>
+          <p>We’re based in Kitchener-Waterloo and meet clients in person across Waterloo Region: Kitchener, Waterloo and Cambridge. If you’re farther out, ask.</p>
         </details>
       </div>
     </div>
   </section>
+
+  <!-- Two slogan ribbons crossing, one each way. Decorative: everything they say is on the page already. -->
+  <div class="ribbons" aria-hidden="true">
+    <div class="ribbon ribbon-back">
+      <div class="ribbon-track"><span>While you sleep</span><span>Fixed price</span><span>Every run logged</span><span>People approve the money</span><span>Works with what you already run</span><span>Kitchener-Waterloo</span></div>
+      <div class="ribbon-track"><span>While you sleep</span><span>Fixed price</span><span>Every run logged</span><span>People approve the money</span><span>Works with what you already run</span><span>Kitchener-Waterloo</span></div>
+    </div>
+    <div class="ribbon ribbon-front">
+      <div class="ribbon-track"><span>Invoices matched</span><span>Quotes chased</span><span>Inquiries answered</span><span>Bank lines reconciled</span><span>Exceptions held for a person</span><span>Report ready by 7 AM</span></div>
+      <div class="ribbon-track"><span>Invoices matched</span><span>Quotes chased</span><span>Inquiries answered</span><span>Bank lines reconciled</span><span>Exceptions held for a person</span><span>Report ready by 7 AM</span></div>
+    </div>
+  </div>
 
   <section id="contact" class="section" aria-labelledby="contact-title">
     <div class="wrap contact">

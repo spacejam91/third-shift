@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Third Shift (thirdshift.ca). All rights reserved. See LICENSE.
 // Local preview of the CRM screen with fictional demo data.
 //
 //   node tools/crm-preview.mjs [port]      then open http://127.0.0.1:8915

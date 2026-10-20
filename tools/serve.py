@@ -1,3 +1,4 @@
+# Copyright (c) 2026 Third Shift (thirdshift.ca). All rights reserved. See LICENSE.
 """Local preview server for site/ that behaves like Cloudflare Pages.
 
 - applies the response headers from site/_headers (so the Content-Security-Policy is tested locally)

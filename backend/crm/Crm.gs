@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Third Shift (thirdshift.ca). All rights reserved. See LICENSE.
 /**
  * Third Shift CRM — private web app (standalone Google Apps Script project)
  *

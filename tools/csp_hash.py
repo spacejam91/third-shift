@@ -1,3 +1,4 @@
+# Copyright (c) 2026 Third Shift (thirdshift.ca). All rights reserved. See LICENSE.
 """Print the CSP hash of each inline <script> in site/index.html, for the script-src line in site/_headers."""
 
 import base64

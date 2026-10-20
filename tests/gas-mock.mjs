@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Third Shift (thirdshift.ca). All rights reserved. See LICENSE.
 // A small in-memory stand-in for the Apps Script services the backend uses, close enough to the
 // real behaviour that matters: Sheets turns "2026-10-21" into a Date, treats a leading apostrophe as
 // "store as text", and shows #ERROR! for a value that starts like a formula.

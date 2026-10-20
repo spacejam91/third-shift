@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://thirdshift.ca/sitemap.xml
+# Plain-text summary for AI search tools: https://thirdshift.ca/llms.txt

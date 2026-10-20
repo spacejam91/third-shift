@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Third Shift (thirdshift.ca). All rights reserved. See LICENSE.
 // Backend tests: the public intake project and the private CRM project, run against gas-mock.mjs.
 // Run with: npm test
 
@@ -61,6 +62,47 @@ test("a repeat inquiry joins the open deal instead of making a duplicate", () =>
   post(ctx, lead({ email: "sam@acme.example", name: "Sam Lee", company: "ACME distribution " }));
   assert.equal(tab(ss, "Companies").length, 1, "company matched by name, case and spacing ignored");
   assert.equal(tab(ss, "Deals").length, 2);
+});
+
+test("campaign tags and the referring site are kept, and set the deal's source", () => {
+  const cases = [
+    [{ utm_source: "instagram", utm_medium: "social", utm_campaign: "launch-reel" }, "Instagram"],
+    [{ utm_source: "outreach", utm_medium: "email", utm_campaign: "seq-ap-1" }, "Outreach"],
+    [{ utm_source: "Newsletter" }, "Newsletter"],
+    [{ referrer: "l.instagram.com" }, "Instagram"],
+    [{ referrer: "www.google.ca" }, "Google"],
+    [{ referrer: "t.co" }, "X"],
+    [{ referrer: "example.org" }, "Website"],
+    [{}, "Website"],
+  ];
+  for (const [tags, source] of cases) {
+    const { ctx, ss } = loadProject(INTAKE);
+    assert.deepEqual(post(ctx, lead(tags)), { ok: true });
+    const [row] = tab(ss, "Leads");
+    for (const k of ["utm_source", "utm_medium", "utm_campaign", "referrer"]) assert.equal(row[k], tags[k] || "", k);
+    assert.equal(tab(ss, "Deals")[0].source, source, JSON.stringify(tags));
+  }
+});
+
+test("an inquiry from someone the sales bot already emailed joins their deal and keeps it Outreach", () => {
+  const { ctx, ss } = loadProject(INTAKE);
+  const now = new Date();
+  ctx.crmAppend_(ctx.crmSheet_(ss, "Companies"), { id: "CO-1", name: "Acme Distribution", created: now, updated: now });
+  ctx.crmAppend_(ctx.crmSheet_(ss, "Contacts"), { id: "P-1", name: "Jane Doe", email: "Jane@Acme.example", company_id: "CO-1", created: now, updated: now });
+  ctx.crmAppend_(ctx.crmSheet_(ss, "Deals"), {
+    id: "D-1", title: "Acme Distribution", company_id: "CO-1", contact_id: "P-1", stage: "Contacted",
+    source: "Outreach", next_step: "Follow-up email 2", next_date: "2026-11-30", created: now, updated: now,
+  });
+  assert.deepEqual(post(ctx, lead({ utm_source: "outreach", utm_campaign: "seq-ap-1" })), { ok: true });
+  const deals = tab(ss, "Deals");
+  assert.equal(deals.length, 1, "no duplicate deal");
+  assert.equal(deals[0].source, "Outreach");
+  assert.equal(deals[0].next_step, "Reply to the inquiry", "the inquiry becomes the next step");
+  const acts = tab(ss, "Activities");
+  assert.equal(acts.length, 1);
+  assert.equal(acts[0].type, "Inquiry", "the sales bot stops its sequence when it sees this");
+  assert.equal(acts[0].deal_id, "D-1");
+  assert.equal(tab(ss, "Contacts").length, 1);
 });
 
 test("bots get a quiet ok and nothing is stored", () => {
@@ -189,6 +231,16 @@ test("the CRM shares the intake's schema file byte for byte", () => {
   const a = fs.readFileSync(path.join(backendDir, "intake/Schema.gs"), "utf8");
   const b = fs.readFileSync(path.join(backendDir, "crm/Schema.gs"), "utf8");
   assert.equal(a, b);
+});
+
+// The sales bot (third-shift-outreach, next to this repo) writes to the same sheet with its own copy
+// of the schema. Only checked where that repo is checked out, so CI here doesn't depend on it.
+const outreachSchema = path.join(backendDir, "..", "..", "third-shift-outreach", "src", "Schema.js");
+test("the sales bot's copy of the core tabs matches the CRM's", { skip: !fs.existsSync(outreachSchema) && "third-shift-outreach not checked out" }, () => {
+  const block = (src) => (src.replace(/\r\n/g, "\n").match(/const CRM_SHEETS = Object\.freeze\(\{[\s\S]*?\}\);/) || [""])[0];
+  const ours = block(fs.readFileSync(path.join(backendDir, "crm/Schema.gs"), "utf8"));
+  assert.ok(ours, "CRM_SHEETS found in crm/Schema.gs");
+  assert.equal(block(fs.readFileSync(outreachSchema, "utf8")), ours, "update third-shift-outreach/src/Schema.js from backend/crm/Schema.gs");
 });
 
 test("only listed users get in, and setup lists the owner", () => {
