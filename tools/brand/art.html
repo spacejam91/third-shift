@@ -68,6 +68,10 @@ canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 .flat { background: #060A14; }
 .flat .head em { background: none; color: var(--amber); }
 .flat .moon.side { position: absolute; }
+/* mono=1: black on white, to sit next to the black-on-white profile picture. No colour at all. */
+.flat.mono { background: #FFFFFF; color: #0A0A0A; }
+.flat.mono .head em, .flat.mono .kicker { color: #0A0A0A; }
+.flat.mono .url { color: #3A3A3A; }
 
 .og .text { position: absolute; left: 7%; top: 50%; translate: 0 -50%; display: grid; justify-items: start; }
 .og .shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(5, 9, 19, .82) 25%, rgba(5, 9, 19, .35) 58%, transparent 80%); }
@@ -86,24 +90,22 @@ const kind = q.get("kind") || "mark";
 const stage = document.getElementById("stage");
 const W = innerWidth, H = innerHeight;
 
+// The crescent: the circle (13, 13) r 12 with the circle (17.5, 10.5) r 9 cut out of it, drawn as one
+// path between the two points where the circles meet, on a grid 100 times the site's 26-unit one.
+// Chrome breaks curves into straight segments sized to the drawing's own units, so the small grid
+// showed flat facets along the edge once exported at 1080 px; the large one draws a smooth curve.
+const CRESCENT = "M1658.18 154.69A1200 1200 0 1 0 2461.66 1600.95A900 900 0 1 1 1658.18 154.69Z";
+
 function moon(size, { glow = false, color = "#F2B055" } = {}) {
   const ns = "http://www.w3.org/2000/svg";
-  const id = "m" + Math.random().toString(36).slice(2);
   const s = document.createElementNS(ns, "svg");
-  s.setAttribute("viewBox", "0 0 26 26");
+  s.setAttribute("viewBox", "0 0 2600 2600");
   s.setAttribute("class", "moon" + (glow ? " glow" : ""));
   if (size) { s.setAttribute("width", size); s.setAttribute("height", size); s.style.setProperty("--s", size + "px"); }
-  const mask = document.createElementNS(ns, "mask");
-  mask.setAttribute("id", id);
-  const r = document.createElementNS(ns, "rect");
-  r.setAttribute("width", "26"); r.setAttribute("height", "26"); r.setAttribute("fill", "white");
-  const c = document.createElementNS(ns, "circle");
-  c.setAttribute("cx", "17.5"); c.setAttribute("cy", "10.5"); c.setAttribute("r", "9"); c.setAttribute("fill", "black");
-  mask.append(r, c);
-  const body = document.createElementNS(ns, "circle");
-  body.setAttribute("cx", "13"); body.setAttribute("cy", "13"); body.setAttribute("r", "12"); body.setAttribute("fill", color);
-  body.setAttribute("mask", `url(#${id})`);
-  s.append(mask, body);
+  const body = document.createElementNS(ns, "path");
+  body.setAttribute("d", CRESCENT);
+  body.setAttribute("fill", color);
+  s.append(body);
   return s;
 }
 
@@ -238,14 +240,16 @@ function buildWordmark() {
 }
 
 function buildBanner() {
-  const flat = q.get("flat") === "1";
-  stage.className = "stage banner " + (flat ? "flat" : "night");
+  const flat = q.get("flat") === "1", mono = q.get("mono") === "1";
+  stage.className = "stage banner " + (flat ? "flat" : "night") + (mono ? " mono" : "");
   const u = H / 100;                         // 1% of height
   const tall = W / H < 4.2;
   if (flat) {
     // Left of centre and above the middle, clear of where X and Facebook overlap the profile picture.
     const ms = Math.round(H * (tall ? .46 : .6));
-    stage.append(sideMoon(ms, W * (tall ? .14 : .05), (H - ms) / 2 - H * (tall ? .05 : 0)));
+    const m = sideMoon(ms, W * (tall ? .14 : .05), (H - ms) / 2 - H * (tall ? .05 : 0));
+    if (mono) m.querySelector("path").setAttribute("fill", "#0A0A0A");
+    stage.append(m);
   } else {
     stage.append(drawNetwork({
       sp: Math.max(16, H / (tall ? 8.5 : 5.2)), seed: 11,
@@ -278,8 +282,8 @@ function buildBanner() {
 }
 
 function buildSquare() {
-  const flat = q.get("flat") === "1";
-  stage.className = "stage square " + (flat ? "flat" : "night");
+  const flat = q.get("flat") === "1", mono = q.get("mono") === "1";
+  stage.className = "stage square " + (flat ? "flat" : "night") + (mono ? " mono" : "");
   const u = W / 100;
   if (!flat) {
     stage.append(drawNetwork({
@@ -289,7 +293,7 @@ function buildSquare() {
     }));
     stage.append(el("div", "shade"));
   }
-  const m = moon(Math.round(u * 17), { glow: !flat });
+  const m = moon(Math.round(u * 17), { glow: !flat, color: mono ? "#0A0A0A" : "#F2B055" });
   const lock = el("div", "lockup", "Third Shift");
   lock.style.fontSize = (u * 9.5) + "px";
   lock.style.margin = (u * 4) + "px 0 " + (u * 3) + "px";
