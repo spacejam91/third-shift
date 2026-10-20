@@ -5,65 +5,59 @@
 <meta charset="utf-8">
 <title>Third Shift motion</title>
 <!--
-  The animated logos for X, Instagram, TikTok and LinkedIn. tools/render-motion.mjs loads this page,
+  The animated videos for X, Instagram, TikTok and LinkedIn. tools/render-motion.mjs loads this page,
   calls window.frame(t) for every frame (t in seconds) and pipes the screenshots to ffmpeg, so every
   frame is drawn from t alone: no CSS animations, no timers, nothing random.
-    ?scene=reveal   night falls, jobs run across the network to the crescent, the name and line arrive
-    ?scene=shift    an example night shift from 11 PM to 7 AM, ending on the logo at dawn
-  Open it in a browser with &play=1 to watch it in real time while editing.
+    ?scene=reveal   the day's last light turns into the crescent, then the name, the line and thirdshift.ca
+    ?scene=shift    an example night as a checklist, 11 PM to 7 AM, each job ticked off, ending on the logo
+  Flat on purpose, like the profile art and the covers: one solid night colour, the flat amber crescent and
+  white type. No gradients, glows or hairlines, which turn blotchy when a platform recompresses the video.
+  Every move eases in and settles; nothing bounces, blurs, types itself or flashes.
+  In a browser, add &play=1 to watch it in real time, or &t=6.5 to hold one moment while editing.
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=IBM+Plex+Mono:wght@400;500&display=block" rel="stylesheet">
 <style>
 :root {
-  --ink: #ECF1F8; --ink-2: #C3CFE0; --muted: #95A6BF;
-  --amber: #F2B055; --amber-hot: #FFD08A; --dawn: #FF8F4D;
+  --night: #060A14; --card: #0B1220; --rule: #18233A; --ring: #2A3752;
+  --ink: #ECF1F8; --ink-2: #C3CFE0; --muted: #8B9BB4; --amber: #F2B055;
 }
-html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #050913; }
+html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: var(--night); }
 body { font-family: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
-.stage { position: relative; width: 100vw; height: 100vh; overflow: hidden; background: linear-gradient(180deg, #050913 0%, #08101F 55%, #0D1730 100%); }
-.layer { position: absolute; inset: 0; }
-canvas.layer { width: 100%; height: 100%; }
-/* jobs, rings and glows sit above the shade and add light rather than paint over it */
-.fx { mix-blend-mode: screen; }
-.cool { background: radial-gradient(90% 70% at 15% 0%, rgba(70, 100, 170, .22), transparent 60%); }
-.dawn { background: radial-gradient(130% 75% at 50% 118%, rgba(255, 143, 77, .55), rgba(255, 143, 77, .12) 45%, transparent 70%); opacity: 0; }
-.shade { background: radial-gradient(closest-side, rgba(5, 9, 19, .8), rgba(5, 9, 19, .3) 70%, transparent); }
-.fade { background: #050913; }
-
+.stage { position: relative; width: 100vw; height: 100vh; overflow: hidden; background: var(--night); }
 .moon { display: block; overflow: visible; }
-.moon .body { fill: var(--amber); }
 
-/* centred stack used by the reveal */
+/* The closing lockup, the same as the flat Instagram post */
 .stack { position: absolute; left: 0; right: 0; display: grid; justify-items: center; text-align: center; }
-.name { font-weight: 620; letter-spacing: -.012em; line-height: 1; font-variation-settings: "opsz" 72; white-space: nowrap; -webkit-text-stroke: .018em currentColor; paint-order: stroke fill; }
-.name span { display: inline-block; will-change: transform, opacity; }
-.line { margin: 0; font-weight: 600; letter-spacing: -.035em; line-height: 1.08; font-variation-settings: "opsz" 96; text-wrap: balance; }
-.line em { font-style: normal; background: linear-gradient(100deg, var(--amber-hot) 0%, var(--amber) 45%, var(--dawn) 100%); background-size: 220% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; }
-.kicker { font-family: "IBM Plex Mono", monospace; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: var(--amber); white-space: pre; }
-.kicker .cursor { display: inline-block; width: .62em; height: 1.05em; margin-left: .08em; vertical-align: -.18em; background: var(--amber); }
-.url { font-family: "IBM Plex Mono", monospace; color: var(--ink-2); letter-spacing: .06em; }
+/* Bricolage Grotesque's ink traps read as cracks at logo size; a matching stroke under the fill closes them */
+.name { font-weight: 700; letter-spacing: -.02em; line-height: 1; font-variation-settings: "opsz" 72; white-space: nowrap; -webkit-text-stroke: .018em currentColor; paint-order: stroke fill; }
+.line { font-weight: 600; letter-spacing: -.04em; line-height: 1.08; font-variation-settings: "opsz" 96; white-space: nowrap; }
+.line em { font-style: normal; color: var(--amber); }
+.kicker { font-family: "IBM Plex Mono", monospace; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: var(--amber); white-space: nowrap; }
+.url { font-family: "IBM Plex Mono", monospace; color: var(--ink-2); letter-spacing: .04em; white-space: nowrap; }
+/* text that rises into place from behind its own baseline */
+.clip { overflow: clip; overflow-clip-margin: .22em; }
 
-/* the shift log */
+/* The shift checklist */
 .top { position: absolute; display: flex; justify-content: space-between; align-items: center; }
-.lock { display: inline-flex; align-items: center; gap: .32em; font-weight: 620; letter-spacing: -.012em; font-variation-settings: "opsz" 72; -webkit-text-stroke: .018em currentColor; paint-order: stroke fill; }
-.clock { font-family: "IBM Plex Mono", monospace; font-weight: 500; color: var(--amber-hot); letter-spacing: .02em; font-variant-numeric: tabular-nums; }
-.panel { position: absolute; border-radius: 1.1em; border: 1px solid rgba(236, 241, 248, .17); background: linear-gradient(180deg, rgba(14, 23, 44, .93), rgba(7, 12, 25, .96)); box-shadow: 0 1.6em 3.6em -1em rgba(0, 0, 0, .9); font-family: "IBM Plex Mono", monospace; color: #E2E9F3; overflow: hidden; }
-.panel-head { display: flex; justify-content: space-between; align-items: center; padding: 1em 1.2em .9em; border-bottom: 1px solid rgba(236, 241, 248, .1); color: #9DB0CC; }
-.panel-head b { color: var(--ink); font-weight: 500; }
-.panel-head .dot { display: inline-block; width: .55em; height: .55em; border-radius: 50%; margin-right: .55em; background: #6FD39A; box-shadow: 0 0 .6em #6FD39A; vertical-align: .05em; }
-.rows { padding: .5em 1.2em .8em; }
-.row { display: grid; grid-template-columns: 5.4em 1fr; gap: .8em; padding: .55em 0; border-bottom: 1px dashed rgba(236, 241, 248, .07); line-height: 1.35; }
-.row span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.row time { color: #F2B55A; }
-.row.held span { color: #FFC37A; }
-.bar { height: .28em; background: rgba(236, 241, 248, .08); }
-.bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--amber), var(--dawn)); transform-origin: left; }
-.tally { display: flex; gap: 1.6em; padding: .9em 1.2em 1em; color: #9DB0CC; border-top: 1px solid rgba(236, 241, 248, .1); }
+.brand { display: inline-flex; align-items: center; gap: .3em; }
+.label { font-family: "IBM Plex Mono", monospace; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+.card { position: absolute; background: var(--card); border: 2px solid var(--rule); border-radius: .75em; overflow: hidden; }
+.card-head { display: flex; justify-content: space-between; align-items: baseline; padding: 1.05em 1.4em .95em; }
+.card-head b { font-weight: 600; font-size: 1.36em; letter-spacing: -.02em; }
+.clock { font-family: "IBM Plex Mono", monospace; font-weight: 500; font-size: 1.24em; color: var(--amber); font-variant-numeric: tabular-nums; }
+.track { height: .22em; background: var(--rule); }
+.track i { display: block; height: 100%; width: 0; background: var(--amber); }
+.rows { padding: 0 1.4em; }
+.row { display: grid; grid-template-columns: 1.3em 1fr auto; column-gap: .9em; align-items: center; border-top: 2px solid var(--rule); }
+.row:first-child { border-top: 0; }
+.row .task { font-weight: 500; font-size: 1.28em; letter-spacing: -.01em; white-space: nowrap; }
+.row .result { font-family: "IBM Plex Mono", monospace; color: var(--ink-2); white-space: nowrap; }
+.row.held .result { color: var(--amber); }
+.tick { display: block; width: 1.3em; height: 1.3em; overflow: visible; }
+.tally { display: flex; gap: 1.8em; padding: .95em 1.4em 1.05em; border-top: 2px solid var(--rule); font-family: "IBM Plex Mono", monospace; color: var(--muted); }
 .tally b { color: var(--ink); font-weight: 500; font-variant-numeric: tabular-nums; }
-.end { position: absolute; left: 0; right: 0; display: grid; justify-items: center; text-align: center; }
-.sample { font-family: "IBM Plex Mono", monospace; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; }
 </style>
 </head>
 <body>
@@ -72,7 +66,7 @@ canvas.layer { width: 100%; height: 100%; }
 const q = new URLSearchParams(location.search);
 const scene = q.get("scene") || "reveal";
 const W = innerWidth, H = innerHeight;
-const U = Math.min(W, H) / 100;          // 1% of the short side
+const tall = H / W > 1.5;                       // 9:16 stories and reels
 const stage = document.getElementById("stage");
 const NS = "http://www.w3.org/2000/svg";
 
@@ -81,16 +75,10 @@ const NS = "http://www.w3.org/2000/svg";
 const clamp = (v, lo = 0, hi = 1) => Math.max(lo, Math.min(hi, v));
 const lerp = (a, b, t) => a + (b - a) * t;
 const ramp = (t, a, b) => clamp((t - a) / (b - a));                      // 0 before a, 1 after b
-const ease = (t) => { t = clamp(t); return t * t * (3 - 2 * t); };
-const easeOut = (t) => 1 - Math.pow(1 - clamp(t), 3);
-const back = (t) => { t = clamp(t); const c = 1.9; return 1 + (c + 1) * Math.pow(t - 1, 3) + c * Math.pow(t - 1, 2); };
-
-function hash(i, g, k) {
-  let h = (i * 374761393 + g * 668265263 + k * 2147483647) | 0;
-  h = Math.imul(h ^ (h >>> 13), 1274126177);
-  h ^= h >>> 16;
-  return (h >>> 0) / 4294967296;
-}
+// Calm curves only: nothing overshoots or bounces.
+const inOut = (t) => (t < .5 ? 4 * t * t * t : 1 - Math.pow(2 - 2 * t, 3) / 2);
+const out = (t) => 1 - Math.pow(1 - t, 4);
+const px = (v) => v.toFixed(2) + "px";
 
 function el(tag, cls, ...kids) {
   const e = document.createElement(tag);
@@ -99,484 +87,227 @@ function el(tag, cls, ...kids) {
   return e;
 }
 
+function svg(tag, attrs = {}) {
+  const e = document.createElementNS(NS, tag);
+  for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
+  return e;
+}
+
+// The crescent, drawn as in tools/brand/art.html. phase(p): 0 is the full disc (its shadow sits off to
+// the top right), 1 is the crescent.
+let ids = 0;
 function moon(size) {
-  const id = "m" + Math.random().toString(36).slice(2);
-  const s = document.createElementNS(NS, "svg");
-  s.setAttribute("viewBox", "0 0 26 26");
-  s.setAttribute("class", "moon");
-  s.setAttribute("width", size); s.setAttribute("height", size);
-  const mask = document.createElementNS(NS, "mask");
-  mask.setAttribute("id", id);
-  const r = document.createElementNS(NS, "rect");
-  r.setAttribute("x", "-20"); r.setAttribute("y", "-20"); r.setAttribute("width", "66"); r.setAttribute("height", "66"); r.setAttribute("fill", "white");
-  const c = document.createElementNS(NS, "circle");
-  c.setAttribute("cx", "17.5"); c.setAttribute("cy", "10.5"); c.setAttribute("r", "9"); c.setAttribute("fill", "black");
-  mask.append(r, c);
-  const body = document.createElementNS(NS, "circle");
-  body.setAttribute("class", "body");
-  body.setAttribute("cx", "13"); body.setAttribute("cy", "13"); body.setAttribute("r", "12");
-  body.setAttribute("mask", `url(#${id})`);
-  s.append(mask, body);
-  // sun(p): 0 = the crescent, 1 = a full sun (the mask's shadow slides away), as in the site footer
-  s.sun = (p) => {
-    c.setAttribute("transform", `translate(${(p * 15).toFixed(2)} ${(-p * 15).toFixed(2)})`);
-    const col = mix([242, 176, 85], [255, 160, 92], p);
-    body.style.fill = `rgb(${col})`;
-  };
+  const id = "shadow" + ++ids;
+  const s = svg("svg", { viewBox: "0 0 26 26", width: size, height: size, class: "moon" });
+  const shadow = svg("circle", { cx: 17.5, cy: 10.5, r: 9, fill: "black" });
+  const mask = svg("mask", { id });
+  mask.append(svg("rect", { width: 26, height: 26, fill: "white" }), shadow);
+  s.append(mask, svg("circle", { cx: 13, cy: 13, r: 12, fill: "#F2B055", mask: `url(#${id})` }));
+  s.phase = (p) => { const d = ((1 - p) * 15).toFixed(3); shadow.setAttribute("transform", `translate(${d} ${-d})`); };
   return s;
 }
 
-const mix = (a, b, t) => a.map((v, k) => Math.round(lerp(v, b[k], t)));
-
-// glow around an element drawn from its live box (drop-shadow on a scaled SVG goes soft and costly)
-function glowAt(ctx, x, y, r, a, warm = 0) {
-  const col = mix([242, 176, 85], [255, 143, 77], warm).join(",");
-  const g = ctx.createRadialGradient(x, y, 0, x, y, r);
-  g.addColorStop(0, `rgba(${col},${(a * .55).toFixed(3)})`);
-  g.addColorStop(.35, `rgba(${col},${(a * .2).toFixed(3)})`);
-  g.addColorStop(1, `rgba(${col},0)`);
-  ctx.fillStyle = g;
-  ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+// A line of text inside a clip, so it can rise into place from behind its own baseline.
+function clipped(cls, size, ...kids) {
+  const inner = el("div", null, ...kids);
+  const box = el("div", "clip " + cls, inner);
+  box.style.fontSize = px(size);
+  box.inner = inner;
+  return box;
 }
+const rise = (box, p) => { box.inner.style.transform = `translateY(${((1 - out(p)) * 1.45).toFixed(4)}em)`; };
+const fadeUp = (e, p, by = .5) => {
+  const k = out(p);
+  e.style.opacity = k.toFixed(3);
+  e.style.transform = `translateY(${((1 - k) * by).toFixed(4)}em)`;
+};
 
-// ------------------------------------------------------------------ the night network
+// ------------------------------------------------------------------ the closing lockup
 
-// A jittered grid. Hubs (about a third of the points) carry the mesh links; jobs travel hub to hub.
-function network({ sp, seed, strength, appear }) {
-  const cols = Math.ceil(W / sp) + 2, rows = Math.ceil(H / sp) + 2;
-  const nodes = [];
-  const at = new Map();
-  for (let g = -1; g < rows; g++) for (let i = -1; i < cols; i++) {
-    const x = i * sp + (hash(i + seed, g, 1) - .5) * sp * .62;
-    const y = g * sp + (hash(i + seed, g, 2) - .5) * sp * .62;
-    const f = strength(x / W, y / H);
-    const n = { i, g, x, y, f, hub: hash(i + seed, g, 5) < .38, tw: hash(i + seed, g, 3), links: [] };
-    n.t0 = appear(n);
-    nodes.push(n); at.set(i + "," + g, n);
-  }
-  const links = [];
-  for (const n of nodes) {
-    if (!n.hub) continue;
-    [[1, 0], [-1, 1], [0, 1], [1, 1]].forEach(([di, dg], d) => {
-      const m = at.get((n.i + di) + "," + (n.g + dg));
-      if (!m || !m.hub || hash(n.i + seed, n.g, 10 + d) > .8) return;
-      const l = { a: n, b: m, w: .55 + .45 * hash(n.i, n.g, 20 + d) };
-      links.push(l); n.links.push(m); m.links.push(n);
-    });
-  }
-  return { nodes, links, sp };
-}
-
-// lit(n) -> 0..1 extra brightness from passing jobs; warm 0..1 tints toward dawn
-function drawNetwork(ctx, net, t, { lit = () => 0, warm = 0, fade = 1 } = {}) {
-  const lw = Math.max(1, net.sp / 46);
-  ctx.lineWidth = lw;
-  const lineCol = mix([190, 186, 170], [230, 190, 150], warm).join(",");
-  for (const l of net.links) {
-    const pa = easeOut(ramp(t, l.a.t0, l.a.t0 + .45)), pb = easeOut(ramp(t, l.b.t0, l.b.t0 + .45));
-    const p = Math.min(pa, pb);
-    if (p <= 0) continue;
-    const f = Math.min(l.a.f, l.b.f);
-    if (f < .02) continue;
-    const a = .36 * f * l.w * fade;
-    ctx.strokeStyle = `rgba(${lineCol},${a.toFixed(3)})`;
-    // links draw out from whichever end appeared first
-    const [s, e] = l.a.t0 <= l.b.t0 ? [l.a, l.b] : [l.b, l.a];
-    const k = easeOut(ramp(t, e.t0 - .1, e.t0 + .5));
-    ctx.beginPath(); ctx.moveTo(s.x, s.y); ctx.lineTo(lerp(s.x, e.x, k), lerp(s.y, e.y, k)); ctx.stroke();
-  }
-  const dotCol = mix([157, 176, 204], [255, 200, 150], warm).join(",");
-  for (const n of net.nodes) {
-    const p = easeOut(ramp(t, n.t0, n.t0 + .45));
-    if (p <= 0) continue;
-    const twinkle = .85 + .15 * Math.sin(t * (1.3 + n.tw * 1.7) + n.tw * 40);
-    const extra = lit(n);
-    const a = ((.13 + n.tw * .24) * (.45 + n.f) + (n.hub ? .2 * n.f : 0)) * twinkle * p * fade + extra * .8;
-    const r = lw * (n.hub ? 1.5 : 1) * (.8 + .5 * n.f) * (.4 + .6 * p) * (1 + extra * .9);
-    ctx.fillStyle = extra > .05 ? `rgba(255,214,150,${clamp(a).toFixed(3)})` : `rgba(${dotCol},${clamp(a).toFixed(3)})`;
-    ctx.beginPath(); ctx.arc(n.x, n.y, r, 0, Math.PI * 2); ctx.fill();
-  }
-}
-
-// A job: a walk along hub links from `from` toward the target point, stopping `stopR` short of it.
-function route(net, from, tx, ty, stopR, maxSteps = 14) {
-  const path = [from];
-  const seen = new Set([from]);
-  let cur = from;
-  for (let s = 0; s < maxSteps; s++) {
-    const here = Math.hypot(cur.x - tx, cur.y - ty);
-    if (here < stopR + net.sp * .9) break;
-    let best = null, bestD = here;
-    for (const m of cur.links) {
-      if (seen.has(m)) continue;
-      const d = Math.hypot(m.x - tx, m.y - ty);
-      if (d < bestD) { bestD = d; best = m; }
-    }
-    if (!best) break;
-    path.push(best); seen.add(best); cur = best;
-  }
-  // last leg runs straight in to the target's rim
-  const ang = Math.atan2(cur.y - ty, cur.x - tx);
-  path.push({ x: tx + Math.cos(ang) * stopR, y: ty + Math.sin(ang) * stopR, end: true });
-  return path;
-}
-
-function pathLength(path) {
-  let L = 0; const seg = [];
-  for (let k = 1; k < path.length; k++) { const d = Math.hypot(path[k].x - path[k - 1].x, path[k].y - path[k - 1].y); seg.push(d); L += d; }
-  return { L, seg };
-}
-
-function pointAt(path, info, dist) {
-  let d = clamp(dist, 0, info.L);
-  for (let k = 0; k < info.seg.length; k++) {
-    if (d <= info.seg[k] || k === info.seg.length - 1) {
-      const u = info.seg[k] ? d / info.seg[k] : 0;
-      return [lerp(path[k].x, path[k + 1].x, u), lerp(path[k].y, path[k + 1].y, u), k];
-    }
-    d -= info.seg[k];
-  }
-}
-
-// Draw one job: a bright head with a fading tail, `p` 0..1 along the path, `trail` in px.
-function drawJob(ctx, job, p, { width, trail, alpha = 1 }) {
-  const info = job.info;
-  const head = p * info.L;
-  if (head <= 0) return;
-  const steps = 18;
-  ctx.lineCap = "round";
-  for (let s = 0; s < steps; s++) {
-    const d0 = Math.max(0, head - trail * (s + 1) / steps), d1 = Math.max(0, head - trail * s / steps);
-    if (d1 <= 0) break;
-    const [x0, y0] = pointAt(job.path, info, d0), [x1, y1] = pointAt(job.path, info, d1);
-    const k = 1 - s / steps;
-    ctx.strokeStyle = `rgba(255,${Math.round(lerp(176, 220, k))},${Math.round(lerp(85, 160, k))},${(alpha * k * k * .95).toFixed(3)})`;
-    ctx.lineWidth = width * (.35 + .65 * k);
-    ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1, y1); ctx.stroke();
-  }
-  const [hx, hy] = pointAt(job.path, info, head);
-  glowAt(ctx, hx, hy, width * 9, alpha);
-  ctx.fillStyle = `rgba(255,235,200,${alpha.toFixed(3)})`;
-  ctx.beginPath(); ctx.arc(hx, hy, width * 1.15, 0, Math.PI * 2); ctx.fill();
-}
-
-// A ring that opens out from a point: the moment a job lands.
-function drawRing(ctx, x, y, age, { r0, r1, life, width, alpha = 1 }) {
-  if (age < 0 || age > life) return;
-  const k = age / life;
-  ctx.strokeStyle = `rgba(255,208,138,${(alpha * (1 - k) * .8).toFixed(3)})`;
-  ctx.lineWidth = width * (1 - k * .6);
-  ctx.beginPath(); ctx.arc(x, y, lerp(r0, r1, easeOut(k)), 0, Math.PI * 2); ctx.stroke();
+// Laid out like the flat Instagram post (tools/brand/art.html ?kind=square&flat=1), plus thirdshift.ca:
+// at the foot of the frame, or under the kicker on a story, where the bottom is under the app's buttons.
+function lockup(s) {
+  const m = moon(Math.round(s * 17));
+  const name = clipped("name", s * 9.5, "Third Shift");
+  name.style.margin = `${px(s * 4)} 0 ${px(s * 3)}`;
+  const lines = [["The work that gets"], ["done while you ", el("em", null, "sleep.")]].map((kids) => clipped("line", s * 5.2, ...kids));
+  const kick = el("div", "kicker", "AI automation · Ontario, Canada");
+  kick.style.fontSize = px(s * 2.1);
+  kick.style.marginTop = px(s * 5);
+  const url = el("div", "url", "thirdshift.ca");
+  url.style.fontSize = px(s * 2.9);
+  const stack = el("div", "stack", m, name, ...lines, kick);
+  if (tall) { url.style.marginTop = px(s * 3.4); stack.append(url); }
+  else { url.style.cssText += `position:absolute;left:0;right:0;text-align:center;bottom:${px(Math.min(W, H) * .065)}`; }
+  stage.append(stack);
+  if (!tall) stage.append(url);
+  const h = stack.getBoundingClientRect().height;
+  stack.style.top = px((H - h) / 2 - (tall ? H * .035 : 0));
+  return { m, name, lines, kick, url, stack };
 }
 
 // ------------------------------------------------------------------ scene: logo reveal
 
 function buildReveal() {
-  const tall = H / W > 1.4, wide = W / H > 1.4;
-  const cv = el("canvas", "layer"); cv.width = W; cv.height = H;
-  const ctx = cv.getContext("2d");
-  const fxc = el("canvas", "layer fx"); fxc.width = W; fxc.height = H;
-  const fx = fxc.getContext("2d");
-  const dawn = el("div", "layer dawn");
-  const fade = el("div", "layer fade");
-  stage.append(el("div", "layer cool"), cv, el("div", "layer shade"), dawn, fxc);
+  const s = Math.min(W, H) / 100 * (tall ? 1.3 : 1);
+  const L = lockup(s);
+  // the crescent's resting place; it starts larger, in the middle of the frame
+  const r = L.m.getBoundingClientRect();
+  const dy = H / 2 - (r.top + r.height / 2);
+  const START = 1.45;
 
-  const s = U * (tall ? 1.18 : wide ? 1.2 : 1);
-  const m = moon(Math.round(s * 19));
-  const name = el("div", "name");
-  const letters = [..."Third Shift"].map((ch) => { const sp = el("span", null, ch === " " ? " " : ch); name.append(sp); return sp; });
-  name.style.fontSize = (s * 11.2) + "px";
-  name.style.margin = (s * 4.2) + "px 0 " + (s * 3.4) + "px";
-  const line = el("p", "line");
-  const sleep = el("em", null, "sleep.");
-  line.append("The work that gets done while you ", sleep);
-  line.style.fontSize = (s * 5.4) + "px";
-  line.style.maxWidth = (s * 66) + "px";
-  const KICK = "AI automation · Kitchener-Waterloo";
-  const kickText = document.createTextNode("");
-  const cursor = el("span", "cursor");
-  const kick = el("div", "kicker", kickText, cursor);
-  kick.style.fontSize = (s * 2.15) + "px";
-  kick.style.marginTop = (s * 5.2) + "px";
-  const stack = el("div", "stack", m, name, line, kick);
-  stage.append(stack);
-  const url = el("div", "url", "thirdshift.ca");
-  url.style.cssText += `position:absolute;left:0;right:0;text-align:center;bottom:${(tall ? 9 : 6.5) * U}px;font-size:${s * 2.9}px`;
-  stage.append(url, fade);
-
-  // centre the stack, a touch above the middle
-  const sh = stack.getBoundingClientRect().height;
-  stack.style.top = ((H - sh) / 2 - (tall ? H * .03 : U * 1.5)) + "px";
-  const mr = m.getBoundingClientRect();
-  const cx = mr.left + mr.width * .5, cy = mr.top + mr.height * .5, R = mr.width * .5;
-
-  // network blooms out from the moon's position
-  const net = network({
-    sp: Math.max(28, Math.min(W, H) / (tall ? 10 : 12.5)), seed: tall ? 9 : 5,
-    strength: (x, y) => clamp(.25 + .75 * ease((Math.hypot(x * W - W / 2, (y * H - H / 2) * 1.05) / Math.min(W, H) - .2) / .32)),
-    appear: (n) => .15 + Math.hypot(n.x - cx, n.y - cy) / Math.hypot(W, H) * 1.5 + hash(n.i, n.g, 7) * .35,
-  });
-
-  // jobs from hubs out near the edges, staggered so they land between 2.35s and 2.95s
-  const edgeHubs = net.nodes.filter((n) => n.hub && n.f > .55 && Math.hypot(n.x - cx, n.y - cy) > Math.min(W, H) * .36
-    && n.x > net.sp * .3 && n.x < W - net.sp * .3 && n.y > net.sp * .3 && n.y < H - net.sp * .3);
-  const jobs = [];
-  const want = tall ? 7 : 6;
-  for (let k = 0; k < want; k++) {
-    // spread the starts around the circle
-    const ang = -Math.PI / 2 + k * (Math.PI * 2 / want) + .4;
-    let best = null, bestScore = -Infinity;
-    for (const n of edgeHubs) {
-      const a = Math.atan2(n.y - cy, n.x - cx);
-      const da = Math.abs(Math.atan2(Math.sin(a - ang), Math.cos(a - ang)));
-      const score = -da * 3 - Math.abs(Math.hypot(n.x - cx, n.y - cy) - Math.min(W, H) * .44) / Math.min(W, H);
-      if (score > bestScore && !jobs.some((j) => j.path[0] === n)) { bestScore = score; best = n; }
-    }
-    if (!best) continue;
-    const path = route(net, best, cx, cy, R * 1.05);
-    const info = pathLength(path);
-    const land = 2.35 + k * .1;
-    const dur = .95 + info.L / (Math.min(W, H) * .55);
-    jobs.push({ path, info, start: land - dur, land, dur });
-  }
-
-  const POP = 2.5;
   function frame(t) {
-    ctx.clearRect(0, 0, W, H);
-    fx.clearRect(0, 0, W, H);
-    const dawnP = ease(ramp(t, 6.3, 8.4));
-    // nodes a job has just passed glow for a moment
-    const lit = (n) => {
-      let v = 0;
-      for (const j of jobs) {
-        const k = j.path.indexOf(n);
-        if (k < 0) continue;
-        let d = 0; for (let s2 = 0; s2 < k; s2++) d += j.info.seg[s2];
-        const when = j.start + (d / j.info.L) * j.dur;
-        const age = t - when;
-        if (age >= 0 && age < .9) v = Math.max(v, 1 - age / .9);
-      }
-      return v;
-    };
-    drawNetwork(ctx, net, t, { lit, warm: dawnP * .6 });
-    for (const j of jobs) {
-      const p = ramp(t, j.start, j.land);
-      const out = 1 - ramp(t, j.land, j.land + .35);
-      if (p > 0 && out > 0) drawJob(fx, j, easeOut(p * .3 + p * .7 * p), { width: U * .42, trail: Math.min(W, H) * .22, alpha: out });
-      for (let k = 1; k < j.path.length - 1; k++) {
-        let d = 0; for (let s2 = 0; s2 < k; s2++) d += j.info.seg[s2];
-        drawRing(fx, j.path[k].x, j.path[k].y, t - (j.start + (d / j.info.L) * j.dur), { r0: U * .6, r1: U * 3.2, life: .7, width: U * .22, alpha: .6 });
-      }
-    }
-    // the landing: shock rings and a glow that settles
-    drawRing(fx, cx, cy, t - POP, { r0: R * .9, r1: R * 3.6, life: 1.3, width: U * .5 });
-    drawRing(fx, cx, cy, t - POP - .18, { r0: R * .9, r1: R * 2.5, life: 1.1, width: U * .3, alpha: .7 });
-    const glowP = ease(ramp(t, POP - .15, POP + .25));
-    const settle = lerp(1.25, .8, ease(ramp(t, POP + .2, POP + 1.6)));
-    glowAt(fx, cx, cy, R * 3.4 * (1 + dawnP * .35), glowP * settle * .7 * (1 + dawnP * .4), dawnP);
-
-    // moon: pops in with an overshoot
-    const mp = ramp(t, POP - .12, POP + .5);
-    m.style.opacity = clamp(mp * 4).toFixed(3);
-    m.style.transform = `scale(${(mp <= 0 ? 0 : back(mp)).toFixed(4)}) rotate(${((1 - easeOut(mp)) * -28).toFixed(2)}deg)`;
-    m.sun(0);
-
-    // name: letters rise one after another
-    letters.forEach((sp, k) => {
-      const p = easeOut(ramp(t, 3.05 + k * .055, 3.6 + k * .055));
-      sp.style.opacity = p.toFixed(3);
-      sp.style.transform = `translateY(${((1 - p) * .55).toFixed(3)}em)`;
-      sp.style.filter = p < 1 ? `blur(${((1 - p) * .06).toFixed(3)}em)` : "";
-    });
-
-    // line fades up, then the gradient on "sleep." sweeps once
-    const lp = easeOut(ramp(t, 4.05, 4.75));
-    line.style.opacity = lp.toFixed(3);
-    line.style.transform = `translateY(${((1 - lp) * .5).toFixed(3)}em)`;
-    sleep.style.backgroundPosition = `${(100 - ease(ramp(t, 4.4, 6.2)) * 100).toFixed(1)}% 0`;
-
-    // kicker types itself
-    const typed = Math.floor(clamp((t - 5.05) / 1.05) * KICK.length);
-    kickText.data = KICK.slice(0, Math.max(0, typed));
-    kick.style.opacity = t >= 4.95 ? "1" : "0";
-    const typing = t < 6.15;
-    cursor.style.opacity = t < 4.95 ? "0" : typing ? "1" : (Math.floor((t - 6.15) / .45) % 2 ? "0" : "1");
-
-    // dawn comes up underneath and the address arrives
-    dawn.style.opacity = (dawnP * .95).toFixed(3);
-    const up = easeOut(ramp(t, 6.9, 7.6));
-    url.style.opacity = up.toFixed(3);
-    url.style.transform = `translateY(${((1 - up) * 14).toFixed(1)}px)`;
-
-    // fade in from black, and out again for a clean loop on the last frames
-    fade.style.opacity = Math.max(1 - ease(ramp(t, 0, .7)), ease(ramp(t, DURATION - .55, DURATION))).toFixed(3);
+    // The day's last light: a full disc that the night's shadow turns into the crescent.
+    L.m.phase(inOut(ramp(t, .35, 1.95)));
+    // The crescent settles into the lockup as the name comes up underneath it.
+    const mv = inOut(ramp(t, 2.0, 3.1));
+    L.m.style.transform = `translateY(${px(dy * (1 - mv))}) scale(${lerp(START, 1, mv).toFixed(4)})`;
+    rise(L.name, ramp(t, 2.55, 3.5));
+    L.lines.forEach((line, k) => rise(line, ramp(t, 3.25 + k * .14, 4.2 + k * .14)));
+    fadeUp(L.kick, ramp(t, 4.4, 5.1));
+    fadeUp(L.url, ramp(t, 4.8, 5.5));
   }
-  return frame;
+  return { frame, duration: 9 };
 }
 
 // ------------------------------------------------------------------ scene: the overnight shift
 
-// minutes into the shift, clock, text (kept to one line), and "held" for the ones left for a person
+// An example night. Inquiries, quotes, reports and schedules come first and invoices after, so it doesn't
+// read as a bookkeeping service. [minutes after 11 PM, job, result, "held" for the one left for a person]
 const SHIFT_ROWS = [
-  [2, "11:02 PM", "Picked up 23 invoices from the AP inbox"],
-  [41, "11:41 PM", "Matched 36 invoices to purchase orders"],
-  [86, "12:26 AM", "Logged 4 web inquiries, replies sent"],
-  [158, "1:38 AM", "Invoice 48213 $1,240 over the PO: held", "held"],
-  [221, "2:41 AM", "Matched 212 bank lines, 2 left for you"],
-  [298, "3:58 AM", "Chased 6 open quotes, 1 accepted"],
-  [372, "5:12 AM", "Vendor bank details changed: held", "held"],
-  [432, "6:12 AM", "Weekly sales report ready for 7 AM"],
+  [12, "Web inquiries", "9 answered"],
+  [64, "Open quotes", "14 followed up"],
+  [118, "Weekly sales report", "ready"],
+  [171, "Crew schedules", "6 sent"],
+  [227, "Appointment reminders", "22 sent"],
+  [280, "Supplier invoices", "36 matched to POs"],
+  [326, "Invoice over its PO", "held for you", "held"],
+  [435, "Morning summary", "in your inbox"],
 ];
 
+// The status mark: an empty ring, an amber arc that fills it while the job runs, then a check
+// (done) or a pause (held for a person).
+function tick() {
+  const C = 2 * Math.PI * 10.5, CHECK = 14;
+  const s = svg("svg", { viewBox: "0 0 24 24", class: "tick" });
+  const ring = svg("circle", { cx: 12, cy: 12, r: 10.5, fill: "none", stroke: "#2A3752", "stroke-width": 2 });
+  const arc = svg("circle", { cx: 12, cy: 12, r: 10.5, fill: "none", stroke: "#F2B055", "stroke-width": 2, transform: "rotate(-90 12 12)", "stroke-dasharray": C.toFixed(3), "stroke-dashoffset": C.toFixed(3) });
+  const disc = svg("circle", { cx: 12, cy: 12, r: 11.5, fill: "#F2B055", opacity: 0 });
+  const check = svg("path", { d: "M7.2 12.4l3.3 3.3 6.4-6.6", fill: "none", stroke: "#060A14", "stroke-width": 2.5, "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-dasharray": CHECK, "stroke-dashoffset": CHECK });
+  const pause = svg("g", { fill: "#F2B055", opacity: 0 });
+  pause.append(svg("rect", { x: 7.9, y: 7, width: 3, height: 10, rx: .7 }), svg("rect", { x: 13.1, y: 7, width: 3, height: 10, rx: .7 }));
+  s.append(ring, arc, disc, check, pause);
+  s.set = ({ running, done, held }) => {
+    arc.setAttribute("stroke-dashoffset", (C * (1 - running)).toFixed(3));
+    if (held) { pause.setAttribute("opacity", done.toFixed(3)); return; }
+    disc.setAttribute("opacity", clamp(done * 3).toFixed(3));
+    check.setAttribute("stroke-dashoffset", (CHECK * (1 - clamp(done * 1.4 - .3))).toFixed(3));
+  };
+  return s;
+}
+
 function buildShift() {
-  const tall = H / W > 1.6;
-  const cv = el("canvas", "layer"); cv.width = W; cv.height = H;
-  const ctx = cv.getContext("2d");
-  const fxc = el("canvas", "layer fx"); fxc.width = W; fxc.height = H;
-  const fx = fxc.getContext("2d");
-  const dawn = el("div", "layer dawn");
-  const fade = el("div", "layer fade");
-  stage.append(el("div", "layer cool"), cv, dawn);
+  const s = W / 100 * (tall ? 1.2 : 1);
+  const pad = W * .06;
 
-  const s = U;
-  const pad = s * 6;
-  const lockMoon = moon(Math.round(s * 7.2));
-  const lock = el("div", "lock", lockMoon, "Third Shift");
-  lock.style.fontSize = (s * 6.2) + "px";
-  const clock = el("div", "clock", "11:00 PM");
-  clock.style.fontSize = (s * 5) + "px";
-  const top = el("div", "top", lock, clock);
-  top.style.cssText += `left:${pad}px;right:${pad}px;top:${(tall ? 11 : 7) * s}px`;
+  const brandMoon = moon(Math.round(s * 4.6));
+  brandMoon.phase(1);
+  const brandName = el("span", "name", "Third Shift");
+  const brand = el("div", "brand", brandMoon, brandName);
+  brand.style.fontSize = px(s * 4.4);
+  const label = el("div", "label", "Example shift");
+  label.style.fontSize = px(s * 2.1);
+  const top = el("div", "top", brand, label);
+  top.style.left = top.style.right = px(pad);
 
-  const panel = el("div", "panel");
-  panel.style.cssText += `left:${pad}px;right:${pad}px;font-size:${s * 2.7}px`;
-  const status = el("span", null, "running");
-  const head = el("div", "panel-head", el("b", null, el("span", "dot"), "Tonight’s shift"), status);
+  const card = el("div", "card");
+  card.style.cssText += `left:${px(pad)};right:${px(pad)};font-size:${px(s * 2.6)}`;
+  const clock = el("span", "clock", "11:00 PM");
+  const fill = el("i");
   const rowsBox = el("div", "rows");
-  const bar = el("i");
   const doneN = el("b", null, "0"), heldN = el("b", null, "0");
-  const tally = el("div", "tally", el("span", null, doneN, " done"), el("span", null, heldN, " held for you"));
-  panel.append(head, el("div", "bar", bar), rowsBox, tally);
-  const rows = SHIFT_ROWS.map(([, time, text, cls]) => {
-    const r = el("div", "row" + (cls ? " " + cls : ""), el("time", null, time), el("span", null, text));
-    rowsBox.append(r);
-    return r;
+  card.append(
+    el("div", "card-head", el("b", null, "Tonight’s shift"), clock),
+    el("div", "track", fill),
+    rowsBox,
+    el("div", "tally", el("span", null, doneN, " done"), el("span", null, heldN, " held for you")),
+  );
+  const rows = SHIFT_ROWS.map(([, job, result, held]) => {
+    const mark = tick();
+    const task = el("span", "task", job), res = el("span", "result", result);
+    const row = el("div", "row" + (held ? " held" : ""), mark, task, res);
+    row.style.height = (tall ? 3.25 : 3) + "em";
+    rowsBox.append(row);
+    return { mark, task, res, held: !!held };
   });
-  const sample = el("div", "sample", "Example shift");
-  sample.style.cssText += `position:absolute;left:${pad}px;font-size:${s * 2.2}px`;
+  stage.append(top, card);
 
-  // closing card
-  const endMoon = moon(Math.round(s * 15));
-  const endName = el("div", "name", "Third Shift");
-  endName.style.fontSize = (s * 10) + "px";
-  endName.style.margin = (s * 3.5) + "px 0 " + (s * 3) + "px";
-  const endLine = el("p", "line");
-  endLine.append("The work that gets done while you ", el("em", null, "sleep."));
-  endLine.style.fontSize = (s * 5) + "px";
-  endLine.style.maxWidth = (s * 64) + "px";
-  const endUrl = el("div", "url", "thirdshift.ca");
-  endUrl.style.fontSize = (s * 3) + "px";
-  endUrl.style.marginTop = (s * 5) + "px";
-  const end = el("div", "end", endMoon, endName, endLine, endUrl);
+  // centre the bar and the card together, inside the part of a story the app's buttons don't cover
+  const th = top.getBoundingClientRect().height, ch = card.getBoundingClientRect().height;
+  const gap = s * (tall ? 6 : 4.5);
+  const [lo, hi] = tall ? [H * .09, H * .8] : [0, H];
+  const y0 = lo + (hi - lo - (th + gap + ch)) / 2;
+  top.style.top = px(y0);
+  card.style.top = px(y0 + th + gap);
 
-  stage.append(top, panel, sample, fxc, end, fade);
+  const L = lockup(Math.min(W, H) / 100 * (tall ? 1.3 : 1));
 
-  const topBox = top.getBoundingClientRect();
-  const ph = panel.getBoundingClientRect().height;
-  const panelTop = tall ? (H - ph) / 2 - s * 6 : topBox.bottom + s * 5.5;
-  panel.style.top = panelTop + "px";
-  if (tall) top.style.top = (panelTop - topBox.height - s * 6) + "px";
-  sample.style.top = (panelTop + ph + s * 2.4) + "px";
-  const eh = end.getBoundingClientRect().height;
-  end.style.top = ((H - eh) / 2 - s * 2) + "px";
-
-  const net = network({
-    sp: Math.max(28, Math.min(W, H) / 11), seed: 13,
-    strength: () => .8,
-    appear: (n) => .1 + (n.y / H) * .9 + hash(n.i, n.g, 7) * .5,
-  });
-
-  // Shift clock: 8 hours across 9.6 seconds (t = 0.6 .. 10.2), then the closing card.
-  const T0 = .6, T1 = 10.2;
+  // Eight hours from t = 0.7 to t = 9.3, then a beat on the finished list, then the logo.
+  const T0 = .7, T1 = 9.3, OUT = 10.2, END = 10.6;
   const minuteAt = (t) => clamp((t - T0) / (T1 - T0)) * 480;
-  const tAtMinute = (mins) => T0 + (mins / 480) * (T1 - T0);
-  const clockText = (mins) => { const v = (23 * 60 + Math.floor(mins)) % 1440, h24 = Math.floor(v / 60), mm = v % 60; return `${h24 % 12 || 12}:${String(mm).padStart(2, "0")} ${h24 < 12 ? "AM" : "PM"}`; };
+  const tAt = (mins) => T0 + (mins / 480) * (T1 - T0);
+  const clockText = (mins) => {
+    const v = (23 * 60 + Math.floor(mins)) % 1440, h24 = Math.floor(v / 60);
+    return `${h24 % 12 || 12}:${String(v % 60).padStart(2, "0")} ${h24 < 12 ? "AM" : "PM"}`;
+  };
+  const doneAt = SHIFT_ROWS.map(([mins]) => tAt(mins));
 
-  // each row's job runs in across the network below and plugs into the bottom of the panel
-  const pb = panel.getBoundingClientRect();
-  const jobs = SHIFT_ROWS.map(([mins], k) => {
-    const left = k % 2 === 0;
-    const tx = pb.left + pb.width * (left ? .2 + hash(k, 1, 9) * .25 : .55 + hash(k, 1, 9) * .25), ty = pb.bottom;
-    const starts = net.nodes.filter((n) => n.hub && n.y > H * .82 && n.y < H - net.sp * .3 && (left ? n.x < W * .4 : n.x > W * .6) && n.x > net.sp * .3 && n.x < W - net.sp * .3);
-    const from = starts[Math.floor(hash(k, 3, 11) * starts.length)];
-    const path = route(net, from, tx, ty, 0, 10);
-    const info = pathLength(path);
-    const land = tAtMinute(mins) + .02;
-    return { path, info, start: land - .8, land };
-  });
-
-  const CARD = 10.6;
   function frame(t) {
-    ctx.clearRect(0, 0, W, H);
-    fx.clearRect(0, 0, W, H);
     const mins = minuteAt(t);
-    const dawnP = ease(ramp(mins, 300, 480));
-    const card = ease(ramp(t, CARD, CARD + .8));
-    drawNetwork(ctx, net, t, { warm: dawnP * .7, fade: 1 - card * .35 });
-    for (const j of jobs) {
-      const p = ramp(t, j.start, j.land);
-      if (p > 0 && p < 1) drawJob(fx, j, ease(p), { width: U * .36, trail: H * .16, alpha: 1 - card });
-      drawRing(fx, j.path[j.path.length - 1].x, j.path[j.path.length - 1].y, t - j.land, { r0: U * .5, r1: U * 4, life: .6, width: U * .25, alpha: 1 - card });
-    }
-
     clock.textContent = clockText(mins);
+    fill.style.width = (mins / 480 * 100).toFixed(3) + "%";
     let done = 0, held = 0;
     rows.forEach((r, k) => {
-      const p = easeOut(ramp(t, jobs[k].land - .05, jobs[k].land + .4));
-      r.style.opacity = p.toFixed(3);
-      r.style.transform = `translateX(${((1 - p) * -1.2).toFixed(3)}em)`;
-      r.style.background = p > 0 && p < 1 ? `rgba(242,176,85,${((1 - p) * .14).toFixed(3)})` : "";
-      if (t >= jobs[k].land) { if (SHIFT_ROWS[k][3] === "held") held++; else done++; }
+      const at = doneAt[k];
+      const running = out(ramp(t, at - .6, at));
+      r.mark.set({ running, done: ramp(t, at, at + .35), held: r.held });
+      r.task.style.opacity = lerp(.4, 1, ramp(t, at - .6, at - .3)).toFixed(3);
+      fadeUp(r.res, ramp(t, at, at + .45), .35);
+      if (t >= at) r.held ? held++ : done++;
     });
-    doneN.textContent = String(done); heldN.textContent = String(held);
-    bar.style.width = (mins / 480 * 100).toFixed(2) + "%";
-    const finished = mins >= 480;
-    status.textContent = finished ? "done, 7:00 AM" : "running";
-    status.style.color = finished ? "var(--amber-hot)" : "";
+    doneN.textContent = String(done);
+    heldN.textContent = String(held);
 
-    // sky and moon turn with the clock: the crescent in the corner becomes the sun at 7 AM
-    dawn.style.opacity = (dawnP * .9).toFixed(3);
-    lockMoon.sun(ease(ramp(mins, 400, 480)));
-
-    // closing card takes over
-    const out = 1 - card;
-    for (const e of [top, panel, sample]) { e.style.opacity = out.toFixed(3); e.style.transform = `translateY(${(-card * U * 3).toFixed(1)}px) scale(${(1 - card * .04).toFixed(4)})`; }
-    end.style.opacity = card.toFixed(3);
-    end.style.transform = `translateY(${((1 - card) * U * 3).toFixed(1)}px)`;
-    const mp = ramp(t, CARD + .1, CARD + .7);
-    endMoon.style.transform = `scale(${(mp <= 0 ? .001 : back(mp)).toFixed(4)})`;
-    endMoon.sun(1 - ease(ramp(t, CARD + 1.2, CARD + 2.2)));
-    glowAt(fx, W / 2, endMoon.getBoundingClientRect().top + endMoon.getBoundingClientRect().height / 2, U * 30, card * .6, 1 - ease(ramp(t, CARD + 1.2, CARD + 2.2)));
-
-    fade.style.opacity = Math.max(1 - ease(ramp(t, 0, .5)), ease(ramp(t, DURATION - .5, DURATION))).toFixed(3);
+    // the list steps back and the logo comes up in its place
+    const o = inOut(ramp(t, OUT, OUT + .6));
+    for (const e of [top, card]) {
+      e.style.opacity = (1 - o).toFixed(3);
+      e.style.transform = `translateY(${px(-o * s * 2)})`;
+    }
+    fadeUp(L.m, ramp(t, END, END + .8), .25);
+    rise(L.name, ramp(t, END + .15, END + 1.05));
+    L.lines.forEach((line, k) => rise(line, ramp(t, END + .45 + k * .14, END + 1.35 + k * .14)));
+    fadeUp(L.kick, ramp(t, END + 1.2, END + 1.85));
+    fadeUp(L.url, ramp(t, END + 1.45, END + 2.1));
   }
-  return frame;
+  return { frame, duration: 14.5 };
 }
 
 // ------------------------------------------------------------------ wiring
 
-const DURATION = { reveal: 9, shift: 14.5 }[scene];
-let draw = null;
-document.fonts.ready.then(() => {
-  draw = (scene === "shift" ? buildShift : buildReveal)();
-  draw(0);
-  window.DURATION = DURATION;
+// Load every face the scenes use before laying anything out, so no frame is drawn in a fallback font.
+const FACES = ['500 40px "Bricolage Grotesque"', '600 40px "Bricolage Grotesque"', '700 40px "Bricolage Grotesque"', '500 40px "IBM Plex Mono"'];
+Promise.all(FACES.map((f) => document.fonts.load(f))).then(() => document.fonts.ready).then(() => {
+  const { frame, duration } = (scene === "shift" ? buildShift : buildReveal)();
+  frame(0);
+  window.DURATION = duration;
   // The exporter calls this, then takes the picture; taking it paints the frame, so no waiting here.
-  window.frame = (t) => { draw(t); return true; };
+  window.frame = (t) => { frame(t); return true; };
+  if (q.get("t")) frame(+q.get("t"));
   document.body.dataset.ready = "1";
   if (q.get("play")) {
     const t0 = performance.now();
-    const loop = (now) => { draw(((now - t0) / 1000) % DURATION); requestAnimationFrame(loop); };
+    const loop = (now) => { frame(((now - t0) / 1000) % duration); requestAnimationFrame(loop); };
     requestAnimationFrame(loop);
   }
 });

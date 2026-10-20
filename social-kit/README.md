@@ -23,16 +23,30 @@ Type: Bricolage Grotesque (headings, logo), IBM Plex Mono (labels). Both free on
 
 The site's own icons (`site/favicon.ico`, `site/apple-touch-icon.png`, `site/icon-192.png`, `site/icon-512.png`) and the link preview (`site/assets/og-image.png`) come from the same script.
 
-## Animated logos (`motion/`)
+## Animated videos (`motion/`)
 
-Made by `node tools/render-motion.mjs` from `tools/brand/motion.html` (needs ffmpeg: `winget install Gyan.FFmpeg.Essentials`). All are H.264 MP4 at 30 fps with a silent audio track, which every platform accepts.
+Made by `npm run motion` from `tools/brand/motion.html`, in about a minute (the five videos render side by side). Needs Google Chrome and ffmpeg (`winget install Gyan.FFmpeg.Essentials`, once; the script finds winget's copy even before a new terminal picks up the PATH). All are H.264 MP4 at 30 fps with a silent audio track, which every platform accepts.
+
+They are flat, like the profile picture and covers: a solid night background, the amber crescent and white type, with no gradients, glow or fine lines, so they stay crisp after X, Instagram and LinkedIn recompress them. Moves ease in and settle; nothing bounces, flashes or types itself.
 
 | File | Use it for | Length |
 |---|---|---|
-| `motion/logo-reveal-1080x1080.mp4` | Instagram and LinkedIn feed, X. Night falls, jobs run across the network to the moon, then the name, the line and thirdshift.ca. | 9 s |
-| `motion/logo-reveal-story-1080x1920.mp4` | Instagram Reels and Stories, TikTok, YouTube Shorts | 9 s |
+| `motion/logo-reveal-1080x1080.mp4` | Instagram and LinkedIn feed, X. The day's last light turns into the crescent (the shift starts when the day ends), then the name, the line, "AI automation · Ontario, Canada" and thirdshift.ca. | 9 s |
+| `motion/logo-reveal-story-1080x1920.mp4` | Instagram Reels and Stories, TikTok, YouTube Shorts. Everything sits above the bottom fifth, where the apps put their buttons and captions. | 9 s |
 | `motion/logo-reveal-wide-1920x1080.mp4` | X, LinkedIn and YouTube in landscape | 9 s |
-| `motion/overnight-shift-1080x1350.mp4` | Instagram 4:5 feed. An example night in the shift log, 11 PM to 7 AM, ending on the logo at dawn. It says "Example shift" on screen; keep captions to the same framing. | 14.5 s |
+| `motion/overnight-shift-1080x1350.mp4` | Instagram 4:5 feed. An example night as a checklist, 11 PM to 7 AM: web inquiries, open quotes, the weekly sales report, crew schedules and appointment reminders, then supplier invoices, with one invoice held for a person to approve. Each job is ticked off as the clock runs, then the logo. It says "Example shift" on screen; keep captions to the same framing. | 14.5 s |
 | `motion/overnight-shift-story-1080x1920.mp4` | The same night for Reels, Stories and TikTok | 14.5 s |
 
-To preview the animation in a browser while editing, open `tools/brand/motion.html?scene=reveal&play=1` (or `scene=shift`).
+**Covers.** The reveal opens on a plain amber disc, so wherever the platform lets you pick a cover or thumbnail (Instagram, TikTok, LinkedIn, YouTube), pick the last frame: the full logo. The shift video's first frame, the night's to-do list, works as it is.
+
+**Re-rendering**
+
+| To | Run |
+|---|---|
+| Re-render all five | `npm run motion` |
+| Re-render some | `npm run motion -- story` (any part of the file names: `reveal`, `shift`, `1350`, `wide`) |
+| Check a change without encoding | `npm run motion -- shift --stills 0,6.8,14.4 --to tmp-stills` (PNGs at those seconds) |
+| Pull a still from a finished video | `ffmpeg -ss 6.8 -i social-kit/motion/overnight-shift-1080x1350.mp4 -frames:v 1 still.png` |
+| Watch it while editing | Open `tools/brand/motion.html?scene=shift&play=1` in Chrome, or add `&t=6.5` to hold one moment. The layout follows the window size, so set the window (or the DevTools device toolbar) to the video's size. |
+
+The checklist's jobs, results and times are `SHIFT_ROWS` in `motion.html` (times are minutes after 11 PM); the closing logo is `lockup()`, laid out like the flat Instagram post. If ffmpeg lives somewhere unusual, set `FFMPEG` to its path.
