@@ -6,6 +6,44 @@
  * Amber is the only accent. Mono (IBM Plex) is for machine output: the shift log, kickers, numbers.
  */
 
+/* Fonts are served from this site (Latin subset), so no page waits on a third-party font host and
+ * visitors' browsers don't contact one. The headline face is one variable file; pages preload it. */
+@font-face {
+  font-family: "Bricolage Grotesque";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("fonts/bricolage-grotesque-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* Stand-ins sized to take the same width as the web fonts, so text wraps the same before and after
+ * they arrive and nothing below jumps. Measured on the top of the page, where a jump counts: body,
+ * links and buttons at 15-17 px (400, 600) and the headline at 700. Bricolage narrows as it grows
+ * (optical size), so the big 600 headings lower down run a little wider in the stand-in. */
+@font-face { font-family: "Bricolage Fallback"; font-weight: 400; src: local("Arial"), local("ArialMT"), local("Arimo"), local("Liberation Sans"), local("Roboto"); size-adjust: 106.5%; ascent-override: 87.3%; descent-override: 25.4%; line-gap-override: 0%; }
+@font-face { font-family: "Bricolage Fallback"; font-weight: 500; src: local("Arial"), local("ArialMT"), local("Arimo"), local("Liberation Sans"), local("Roboto"); size-adjust: 104%; ascent-override: 89.4%; descent-override: 26%; line-gap-override: 0%; }
+@font-face { font-family: "Bricolage Fallback"; font-weight: 600; src: local("Arial Bold"), local("Arial-BoldMT"), local("Arimo Bold"), local("Liberation Sans Bold"), local("Roboto Bold"); size-adjust: 101.4%; ascent-override: 91.7%; descent-override: 26.6%; line-gap-override: 0%; }
+@font-face { font-family: "Bricolage Fallback"; font-weight: 700; src: local("Arial Bold"), local("Arial-BoldMT"), local("Arimo Bold"), local("Liberation Sans Bold"), local("Roboto Bold"); size-adjust: 90%; ascent-override: 103.3%; descent-override: 30%; line-gap-override: 0%; }
+/* Plex Mono is 0.6 em a character; Consolas is 0.55, so it stands in at 107.5%. Menlo and SF Mono are
+ * already 0.6. */
+@font-face { font-family: "Plex Fallback"; src: local("Consolas"); size-adjust: 107.5%; }
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/ibm-plex-mono-400-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("fonts/ibm-plex-mono-500-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 :root {
   --night-0: #050913;
   --night-1: #08101F;
@@ -27,7 +65,7 @@
   --max: 73.75rem;      /* 1180px at 16px; grows with the root size on big monitors */
   --r: 18px;
   --ease: cubic-bezier(.2, .7, .2, 1);
-  --mono: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+  --mono: "IBM Plex Mono", "Plex Fallback", "SFMono-Regular", Menlo, Consolas, monospace;
   --p: 0;
   color-scheme: dark;
 }
@@ -41,7 +79,7 @@ body {
   margin: 0;
   background: var(--night-0);
   color: var(--ink);
-  font-family: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  font-family: "Bricolage Grotesque", "Bricolage Fallback", "Helvetica Neue", Arial, sans-serif;
   font-size: 1.0625rem;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
@@ -307,6 +345,9 @@ h1 em {
 .ff:hover { background: rgba(242, 176, 85, .16); border-color: var(--amber); box-shadow: 0 0 18px -4px rgba(242, 176, 85, .6); }
 .ff:focus-visible { outline: 2px solid var(--amber-hot); outline-offset: 2px; }
 .ff:disabled { cursor: progress; }
+/* The button needs the script; the .js class (set before first paint) swaps it in for "Shift ends" in
+ * CSS, so the panel already has its final height and doesn't jump when app.js runs. */
+html:not(.js) .ff, .ff[hidden], .js #log-ends { display: none; }
 .ff:disabled::before { animation: blink .5s steps(1) infinite; }
 .log::after {
   content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
@@ -329,7 +370,7 @@ h1 em {
 .ff-note { margin: .1rem 0 0; font-size: .86em; color: #7F91AE; }
 .ff-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem 1.2rem; margin-top: .35rem; }
 .ff-actions button { font: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
-.ff-actions .btn { font-family: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif; }
+.ff-actions .btn { font-family: "Bricolage Grotesque", "Bricolage Fallback", "Helvetica Neue", Arial, sans-serif; }
 
 /* ---------------------------------------------------------------- Tool band */
 

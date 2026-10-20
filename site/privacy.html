@@ -3,7 +3,7 @@
 <html lang="en-CA">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-WZRJfWvsnNCPcxzZwvyhovnZGqhZaC+8gPGPRbx6wTk=' https://challenges.cloudflare.com; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; manifest-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; frame-src https://challenges.cloudflare.com; form-action 'self'; base-uri 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-WZRJfWvsnNCPcxzZwvyhovnZGqhZaC+8gPGPRbx6wTk=' https://challenges.cloudflare.com; style-src 'self'; font-src 'self'; img-src 'self' data:; manifest-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; frame-src https://challenges.cloudflare.com; form-action 'self'; base-uri 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="author" content="Third Shift">
 <meta name="copyright" content="© 2026 Third Shift, thirdshift.ca. All rights reserved.">
@@ -17,9 +17,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="theme-color" content="#060A14">
 <meta name="color-scheme" content="dark">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preload" href="assets/fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/styles.css">
 </head>
 <body>
@@ -65,7 +63,6 @@
     <ul>
       <li><strong>GitHub Pages</strong> hosts the site. Like any web host, it processes technical details of each visit, such as your IP address.</li>
       <li><strong>Cloudflare Turnstile</strong>: if the contact form shows a bot check, Cloudflare reads signals from your browser to tell people from bots.</li>
-      <li><strong>Google Fonts</strong> supplies the typefaces, so your browser fetches them from Google’s servers, which see your IP address.</li>
       <li><strong>Google Apps Script</strong> receives the contact form and writes it to our sheet.</li>
     </ul>
 
