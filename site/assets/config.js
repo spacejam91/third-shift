@@ -3,7 +3,7 @@
 
 // The lead-intake Apps Script web app URL (Deploy → Manage deployments → Web app URL).
 // Empty means the form says "isn't connected yet" and points people to email.
-export const LEAD_ENDPOINT = "";
+export const LEAD_ENDPOINT = "https://script.google.com/macros/s/AKfycbxbJsMzLE3fxHs0H1OdlgWTn-_G6yiOGVDz0befzg1LUtRiauCPNxjXEIwcjC6imISSbw/exec";
 
 // Cloudflare Turnstile site key (Cloudflare → Turnstile → Add site). Empty runs the form without the
 // bot check. Set the matching secret as the TURNSTILE_SECRET script property in Apps Script, or the
