@@ -6,8 +6,9 @@ Until then, every "Book a call" button leads to a form that says it isn't connec
 link (step 3) is the quickest way to make the site take leads. Work down the list in order.
 
 Decided on Oct 20, 2026: business email runs on **Google Workspace** on thirdshift.ca. The CRM sheet,
-both Apps Script projects and the booking calendar belong to the Workspace user (for example
-`you@thirdshift.ca`), not to thirdshift.ca@gmail.com. The sales bot runs as that user too.
+both Apps Script projects and the booking calendar belong to the Workspace user (suggested:
+`office@thirdshift.ca`, named "Third Shift"), not to thirdshift.ca@gmail.com. The sales bot runs as that
+user too.
 
 Also decided that night: the owner stays anonymous in anything public. The site, emails, posts, docs and
 commits in this repo never name the owner or mention a job, employer, career or background, and
@@ -30,14 +31,16 @@ text messages. Save each set of backup codes somewhere offline.
 
 ### 2. Google Workspace on thirdshift.ca
 
-1. Sign up for Google Workspace **Business Starter** with the domain thirdshift.ca. Create your user
-   (for example `you@thirdshift.ca`) and turn on 2-step verification for it straight away.
+1. Sign up for Google Workspace **Business Starter** with the domain thirdshift.ca. Create the user as
+   first name "Third", last name "Shift", with the address `office@thirdshift.ca`, and turn on 2-step
+   verification for it straight away. That name and address are what prospects see as the organizer
+   on calendar invites and on the booking page, so they show the business, not a person.
 2. Workspace asks you to verify the domain with a TXT record. Add it in GoDaddy (My Products >
    thirdshift.ca > DNS > Add record). Leave every existing record alone: the A records, the `www`
    CNAME and the `_github-pages-challenge-spacejam91` TXT keep the site up.
 3. Add the MX record the setup wizard shows (`smtp.google.com`, priority 1). Mail to @thirdshift.ca
    starts arriving in Workspace once it takes effect.
-4. In the Admin console, add `hello@thirdshift.ca` as an alias of your user.
+4. In the Admin console, add `hello@thirdshift.ca` as an alias of that user.
 5. Set up SPF, DKIM and DMARC for thirdshift.ca. The exact records are in
    `third-shift-outreach/README.md`, section 1, which also covers the separate domain cold email will
    go out from. The sales bot can check every record once you've added them.
