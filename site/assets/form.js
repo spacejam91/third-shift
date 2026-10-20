@@ -137,8 +137,10 @@ export function initForm(form, { onLaunch = () => {} } = {}) {
       const at = box.getBoundingClientRect();
       if (at.width) onLaunch(at.left + at.width / 2, at.top + at.height / 2);
     };
+    // A tab in the background skips view transitions without running the swap, which would leave the
+    // button on "Sending" for a visitor who looked away during the few seconds Apps Script takes.
     const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (!calm && document.startViewTransition) document.startViewTransition(swap).finished.finally(after);
+    if (!calm && !document.hidden && document.startViewTransition) document.startViewTransition(swap).finished.finally(after);
     else { swap(); after(); }
   }
 
