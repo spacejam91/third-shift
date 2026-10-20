@@ -7,7 +7,8 @@ import fs from "node:fs";
 import crypto from "node:crypto";
 import assert from "node:assert/strict";
 import { SERVICES } from "../content/services.mjs";
-import { renderService, sitePolicy } from "../tools/build-pages.mjs";
+import { INDUSTRIES } from "../content/industries.mjs";
+import { COLLECTIONS, renderPage, sitePolicy } from "../tools/build-pages.mjs";
 
 const SITE = new URL("../site/", import.meta.url);
 const read = (name) => fs.readFileSync(new URL(name, SITE), "utf8").replace(/\r\n/g, "\n");
@@ -23,11 +24,20 @@ const PAGES = fs.readdirSync(SITE).filter((f) => f.endsWith(".html") && f !== "4
 const ALL = [...PAGES, "404.html"];
 const urlOf = (file) => "https://thirdshift.ca/" + (file === "index.html" ? "" : file.replace(/\.html$/, ""));
 
-test("each service page is exactly what its content builds", () => {
+test("each built page is exactly what its content builds", () => {
   const policy = sitePolicy();
-  for (const svc of SERVICES) {
-    assert.equal(read(svc.slug + ".html"), renderService(svc, SERVICES, policy), `${svc.slug}.html is out of date: run npm run pages`);
+  for (const collection of COLLECTIONS) {
+    for (const page of collection.items) {
+      assert.equal(read(page.slug + ".html"), renderPage(page, collection, policy), `${page.slug}.html is out of date: run npm run pages`);
+    }
   }
+});
+
+test("built pages have unique addresses, and the home page links to every one", () => {
+  const slugs = COLLECTIONS.flatMap((c) => c.items.map((p) => p.slug));
+  assert.equal(new Set(slugs).size, slugs.length, "two pages share a slug");
+  const home = read("index.html");
+  for (const slug of slugs) assert.ok(home.includes(`href="${slug}"`), `the home page doesn't link to ${slug}`);
 });
 
 test("every page in search has a title, description, canonical link and one h1", () => {
@@ -109,7 +119,7 @@ test("each page's FAQ structured data says exactly what the page says", () => {
 });
 
 test("example logs fit the staggered entrance in styles.css (six rows at most)", () => {
-  for (const svc of SERVICES) assert.ok(svc.log.rows.length <= 6, `${svc.slug} has ${svc.log.rows.length} log rows`);
+  for (const page of [...SERVICES, ...INDUSTRIES]) assert.ok(page.log.rows.length <= 6, `${page.slug} has ${page.log.rows.length} log rows`);
 });
 
 test("the home page and each service page agree on the service's address", () => {

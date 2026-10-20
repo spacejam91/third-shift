@@ -8,8 +8,10 @@
 // - No prices and no new timelines. The one timeline is the home page's "within a few weeks".
 // - Plain text everywhere except h1, which may use <em> for the amber word.
 
-const SHIP = "First builds typically ship within a few weeks. We run it alongside your team until it’s trusted, then hand it over.";
-const PRICE = "Every build has a fixed price, written on the one-page plan before any work starts. You know the number before you commit.";
+// Two answers the home page already gives word for word; the industry pages reuse them too.
+export const SHIP = "First builds typically ship within a few weeks. We run it alongside your team until it’s trusted, then hand it over.";
+export const PRICE = "Every build has a fixed price, written on the one-page plan before any work starts. You know the number before you commit.";
+export const MONEY = "No money is paid or sent without a person signing off, unless you decide otherwise.";
 
 export const SERVICES = [
   {
@@ -20,6 +22,7 @@ export const SERVICES = [
     h1: "Supplier invoices, cleared <em>overnight.</em>",
     lede: "Third Shift builds the automation that collects your supplier invoices, matches them to purchase orders and posts them to your accounting system while the office is closed. Anything that doesn’t match waits for a person, and nothing gets paid until someone approves it.",
     more: "Invoices collected, matched to purchase orders and posted overnight.",
+    linkText: "How invoice automation works",
     schema: {
       name: "Supplier invoice and payables automation",
       serviceType: "Accounts payable automation",
@@ -66,9 +69,9 @@ export const SERVICES = [
     person: {
       kicker: "What stays with a person",
       h2: "Built the way a careful AP team would want it",
-      intro: "Third Shift is run by Aaron, who spent years inside accounts payable and finance operations. The checks are the ones a careful AP team makes by hand, written by someone who spent years making them.",
+      intro: "The checks are the ones a careful accounts payable team makes by hand, in the same order, on every invoice, every night.",
       items: [
-        ["Payments", "No money is paid or sent without a person signing off, unless you decide otherwise."],
+        ["Payments", MONEY],
         ["Exceptions", "An invoice that doesn’t match, a supplier it hasn’t seen before, or anything outside the rules waits for a person, with the reason."],
         ["Bank details", "New or changed supplier banking information is always held for a call-back to a number you already have."],
         ["Access", "Read-only access to the inbox wherever possible, a separate login in your accounting system, and access you can revoke at any time."],
@@ -103,6 +106,7 @@ export const SERVICES = [
     h1: "Every inquiry answered. Every quote <em>followed up.</em>",
     lede: "Third Shift builds the automation that logs every website and email inquiry, sends a reply within minutes, and follows up on open quotes on a schedule, so no lead goes quiet because someone forgot.",
     more: "Inquiries logged and answered within minutes, quotes chased on a schedule.",
+    linkText: "How lead follow-up works",
     schema: {
       name: "Lead intake and follow-up automation",
       serviceType: "Lead management automation",
@@ -185,6 +189,7 @@ export const SERVICES = [
     h1: "The Monday numbers, ready <em>before you are.</em>",
     lede: "Third Shift builds the reports you look at every week and every month, pulled overnight from the systems the numbers live in, checked, and in your inbox before the team starts. Nobody spends Monday morning copying figures into a spreadsheet.",
     more: "Weekly and monthly reports built overnight and checked against the source.",
+    linkText: "How automated reporting works",
     schema: {
       name: "Reporting automation",
       serviceType: "Business reporting automation",
@@ -267,6 +272,7 @@ export const SERVICES = [
     h1: "The job only <em>one person</em> knows how to do.",
     lede: "Every business has one: the Friday routine, the spreadsheet with the formulas nobody touches, the checklist that lives in someone’s head. Third Shift writes it down, builds it out, and runs it on a schedule with a log of every run, so it still gets done when that person is away.",
     more: "The routine one person carries in their head, written down and run on a schedule.",
+    linkText: "How process automation works",
     schema: {
       name: "Routine process automation",
       serviceType: "Business process automation",
@@ -315,7 +321,7 @@ export const SERVICES = [
       h2: "Decisions stay with people",
       items: [
         ["Judgment calls", "Anything that needs a decision is prepared and handed to a person, not decided by the automation."],
-        ["Money", "No money is paid or sent without a person signing off, unless you decide otherwise."],
+        ["Money", MONEY],
         ["Its own login", "Each automation has its own access, so you can switch it off without touching anything else."],
         ["Stops when unsure", "When something fails or looks wrong, it stops and tells a person instead of guessing."],
       ],
@@ -349,6 +355,7 @@ export const SERVICES = [
     h1: "Built for the job <em>in front of you.</em>",
     lede: "Invoices, inquiries and reports are where most owners start, not the whole menu. Every build is made for the business in front of us, so if a job repeats and lives in software, it’s a candidate.",
     more: "Reorder alerts, scheduling, timesheets, onboarding and small internal tools.",
+    linkText: "More on what else we build",
     schema: {
       name: "Custom automation and internal tools",
       serviceType: "Custom software automation",
@@ -396,7 +403,7 @@ export const SERVICES = [
       kicker: "How we build",
       h2: "The same rules on every build",
       items: [
-        ["People approve the money", "No money is paid or sent without a person signing off, unless you decide otherwise."],
+        ["People approve the money", MONEY],
         ["Your data stays in your systems", "We build inside the accounts you already own. Where an AI model reads a document, we use business-grade services that don’t train on your data."],
         ["The least access that does the job", "Read-only wherever possible, a separate login for each automation, and access you can revoke at any time."],
         ["Every run is logged", "A plain-English record of what ran, what it touched and what it held back."],

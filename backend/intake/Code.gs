@@ -20,7 +20,7 @@
 
 const NOTIFY_TO = "thirdshift.ca@gmail.com";   // swap to hello@thirdshift.ca once that mailbox exists
 const FROM_NAME = "Third Shift";
-const REPLY_TO = "thirdshift.ca@gmail.com";   // swap to hello@thirdshift.ca once email forwarding exists
+const REPLY_TO = "thirdshift.ca@gmail.com";   // swap to hello@thirdshift.ca once that mailbox exists
 const DEFAULT_ALLOWED_HOSTS = ["thirdshift.ca", "www.thirdshift.ca"];
 const TURNSTILE_VERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
 
@@ -188,9 +188,9 @@ function autoReply_(lead) {
   const first = (lead.name.split(/\s+/)[0].match(/^[\p{L}'’-]{1,30}$/u) || [])[0] || "there";
   const body =
     "Hi " + first + ",\n\n" +
-    "Got your note. I'll read it properly and reply within one business day with a time for a call, " +
+    "Got your note. We'll read it properly and reply within one business day with a time for a call, " +
     "or a straight answer if it's not a fit.\n\n" +
-    "Aaron\nThird Shift\nthirdshift.ca";
+    "Third Shift\nthirdshift.ca";
   MailApp.sendEmail({ to: lead.email, replyTo: REPLY_TO, subject: "Got it — Third Shift", body: body, name: FROM_NAME });
 }
 

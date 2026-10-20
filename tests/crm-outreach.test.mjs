@@ -6,7 +6,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { loadProject } from "./gas-mock.mjs";
 
-const USER = "aaron@thirdshift.ca";
+const USER = "owner@thirdshift.ca";
 // The sales agent's columns (third-shift-outreach/src/Config.js, OUT_SHEETS).
 const TABS = {
   Outreach: ["id", "status", "company", "website", "domain", "city", "industry", "place_id", "phone", "source",

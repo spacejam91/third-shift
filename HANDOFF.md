@@ -7,7 +7,11 @@ link (step 3) is the quickest way to make the site take leads. Work down the lis
 
 Decided on Oct 20, 2026: business email runs on **Google Workspace** on thirdshift.ca. The CRM sheet,
 both Apps Script projects and the booking calendar belong to the Workspace user (for example
-`aaron@thirdshift.ca`), not to thirdshift.ca@gmail.com. The sales bot runs as that user too.
+`you@thirdshift.ca`), not to thirdshift.ca@gmail.com. The sales bot runs as that user too.
+
+Also decided that night: the owner stays anonymous in anything public. The site, emails, posts, docs and
+commits in this repo never name the owner or mention a job, employer, career or background, and
+Third Shift speaks as "we". Commits here are authored "Third Shift <hello@thirdshift.ca>".
 
 ## Your to-do list
 
@@ -27,7 +31,7 @@ text messages. Save each set of backup codes somewhere offline.
 ### 2. Google Workspace on thirdshift.ca
 
 1. Sign up for Google Workspace **Business Starter** with the domain thirdshift.ca. Create your user
-   (for example `aaron@thirdshift.ca`) and turn on 2-step verification for it straight away.
+   (for example `you@thirdshift.ca`) and turn on 2-step verification for it straight away.
 2. Workspace asks you to verify the domain with a TXT record. Add it in GoDaddy (My Products >
    thirdshift.ca > DNS > Add record). Leave every existing record alone: the A records, the `www`
    CNAME and the `_github-pages-challenge-spacejam91` TXT keep the site up.
@@ -129,20 +133,24 @@ and a LinkedIn company page. Each links back to the site.
 ### 10. Smaller items
 
 - **Social links:** the footer and the structured data point at instagram.com/thirdshift.ca, x.com/thirdshiftca and facebook.com/thirdshift.ca. Add LinkedIn when the page exists (there's a commented-out line in the footer of `site/index.html`).
-- **Legal name:** the footer says "© 2026 Third Shift". Once the name is registered, it becomes "[Legal name] o/a Third Shift" there and in `LICENSE`.
-- **Pricing:** none on the site for now (Aaron, Oct 20). A "from $X" line can go on the home page and the service pages whenever you want one.
+- **Legal name:** the footer and `LICENSE` say "Third Shift", which keeps the owner off the site. Registering the business name or incorporating later doesn't need to change that, but public business registries do list who is behind a registered name.
+- **Pricing:** none on the site for now (decided Oct 20). A "from $X" line can go on the home page and the service pages whenever you want one.
 - **IPv6 (optional):** in GoDaddy DNS, add AAAA records for @ pointing to 2606:50c0:8000::153, 2606:50c0:8001::153, 2606:50c0:8002::153 and 2606:50c0:8003::153.
 - **Keeping the code private:** the repo has to be public for free GitHub Pages. `LICENSE` says all rights reserved, which is what protects it legally. If you want the source hidden as well, a GitHub Pro plan lets Pages run from a private repo. The pages themselves are always visible in a browser.
 
 ## Copy: signed off
 
-Aaron confirmed the site copy on Oct 20, 2026, as written: the "Who's behind it" paragraph (names no
-employer), "First builds typically ship within a few weeks", "We'll reply within one business day" (form,
-auto-reply and success message), "We meet in person" across Waterloo Region, and the "Built to fit" list.
-The service pages added the same day use only those claims. Anything new that promises a time, a price
-or a result needs his OK first. One line changed after sign-off, on his say-so: "Nothing pays, posts or
-sends money without a person signing off" became "No money is paid or sent without a person signing
-off", because the example log shows matched invoices being posted automatically.
+The owner confirmed the site copy on Oct 20, 2026: "First builds typically ship within a few weeks",
+"We'll reply within one business day" (form, auto-reply and success message), "We meet in person" across
+Waterloo Region, and the "Built to fit" list. The service and "who it's for" pages added the same day use
+only those claims. Anything new that promises a time, a price or a result needs the owner's OK first.
+
+Changed after sign-off, on the owner's word the same night:
+- "Nothing pays, posts or sends money without a person signing off" became "No money is paid or sent
+  without a person signing off", because the example log shows matched invoices being posted automatically.
+- The "Who's behind it" paragraph became "Where we work", with no name or background (see the anonymity
+  note at the top).
+- Service area: in person across Waterloo Region, and elsewhere in Ontario by video call.
 
 ## How it fits together
 
@@ -188,7 +196,7 @@ record. None of them touch the records above.
 ## Design and security notes
 
 - The night network, the shift log and the dawn at the bottom carry the page. New sections should stay quiet around them.
-- Motion should mean something (a job getting done), not decorate. On Oct 20, at Aaron's word, these went: the two crossing slogan ribbons above the form (now one still line of the four promises), the rubber stamps ("Free call", "Fixed price", "Human sign-off"), the ring trailing the mouse, buttons pulled toward the mouse, section labels scrambling in, and the "jobs kicked off since you got here" pop-up. The four service-card illustrations now play once as each card arrives, rest on their finished picture, and replay on hover.
+- Motion should mean something (a job getting done), not decorate. On Oct 20, at the owner's word, these went: the two crossing slogan ribbons above the form (now one still line of the four promises), the rubber stamps ("Free call", "Fixed price", "Human sign-off"), the ring trailing the mouse, buttons pulled toward the mouse, section labels scrambling in, and the "jobs kicked off since you got here" pop-up. The four service-card illustrations now play once as each card arrives, rest on their finished picture, and replay on hover.
 - Palette tokens are at the top of `site/assets/styles.css`. On wide monitors everything sized in rem scales up gently, from 16px at 1440 wide to 22px at the cap.
 - The log lines, the fast-forward summary, the service pages' example logs and the videos show example nights. Once there's a real client, swap in real (anonymised) numbers.
 - Every page carries a Content-Security-Policy meta tag; `_headers` has the same rules for hosts that read it, and a test keeps them all in step. Scripts are first-party only, and there are no trackers. The privacy page promises that, so keep it true.

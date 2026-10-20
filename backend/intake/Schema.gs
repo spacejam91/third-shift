@@ -82,7 +82,7 @@ function crmAppend_(sheet, obj) {
   return sheet.getLastRow();
 }
 
-// Writes only the given columns, so formulas Aaron adds elsewhere in the row survive.
+// Writes only the given columns, so formulas added by hand elsewhere in the row survive.
 function crmUpdateRow_(sheet, rowNum, obj) {
   const idx = crmHeaderIndex_(sheet);
   Object.keys(obj).forEach(function (k) {

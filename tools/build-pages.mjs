@@ -1,25 +1,44 @@
 // Copyright (c) 2026 Third Shift (thirdshift.ca). All rights reserved. See LICENSE.
-// Writes the service pages, site/<slug>.html, from content/services.mjs.
+// Writes the service pages and the "who it's for" pages, site/<slug>.html, from content/services.mjs
+// and content/industries.mjs.
 //
 // The pages are plain HTML like the rest of site/ and are committed as built, so GitHub Pages serves
-// them as they are and there is still no build step on deploy. This only saves keeping five copies
-// of the header, footer and search markup in step by hand. Edit content/services.mjs, run
-// `npm run pages`, and commit both. tests/pages.test.mjs fails if a page and its content disagree.
+// them as they are and there is still no build step on deploy. This only saves keeping ten copies
+// of the header, footer and search markup in step by hand. Edit the content, run `npm run pages`,
+// and commit both. tests/pages.test.mjs fails if a page and its content disagree.
 //
 // Usage:  node tools/build-pages.mjs
 
 import fs from "node:fs";
 import { fileURLToPath } from "node:url";
 import { SERVICES } from "../content/services.mjs";
+import { INDUSTRIES } from "../content/industries.mjs";
 
 const SITE = "https://thirdshift.ca/";
 const ROOT = new URL("../site/", import.meta.url);
+
+// Each set of pages hangs off one section of the home page, which is its breadcrumb's middle step.
+export const COLLECTIONS = [
+  {
+    source: "content/services.mjs",
+    items: SERVICES,
+    crumb: { name: "What we automate", href: "./#services" },
+    more: { kicker: "What else we automate", h2: "Other places to start" },
+  },
+  {
+    source: "content/industries.mjs",
+    items: INDUSTRIES,
+    crumb: { name: "Who it’s for", href: "./#fit" },
+    more: { kicker: "Who else it’s for", h2: "Other kinds of business" },
+  },
+];
 
 const AREA = [
   { "@type": "City", name: "Kitchener" },
   { "@type": "City", name: "Waterloo" },
   { "@type": "City", name: "Cambridge" },
   { "@type": "AdministrativeArea", name: "Region of Waterloo, Ontario" },
+  { "@type": "State", name: "Ontario" },
 ];
 
 // The policy is written once, in index.html (and _headers); the service pages copy it.
@@ -31,7 +50,7 @@ export function sitePolicy() {
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const lines = (items, fn) => items.map(fn).join("\n");
 
-function structuredData(svc, url) {
+function structuredData(svc, url, collection) {
   const graph = [
     {
       "@type": "Service",
@@ -42,12 +61,13 @@ function structuredData(svc, url) {
       url,
       provider: { "@type": "ProfessionalService", "@id": SITE + "#business", name: "Third Shift", url: SITE },
       areaServed: AREA,
+      ...(svc.schema.audience ? { audience: { "@type": "BusinessAudience", name: svc.schema.audience } } : {}),
     },
     {
       "@type": "BreadcrumbList",
       itemListElement: [
         { "@type": "ListItem", position: 1, name: "Home", item: SITE },
-        { "@type": "ListItem", position: 2, name: "What we automate", item: SITE + "#services" },
+        { "@type": "ListItem", position: 2, name: collection.crumb.name, item: SITE + collection.crumb.href.slice(2) },
         { "@type": "ListItem", position: 3, name: svc.crumb, item: url },
       ],
     },
@@ -60,15 +80,23 @@ function structuredData(svc, url) {
   return JSON.stringify({ "@context": "https://schema.org", "@graph": graph }, null, 2).replace(/</g, "\\u003c");
 }
 
-export function renderService(svc, all = SERVICES, policy = sitePolicy()) {
+// A card can name the service page it belongs to; the link uses that page's own wording.
+function cardLink(slug) {
+  const target = SERVICES.find((s) => s.slug === slug);
+  if (!target) throw new Error(`No service page called ${slug}`);
+  return `\n          <a class="link-quiet card-link" href="${target.slug}">${esc(target.linkText)}</a>`;
+}
+
+export function renderPage(svc, collection = COLLECTIONS[0], policy = sitePolicy()) {
   const url = SITE + svc.slug;
-  const others = all.filter((s) => s.slug !== svc.slug);
+  const others = collection.items.filter((s) => s.slug !== svc.slug);
   const ogTitle = svc.title.replace(/ \| Third Shift$/, "") + " — Third Shift";
   const { log, handles, how, person, fit } = svc;
+  const jump = how ? ["#how-it-works", "How it works"] : ["#what-it-handles", "What it takes off your plate"];
 
   return `<!DOCTYPE html>
 <!-- Copyright (c) 2026 Third Shift (thirdshift.ca). All rights reserved. See LICENSE. -->
-<!-- Built by tools/build-pages.mjs from content/services.mjs. Change those, then run npm run pages. -->
+<!-- Built by tools/build-pages.mjs from ${collection.source}. Change those, then run npm run pages. -->
 <html lang="en-CA">
 <head>
 <meta charset="utf-8">
@@ -100,7 +128,7 @@ export function renderService(svc, all = SERVICES, policy = sitePolicy()) {
 <meta property="og:image:alt" content="Third Shift: the work that gets done while you sleep. AI automation for small businesses in Kitchener-Waterloo.">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">
-${structuredData(svc, url)}
+${structuredData(svc, url, collection)}
 </script>
 <script>document.documentElement.classList.add("js");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -148,7 +176,7 @@ ${structuredData(svc, url)}
         <nav class="crumbs" aria-label="Breadcrumb">
           <ol>
             <li><a href="./">Home</a></li>
-            <li><a href="./#services">What we automate</a></li>
+            <li><a href="${collection.crumb.href}">${esc(collection.crumb.name)}</a></li>
             <li aria-current="page">${esc(svc.crumb)}</li>
           </ol>
         </nav>
@@ -156,7 +184,7 @@ ${structuredData(svc, url)}
         <p class="lede">${esc(svc.lede)}</p>
         <div class="actions">
           <a class="btn btn-lg comet" href="./#contact" data-book>Book a free 20-minute call</a>
-          <a class="link-quiet" href="#how-it-works">How it works</a>
+          <a class="link-quiet" href="${jump[0]}">${jump[1]}</a>
         </div>
       </div>
       <aside class="log log-static" aria-label="${esc(log.label)}" data-tilt>
@@ -183,14 +211,14 @@ ${lines(log.rows, ([time, text, flag]) => `          <li${flag ? ' class="flag"'
         <p class="intro">${esc(handles.intro)}</p>
       </header>
       <ul class="cards">
-${lines(handles.cards, ([h, p]) => `        <li class="card" data-glow data-reveal>
+${lines(handles.cards, ([h, p, link]) => `        <li class="card" data-glow data-reveal>
           <h3>${esc(h)}</h3>
-          <p>${esc(p)}</p>
+          <p>${esc(p)}</p>${link ? cardLink(link) : ""}
         </li>`)}
       </ul>
     </div>
   </section>
-
+${how ? `
   <section class="section" id="how-it-works" aria-labelledby="how-title">
     <div class="wrap">
       <header class="sec-head" data-reveal>
@@ -207,7 +235,7 @@ ${lines(how.steps, ([h, p], i) => `        <li data-reveal>
       </ol>
     </div>
   </section>
-
+` : ""}
   <section class="section" aria-labelledby="person-title">
     <div class="wrap">
       <header class="sec-head" data-reveal>
@@ -262,8 +290,8 @@ ${lines(svc.faq, ([q, a]) => `        <details>
   <section class="section" aria-labelledby="more-title">
     <div class="wrap">
       <header class="sec-head" data-reveal>
-        <p class="kicker">What else we automate</p>
-        <h2 id="more-title">Other places to start</h2>
+        <p class="kicker">${esc(collection.more.kicker)}</p>
+        <h2 id="more-title">${esc(collection.more.h2)}</h2>
       </header>
       <ul class="more-list" data-reveal>
 ${lines(others, (o) => `        <li><a href="${o.slug}"><strong>${esc(o.crumb)}</strong><span>${esc(o.more)}</span></a></li>`)}
@@ -313,11 +341,11 @@ ${lines(others, (o) => `        <li><a href="${o.slug}"><strong>${esc(o.crumb)}<
 
 export function buildAll() {
   const policy = sitePolicy();
-  return SERVICES.map((svc) => {
-    const file = new URL(svc.slug + ".html", ROOT);
-    fs.writeFileSync(file, renderService(svc, SERVICES, policy));
+  return COLLECTIONS.flatMap((collection) => collection.items.map((page) => {
+    const file = new URL(page.slug + ".html", ROOT);
+    fs.writeFileSync(file, renderPage(page, collection, policy));
     return fileURLToPath(file);
-  });
+  }));
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === fs.realpathSync(process.argv[1])) {
