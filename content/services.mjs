@@ -30,7 +30,7 @@ export const SERVICES = [
       boot: [["AP inbox", "read-only"], ["Accounting", "connected"], ["Payments", "a person approves", true]],
       rows: [
         ["11:02 PM", "Picked up 41 invoices from the AP inbox and two vendor portals"],
-        ["11:06 PM", "Read supplier, invoice number, dates, HST and line items"],
+        ["11:06 PM", "Read supplier, invoice number, dates, GST/HST and line items"],
         ["11:09 PM", "Matched 37 to purchase orders and receipts, posted them as bills"],
         ["11:10 PM", "1 held: same invoice number as one posted on the 3rd", true],
         ["11:10 PM", "3 held: price or quantity doesn’t match the PO", true],
@@ -44,10 +44,10 @@ export const SERVICES = [
       intro: "The steps an accounts payable clerk does by hand, done in the same order, with the same checks, every night.",
       cards: [
         ["Collecting invoices", "From the AP inbox, supplier emails and the vendor portals you already log into. Each one is kept with the original attached, so nobody has to ask where a number came from."],
-        ["Reading and coding", "Supplier, invoice number, dates, line items and HST are read off the page and coded to the right accounts, using rules taken from how your team codes them today."],
+        ["Reading and coding", "Supplier, invoice number, dates, line items and GST/HST are read off the page and coded to the right accounts, using rules taken from how your team codes them today."],
         ["Matching", "Each invoice is checked against its purchase order and, where you track it, what was received. Prices, quantities and totals have to agree within the tolerance you set."],
-        ["Duplicates and fraud checks", "The same invoice arriving twice, from a second email or a resent PDF, is caught before it’s posted. New or changed bank details are always held for a call-back."],
-        ["Posting and the payment run", "Matched invoices are posted as bills with the PDF attached and lined up for the next payment run. A person reviews and approves the run."],
+        ["Duplicates and bank details", "The same invoice arriving twice, from a second email or a resent PDF, is flagged and held before it’s posted. New or changed bank details are always held for a call-back."],
+        ["Posting and the payment run", "Matched invoices are posted as bills with the PDF attached and lined up for payment by their due dates. A person reviews and approves each payment run."],
         ["Due dates and discounts", "Due dates and early-payment discounts are tracked, so the morning summary says what’s due this week and which discounts are still worth taking."],
       ],
     },
@@ -57,8 +57,8 @@ export const SERVICES = [
       intro: "The AI reads and sorts. Rules and checks do the math.",
       steps: [
         ["Collected", "After hours, new invoices are gathered from the inbox and the portals, with the originals saved."],
-        ["Read and checked", "The details come off each invoice, the math and the HST are checked, and it’s compared with everything already posted."],
-        ["Matched", "Each invoice is compared to its purchase order and receipt. Inside your tolerance, it’s posted. Outside it, it’s held with the reason written next to it."],
+        ["Read and checked", "The details come off each invoice, the math and the GST/HST are checked, and it’s compared with everything already posted."],
+        ["Matched", "Each invoice is compared to its purchase order and receipt, where you use them. Inside your tolerance, it’s posted. Outside it, it’s held with the reason written next to it."],
         ["Summarized", "Before your team starts, one email: what was posted, what’s waiting and why, what’s due this week."],
         ["Approved by a person", "Your team clears the exceptions and approves the payment run. Nothing is paid without that sign-off."],
       ],
@@ -66,9 +66,9 @@ export const SERVICES = [
     person: {
       kicker: "What stays with a person",
       h2: "Built the way a careful AP team would want it",
-      intro: "Third Shift is run by Aaron, who spent years inside accounts payable and finance operations. The checks are the ones an AP clerk makes, because they were built by one.",
+      intro: "Third Shift is run by Aaron, who spent years inside accounts payable and finance operations. The checks are the ones a careful AP team makes by hand, written by someone who spent years making them.",
       items: [
-        ["Payments", "Nothing pays, posts or sends money without a person signing off, unless you decide otherwise."],
+        ["Payments", "Nothing is paid without a person signing off, unless you decide otherwise."],
         ["Exceptions", "An invoice that doesn’t match, a supplier it hasn’t seen before, or anything outside the rules waits for a person, with the reason."],
         ["Bank details", "New or changed supplier banking information is always held for a call-back to a number you already have."],
         ["Access", "Read-only access to the inbox wherever possible, a separate login in your accounting system, and access you can revoke at any time."],
@@ -86,7 +86,7 @@ export const SERVICES = [
     faq: [
       ["Do we need purchase orders?", "No. Without them, each invoice is checked against what you’ve paid that supplier before and against your coding rules, and anything unusual waits for a person. Purchase orders make the matching stricter, and we’ll tell you whether they’re worth adding."],
       ["What happens to an invoice it can’t read?", "It’s held for a person with the original attached, and the morning summary lists it. Poor scans and handwritten invoices are the usual ones."],
-      ["Can it pay our suppliers?", "It lines up the payment run in your accounting system. A person reviews and approves it every time, unless you decide otherwise."],
+      ["Can it pay our suppliers?", "It lines up the payment run in your accounting system. A person approves the run before anything is paid, unless you decide otherwise."],
       ["How long does a first build take?", SHIP],
     ],
     cta: {
@@ -99,14 +99,14 @@ export const SERVICES = [
     slug: "lead-follow-up",
     crumb: "Inquiries and quotes",
     title: "Lead and Quote Follow-Up Automation in Kitchener | Third Shift",
-    description: "Every website and email inquiry logged in your CRM with a reply within minutes, and open quotes followed up on a schedule until the customer answers.",
+    description: "Website and email inquiries logged in your CRM with a reply within minutes, and open quotes followed up on a set schedule that stops when the customer replies.",
     h1: "Every inquiry answered. Every quote <em>followed up.</em>",
     lede: "Third Shift builds the automation that logs every website and email inquiry, sends a reply within minutes, and follows up on open quotes on a schedule, so no lead goes quiet because someone forgot.",
     more: "Inquiries logged and answered within minutes, quotes chased on a schedule.",
     schema: {
       name: "Lead intake and follow-up automation",
       serviceType: "Lead management automation",
-      description: "Website, email and form inquiries logged in the CRM with a reply sent, and open quotes followed up on a schedule until the customer answers.",
+      description: "Website, email and form inquiries logged in the CRM with a reply sent, and open quotes followed up on a set schedule, stopping when the customer replies.",
     },
     log: {
       label: "An example night",
@@ -124,14 +124,14 @@ export const SERVICES = [
     handles: {
       kicker: "What it handles",
       h2: "From first message to booked call",
-      intro: "Leads rarely go cold because the work was wrong. They go cold because nobody got back to them.",
+      intro: "Leads rarely go cold because the quote was wrong. They go cold because nobody got back to them.",
       cards: [
         ["Logging every inquiry", "Website forms and emails land in one place, your CRM or a shared spreadsheet, with who they are, what they asked and how they found you."],
         ["A reply within minutes", "The person hears back within minutes, day or night, in your words, with the next step or a link to book a call. Real questions are passed to you."],
-        ["Quotes followed up", "Open quotes get a polite follow-up on the schedule you choose. The follow-ups stop the moment the customer answers."],
+        ["Quotes followed up", "Open quotes get a polite follow-up on the schedule you choose. The follow-ups stop as soon as the customer replies or books a call, and you can stop them for anyone at any time."],
         ["One record per person", "Someone who emails and then fills in the form is one contact, not two, and returning customers are matched to their history."],
         ["The morning list", "One email before your day starts: new inquiries, replies waiting, quotes still open, and who’s worth a phone call."],
-        ["Where leads come from", "Each inquiry records what brought it in, so you can see which posts, ads or referrals actually lead to work."],
+        ["Where leads come from", "Each inquiry records where it came from, when that’s known, so over time you can see which posts, ads or referrals bring in inquiries."],
       ],
     },
     how: {
@@ -142,7 +142,7 @@ export const SERVICES = [
         ["Captured", "An inquiry arrives by form or email and is logged with its details and where it came from."],
         ["Answered", "A reply goes out within minutes, written with you ahead of time. Anything that needs a real answer is flagged for you."],
         ["Followed up", "Open quotes get follow-ups on your schedule, spaced a few days apart."],
-        ["Stopped", "A reply, a booked call or a no-thanks stops the follow-ups for that person straight away."],
+        ["Stopped", "A reply, a booked call or a no-thanks stops the follow-ups for that person straight away. You can also stop them for anyone, any time."],
         ["Summarized", "The morning email tells you who to call and what’s waiting."],
       ],
     },
@@ -166,9 +166,9 @@ export const SERVICES = [
       tools: ["Gmail", "Outlook", "HubSpot", "Google Sheets", "Excel", "Shopify", "Website forms"],
     },
     faq: [
-      ["Will customers know it’s automated?", "The first reply says you’ve got their message and what happens next, the way a good front desk would. It doesn’t pretend to be a person in a conversation. Real questions come to you."],
+      ["Will customers know it’s automated?", "The first reply says you’ve got their message and what happens next, the way a good front desk would. It doesn’t pretend to be a person in a conversation. Follow-ups go out under your name, in words you approved, and real questions come to you."],
       ["Do we need a CRM?", "No. A shared Google Sheet or Excel file works to start. If you already use HubSpot or another CRM, we connect to that instead."],
-      ["What about Canada’s anti-spam law?", "Follow-ups only go to people who contacted you or asked you for a quote. Every message says who it’s from and how to opt out, and a request to stop is honoured straight away."],
+      ["What about Canada’s anti-spam law?", "Follow-ups only go to people who contacted you or asked you for a quote, and they finish well within the six months the law allows after an inquiry. Every message carries your business name, mailing address and contact details with a way to unsubscribe, and a request to stop is honoured straight away."],
       ["What does a build cost?", PRICE],
     ],
     cta: {
@@ -182,7 +182,7 @@ export const SERVICES = [
     crumb: "Reporting",
     title: "Automated Business Reporting in Kitchener-Waterloo | Third Shift",
     description: "Weekly and monthly reports built overnight from your accounting system, store and spreadsheets, checked against the source and sent before the team starts.",
-    h1: "The Monday numbers, ready <em>before Monday.</em>",
+    h1: "The Monday numbers, ready <em>before you are.</em>",
     lede: "Third Shift builds the reports you look at every week and every month, pulled overnight from the systems the numbers live in, checked, and in your inbox before the team starts. Nobody spends Monday morning copying figures into a spreadsheet.",
     more: "Weekly and monthly reports built overnight and checked against the source.",
     schema: {
@@ -219,20 +219,20 @@ export const SERVICES = [
     how: {
       kicker: "How it works",
       h2: "Built overnight, read over coffee",
-      intro: "It only reads. It can’t change a figure in your books.",
+      intro: "It only reads. It never writes a figure back to your books.",
       steps: [
-        ["Pulled", "Overnight, read-only, from each system the numbers live in."],
+        ["Pulled", "Overnight, read-only wherever your system allows, from each system the numbers live in."],
         ["Checked", "Totals are tied back to the source. Missing data is noted, never guessed."],
         ["Built", "Into the same layout every time, with the last period beside it."],
         ["Delivered", "To the people who need it, before the day starts."],
-        ["Adjusted", "Want a new number? It’s added once and shows up every time from then on."],
+        ["Adjusted", "Want a new number later? It can be added once, and then it shows up every time."],
       ],
     },
     person: {
       kicker: "What stays with a person",
       h2: "The report shows what happened. What to do about it is yours.",
       items: [
-        ["Read-only", "Reporting only reads. It has no way to change a figure in your accounting system."],
+        ["Read-only", "Reporting is built only to read. Wherever your system allows it, its login can’t change a figure either."],
         ["Odd numbers", "If something looks off, like a week with no deposits, the report flags it rather than smoothing it over."],
         ["Who sees what", "Each report goes only to the people you choose."],
         ["Every run logged", "A plain-English record of what it pulled, from where, and when, so any number can be traced back."],
@@ -248,7 +248,7 @@ export const SERVICES = [
       tools: ["QuickBooks", "Xero", "Sage", "NetSuite", "Shopify", "Stripe", "HubSpot", "Excel", "Google Sheets"],
     },
     faq: [
-      ["Do we need a new dashboard tool?", "Usually not. Most owners want an email and a spreadsheet they already know how to read. If a dashboard would genuinely help, we say so and why."],
+      ["Do we need a new dashboard tool?", "Usually not. An email and a spreadsheet you already know how to read are often enough. If a dashboard would genuinely help, we say so and why."],
       ["What if two systems disagree?", "The report says so at the top, with the difference. It never picks one number and hides the other."],
       ["Can our accountant use it?", "Yes. The same figures can go to your accountant in the format they ask for."],
       ["What does a build cost?", PRICE],
@@ -331,8 +331,8 @@ export const SERVICES = [
     },
     faq: [
       ["What if the process isn’t written down anywhere?", "That’s the usual case. Writing it down is the first step of every build like this."],
-      ["What if the person who does it is leaving?", "That’s one of the best reasons to start now, while they can still walk us through it."],
-      ["Can we change it later?", "Yes. When the routine changes, the automation is changed to match, and the written steps with it."],
+      ["What if the person who does it is leaving?", "Then it’s worth writing down now, while they can still walk us through it."],
+      ["Can we change it later?", "Yes. When the routine changes, the automation can be changed to match, and the written steps with it."],
       ["How long does a first build take?", SHIP],
     ],
     cta: {
@@ -361,7 +361,7 @@ export const SERVICES = [
         ["5:30 AM", "Reorder list sent: 4 items below their minimum"],
         ["6:00 AM", "Today’s crew schedule sent, with addresses and job notes"],
         ["6:15 AM", "Reminders sent for tomorrow’s appointments"],
-        ["7:00 AM", "Timesheets checked: one missing, its owner reminded"],
+        ["7:00 AM", "Timesheets checked: one missing, a reminder sent"],
         ["7:01 AM", "2 overtime entries held for approval before payroll", true],
         ["7:05 AM", "New customer set up in three systems, welcome email sent"],
       ],
@@ -404,7 +404,7 @@ export const SERVICES = [
     },
     fit: {
       items: [
-        "It repeats, daily, weekly or monthly.",
+        "It repeats daily, weekly or monthly.",
         "It follows the same steps most of the time.",
         "It lives in email, spreadsheets or an app you log into.",
         "Someone on your team dreads doing it.",

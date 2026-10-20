@@ -114,7 +114,7 @@
           "name": "Can it pay our suppliers?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "It lines up the payment run in your accounting system. A person reviews and approves it every time, unless you decide otherwise."
+            "text": "It lines up the payment run in your accounting system. A person approves the run before anything is paid, unless you decide otherwise."
           }
         },
         {
@@ -200,7 +200,7 @@
         </ul>
         <ol class="log-rows">
           <li><time>11:02 PM</time><span>Picked up 41 invoices from the AP inbox and two vendor portals</span></li>
-          <li><time>11:06 PM</time><span>Read supplier, invoice number, dates, HST and line items</span></li>
+          <li><time>11:06 PM</time><span>Read supplier, invoice number, dates, GST/HST and line items</span></li>
           <li><time>11:09 PM</time><span>Matched 37 to purchase orders and receipts, posted them as bills</span></li>
           <li class="flag"><time>11:10 PM</time><span>1 held: same invoice number as one posted on the 3rd</span></li>
           <li class="flag"><time>11:10 PM</time><span>3 held: price or quantity doesn’t match the PO</span></li>
@@ -225,19 +225,19 @@
         </li>
         <li class="card" data-glow data-reveal>
           <h3>Reading and coding</h3>
-          <p>Supplier, invoice number, dates, line items and HST are read off the page and coded to the right accounts, using rules taken from how your team codes them today.</p>
+          <p>Supplier, invoice number, dates, line items and GST/HST are read off the page and coded to the right accounts, using rules taken from how your team codes them today.</p>
         </li>
         <li class="card" data-glow data-reveal>
           <h3>Matching</h3>
           <p>Each invoice is checked against its purchase order and, where you track it, what was received. Prices, quantities and totals have to agree within the tolerance you set.</p>
         </li>
         <li class="card" data-glow data-reveal>
-          <h3>Duplicates and fraud checks</h3>
-          <p>The same invoice arriving twice, from a second email or a resent PDF, is caught before it’s posted. New or changed bank details are always held for a call-back.</p>
+          <h3>Duplicates and bank details</h3>
+          <p>The same invoice arriving twice, from a second email or a resent PDF, is flagged and held before it’s posted. New or changed bank details are always held for a call-back.</p>
         </li>
         <li class="card" data-glow data-reveal>
           <h3>Posting and the payment run</h3>
-          <p>Matched invoices are posted as bills with the PDF attached and lined up for the next payment run. A person reviews and approves the run.</p>
+          <p>Matched invoices are posted as bills with the PDF attached and lined up for payment by their due dates. A person reviews and approves each payment run.</p>
         </li>
         <li class="card" data-glow data-reveal>
           <h3>Due dates and discounts</h3>
@@ -263,12 +263,12 @@
         <li data-reveal>
           <span class="step-n" aria-hidden="true">2</span>
           <h3>Read and checked</h3>
-          <p>The details come off each invoice, the math and the HST are checked, and it’s compared with everything already posted.</p>
+          <p>The details come off each invoice, the math and the GST/HST are checked, and it’s compared with everything already posted.</p>
         </li>
         <li data-reveal>
           <span class="step-n" aria-hidden="true">3</span>
           <h3>Matched</h3>
-          <p>Each invoice is compared to its purchase order and receipt. Inside your tolerance, it’s posted. Outside it, it’s held with the reason written next to it.</p>
+          <p>Each invoice is compared to its purchase order and receipt, where you use them. Inside your tolerance, it’s posted. Outside it, it’s held with the reason written next to it.</p>
         </li>
         <li data-reveal>
           <span class="step-n" aria-hidden="true">4</span>
@@ -289,12 +289,12 @@
       <header class="sec-head" data-reveal>
         <p class="kicker">What stays with a person</p>
         <h2 id="person-title">Built the way a careful AP team would want it</h2>
-        <p class="intro">Third Shift is run by Aaron, who spent years inside accounts payable and finance operations. The checks are the ones an AP clerk makes, because they were built by one.</p>
+        <p class="intro">Third Shift is run by Aaron, who spent years inside accounts payable and finance operations. The checks are the ones a careful AP team makes by hand, written by someone who spent years making them.</p>
       </header>
       <ul class="principles">
         <li data-reveal>
           <h3>Payments</h3>
-          <p>Nothing pays, posts or sends money without a person signing off, unless you decide otherwise.</p>
+          <p>Nothing is paid without a person signing off, unless you decide otherwise.</p>
         </li>
         <li data-reveal>
           <h3>Exceptions</h3>
@@ -359,7 +359,7 @@
         </details>
         <details>
           <summary>Can it pay our suppliers?</summary>
-          <p>It lines up the payment run in your accounting system. A person reviews and approves it every time, unless you decide otherwise.</p>
+          <p>It lines up the payment run in your accounting system. A person approves the run before anything is paid, unless you decide otherwise.</p>
         </details>
         <details>
           <summary>How long does a first build take?</summary>
