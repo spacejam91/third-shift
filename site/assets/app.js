@@ -7,7 +7,7 @@ import { initEffects } from "./effects.js";
 import { initCalculator } from "./calculator.js";
 import { initAudit } from "./audit.js";
 import { initForm } from "./form.js";
-import { book, bookAll, flagCopies } from "./shared.js";
+import { arrival, book, bookAll, flagCopies } from "./shared.js";
 
 const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
@@ -37,6 +37,7 @@ const clock = safely("clock", () => {
   };
 });
 
+safely("arrival", arrival);
 safely("booking", bookAll);
 safely("origin", flagCopies);
 
