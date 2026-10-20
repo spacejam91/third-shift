@@ -6,30 +6,54 @@
 <title>Third Shift — AI automation for small businesses in Kitchener-Waterloo</title>
 <meta name="description" content="Third Shift builds AI automation for small businesses in Kitchener-Waterloo: invoices, lead intake, follow-ups and reporting, running overnight so your team starts the day with it done.">
 <link rel="canonical" href="https://thirdshift.ca/">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 26'%3E%3Cmask id='m'%3E%3Crect width='26' height='26' fill='white'/%3E%3Ccircle cx='17.5' cy='10.5' r='9' fill='black'/%3E%3C/mask%3E%3Ccircle cx='13' cy='13' r='12' fill='%23D98E22' mask='url(%23m)'/%3E%3C/svg%3E">
-<meta name="theme-color" content="#EEF2F7" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0D1526" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="theme-color" content="#060A14">
+<meta name="color-scheme" content="dark">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Third Shift">
 <meta property="og:locale" content="en_CA">
 <meta property="og:url" content="https://thirdshift.ca/">
 <meta property="og:title" content="Third Shift — the work that gets done while you sleep">
 <meta property="og:description" content="AI automation for small businesses in Kitchener-Waterloo: invoices, lead intake, follow-ups and reporting, running overnight.">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://thirdshift.ca/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Third Shift: the work that gets done while you sleep. AI automation for small businesses in Kitchener-Waterloo.">
+<meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "ProfessionalService",
-  "name": "Third Shift",
-  "url": "https://thirdshift.ca/",
-  "email": "hello@thirdshift.ca",
-  "description": "AI automation for small businesses in Kitchener-Waterloo: supplier invoices and payables, lead intake and follow-up, reporting.",
-  "address": { "@type": "PostalAddress", "addressLocality": "Kitchener", "addressRegion": "ON", "addressCountry": "CA" },
-  "areaServed": { "@type": "AdministrativeArea", "name": "Region of Waterloo, Ontario" },
-  "sameAs": [
-    "https://www.instagram.com/thirdshift.ca",
-    "https://x.com/thirdshiftca",
-    "https://www.facebook.com/thirdshift.ca"
+  "@graph": [
+    {
+      "@type": "ProfessionalService",
+      "@id": "https://thirdshift.ca/#business",
+      "name": "Third Shift",
+      "url": "https://thirdshift.ca/",
+      "logo": "https://thirdshift.ca/apple-touch-icon.png",
+      "image": "https://thirdshift.ca/assets/og-image.png",
+      "email": "hello@thirdshift.ca",
+      "description": "AI automation for small businesses in Kitchener-Waterloo: supplier invoices and payables, lead intake and follow-up, reporting, and the routines one person carries in their head.",
+      "address": { "@type": "PostalAddress", "addressLocality": "Kitchener", "addressRegion": "ON", "addressCountry": "CA" },
+      "areaServed": { "@type": "AdministrativeArea", "name": "Region of Waterloo, Ontario" },
+      "knowsAbout": ["Accounts payable automation", "Invoice processing", "Lead intake automation", "Business reporting", "AI automation"],
+      "sameAs": [
+        "https://www.instagram.com/thirdshift.ca",
+        "https://x.com/thirdshiftca",
+        "https://www.facebook.com/thirdshift.ca"
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        { "@type": "Question", "name": "What does a build cost?", "acceptedAnswer": { "@type": "Answer", "text": "Every build has a fixed price, written on a one-page plan before any work starts. You know the number before you commit." } },
+        { "@type": "Question", "name": "Do we need new software?", "acceptedAnswer": { "@type": "Answer", "text": "Usually not. We connect the email, spreadsheets and accounting system you already use. If a new tool would genuinely help, we say so and why." } },
+        { "@type": "Question", "name": "Will AI make mistakes with our numbers?", "acceptedAnswer": { "@type": "Answer", "text": "The AI reads and sorts; rules and checks do the math. Anything outside the rules, like an invoice that doesn't match its purchase order, is held for a person." } },
+        { "@type": "Question", "name": "What happens when something breaks?", "acceptedAnswer": { "@type": "Answer", "text": "Every automation is monitored and logs each run. When something fails or looks wrong, it stops and tells a person instead of guessing." } },
+        { "@type": "Question", "name": "How long does a first build take?", "acceptedAnswer": { "@type": "Answer", "text": "First builds typically ship within a few weeks. We run it alongside your team until it's trusted, then hand it over." } },
+        { "@type": "Question", "name": "Do you only work in Kitchener-Waterloo?", "acceptedAnswer": { "@type": "Answer", "text": "We're based in Kitchener-Waterloo and meet clients in person across Waterloo Region. If you're farther out, ask." } }
+      ]
+    }
   ]
 }
 </script>
@@ -37,267 +61,131 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #EEF2F7;
-    --surface: #FFFFFF;
-    --ink: #13203A;
-    --muted: #55657E;
-    --line: rgba(19, 32, 58, .16);
-    --amber: #D98E22;
-    --amber-text: #8A5A0E;
-    --amber-soft: rgba(217, 142, 34, .14);
-    --btn-bg: #13203A;
-    --btn-ink: #F4F7FB;
-    --log-bg: #13203A;
-    --log-ink: #E8EEF7;
-    --log-muted: #9DB0CC;
-    --log-amber: #F2B55A;
-    --log-line: rgba(232, 238, 247, .12);
-    --focus: #D98E22;
-    --max: 1100px;
-    box-sizing: border-box;
-    padding-top: env(safe-area-inset-top, 0px);
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      color-scheme: dark;
-      --bg: #0D1526;
-      --surface: #142038;
-      --ink: #E9EEF6;
-      --muted: #9FB0C8;
-      --line: rgba(233, 238, 246, .16);
-      --amber: #F0B454;
-      --amber-text: #F0B454;
-      --amber-soft: rgba(240, 180, 84, .14);
-      --btn-bg: #F0B454;
-      --btn-ink: #13203A;
-      --log-bg: #0A1120;
-      --log-line: rgba(232, 238, 247, .14);
-    }
-  }
-  :root[data-theme="dark"] {
-    color-scheme: dark;
-    --bg: #0D1526;
-    --surface: #142038;
-    --ink: #E9EEF6;
-    --muted: #9FB0C8;
-    --line: rgba(233, 238, 246, .16);
-    --amber: #F0B454;
-    --amber-text: #F0B454;
-    --amber-soft: rgba(240, 180, 84, .14);
-    --btn-bg: #F0B454;
-    --btn-ink: #13203A;
-    --log-bg: #0A1120;
-    --log-line: rgba(232, 238, 247, .14);
-  }
-
-  html { scroll-padding-top: env(safe-area-inset-top, 0px); scroll-behavior: smooth; }
-  *, *::before, *::after { box-sizing: inherit; }
-  body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--ink);
-    font-family: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
-    font-size: 17px;
-    line-height: 1.55;
-    -webkit-font-smoothing: antialiased;
-  }
-  img, svg { max-width: 100%; }
-  a { color: inherit; }
-  :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; border-radius: 4px; }
-
-  .wrap { width: min(var(--max), 100% - 2.5rem); margin-inline: auto; }
-
-  /* Header */
-  .top { display: flex; align-items: center; justify-content: space-between; padding: 1.4rem 0; }
-  .mark { display: inline-flex; align-items: center; gap: .6rem; text-decoration: none; font-weight: 600; font-size: 1.15rem; letter-spacing: -.01em; }
-  .mark svg { width: 26px; height: 26px; }
-  .top nav { display: flex; gap: 1.6rem; align-items: center; font-size: .95rem; }
-  .top nav a { text-decoration: none; color: var(--muted); }
-  .top nav a:hover { color: var(--ink); }
-  .top nav a.btn, .top nav a.btn:hover { color: var(--btn-ink); }
-  .btn {
-    display: inline-block; background: var(--btn-bg); color: var(--btn-ink);
-    padding: .8rem 1.25rem; border-radius: 999px; text-decoration: none; font-weight: 600;
-    border: 0; font: inherit; font-weight: 600; cursor: pointer; line-height: 1.2;
-  }
-  .btn:hover { filter: brightness(1.08); }
-  .btn:disabled { opacity: .6; cursor: progress; filter: none; }
-  .btn.small { padding: .55rem 1rem; font-size: .95rem; }
-  @media (max-width: 640px) { .top nav .hide-sm { display: none; } }
-
-  /* Hero */
-  .hero { display: grid; gap: 2.5rem; padding: 2.5rem 0 4rem; align-items: center; }
-  @media (min-width: 900px) { .hero { grid-template-columns: 1.05fr .95fr; gap: 4rem; padding: 4rem 0 6rem; } }
-  h1 {
-    font-size: clamp(2.5rem, 6.2vw, 4.4rem);
-    line-height: .98; letter-spacing: -.03em; font-weight: 700; margin: 0 0 1.2rem;
-    font-variation-settings: "opsz" 96;
-    text-wrap: balance;
-  }
-  .lede { font-size: 1.15rem; color: var(--muted); max-width: 34rem; margin: 0 0 1.8rem; text-wrap: pretty; }
-  .hero .actions { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
-  .hero .actions .quiet { color: var(--muted); text-decoration: underline; text-underline-offset: .2em; }
-
-  /* Shift log — the one bold element */
-  .log {
-    background: var(--log-bg); color: var(--log-ink); border-radius: 14px;
-    padding: 1.1rem 1.25rem 1.25rem; font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
-    font-size: .86rem; line-height: 1.5; box-shadow: 0 30px 60px -30px rgba(10, 17, 32, .55);
-    border: 1px solid var(--log-line);
-  }
-  .log header { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding-bottom: .8rem; border-bottom: 1px solid var(--log-line); margin-bottom: .6rem; color: var(--log-muted); }
-  .log header strong { color: var(--log-ink); font-weight: 500; }
-  .log ol { list-style: none; margin: 0; padding: 0; }
-  .log li { display: grid; grid-template-columns: 5.2em 1fr; gap: .75rem; padding: .36rem 0; }
-  .log li time { color: var(--log-amber); }
-  /* Rows start hidden only when the reveal script can run; without JS the log just shows. */
-  .js .log li { opacity: 0; transform: translateY(4px); }
-  .js .log li.in { opacity: 1; transform: none; transition: opacity .5s ease, transform .5s ease; }
-  .log li.flag span::before { content: ""; display: inline-block; width: .5em; height: .5em; border-radius: 50%; background: var(--log-amber); margin-right: .5em; vertical-align: middle; }
-  .log footer { margin-top: .7rem; padding-top: .7rem; border-top: 1px solid var(--log-line); color: var(--log-muted); display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
-  .cursor::after { content: "▍"; color: var(--log-amber); animation: blink 1.1s steps(1) infinite; margin-left: .15em; }
-  @keyframes blink { 50% { opacity: 0; } }
-  @media (prefers-reduced-motion: reduce) {
-    .js .log li { opacity: 1; transform: none; transition: none; }
-    .cursor::after { animation: none; }
-    html { scroll-behavior: auto; }
-  }
-
-  /* Sections */
-  section { padding: 3.5rem 0; border-top: 1px solid var(--line); }
-  h2 { font-size: clamp(1.7rem, 3.4vw, 2.3rem); letter-spacing: -.02em; line-height: 1.1; margin: 0 0 .6rem; font-weight: 600; text-wrap: balance; }
-  .intro { color: var(--muted); max-width: 38rem; margin: 0 0 2rem; }
-
-  .services { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
-  @media (min-width: 760px) { .services { grid-template-columns: 1fr 1fr; column-gap: 3rem; } }
-  .services li { padding: 1.4rem 0; border-bottom: 1px solid var(--line); }
-  .services h3 { margin: 0 0 .4rem; font-size: 1.2rem; font-weight: 600; letter-spacing: -.01em; }
-  .services p { margin: 0; color: var(--muted); }
-
-  .steps { counter-reset: step; list-style: none; margin: 0; padding: 0; display: grid; gap: 1.2rem; max-width: 44rem; }
-  .steps li { position: relative; padding-left: 3.2rem; }
-  .steps li::before {
-    counter-increment: step; content: counter(step);
-    position: absolute; left: 0; top: .1rem; width: 2.2rem; height: 2.2rem; border-radius: 50%;
-    background: var(--amber-soft); color: var(--amber-text); display: grid; place-items: center; font-weight: 600;
-  }
-  .steps h3 { margin: 0 0 .25rem; font-size: 1.1rem; font-weight: 600; }
-  .steps p { margin: 0; color: var(--muted); }
-
-  .fit { display: grid; gap: 2rem; }
-  @media (min-width: 860px) { .fit { grid-template-columns: 1fr 1fr; gap: 4rem; } }
-  .fit p { color: var(--muted); margin: 0 0 1rem; }
-  .fit p:last-child { margin-bottom: 0; }
-
-  /* Form */
-  .contact { display: grid; gap: 2rem; }
-  @media (min-width: 900px) { .contact { grid-template-columns: .8fr 1.2fr; gap: 4rem; } }
-  .contact .side p { color: var(--muted); }
-  .contact .side a { color: var(--amber-text); text-decoration: none; }
-  .contact .side a:hover { text-decoration: underline; }
-  form { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 1.5rem; display: grid; gap: 1rem; }
-  @media (min-width: 640px) { form { padding: 2rem; grid-template-columns: 1fr 1fr; } form .full { grid-column: 1 / -1; } }
-  label { display: grid; gap: .35rem; font-size: .92rem; font-weight: 500; }
-  label span.opt { color: var(--muted); font-weight: 400; }
-  input, textarea {
-    font: inherit; color: var(--ink); background: transparent; border: 1px solid var(--line);
-    border-radius: 8px; padding: .7rem .85rem; width: 100%;
-  }
-  input:focus, textarea:focus { outline: 2px solid var(--amber); outline-offset: 0; border-color: transparent; }
-  textarea { min-height: 7.5rem; resize: vertical; }
-  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
-  .form-foot { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
-  .note { font-size: .92rem; color: var(--muted); margin: 0; }
-  .note.err { color: #B4321F; }
-  :root[data-theme="dark"] .note.err { color: #FF8A73; }
-  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .note.err { color: #FF8A73; } }
-  .sent { padding: 1.2rem 1.3rem; border-radius: 10px; background: var(--amber-soft); }
-  .sent strong { display: block; margin-bottom: .2rem; }
-  .sent:focus { outline: none; }
-
-  /* Footer */
-  .foot { border-top: 1px solid var(--line); padding: 2.5rem 0 3rem; color: var(--muted); font-size: .92rem; display: grid; gap: 1.2rem; }
-  @media (min-width: 760px) { .foot { grid-template-columns: 1fr auto; align-items: start; } }
-  .foot ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 1.2rem; flex-wrap: wrap; }
-  .foot a { text-decoration: none; }
-  .foot a:hover { color: var(--ink); }
-</style>
+<link rel="stylesheet" href="/assets/styles.css">
+<script type="module" src="/assets/app.js"></script>
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
 
-<div class="wrap">
-  <header class="top">
-    <a class="mark" href="#top" aria-label="Third Shift home">
+<div class="sky" aria-hidden="true">
+  <div class="stars"></div>
+  <div class="dawn"></div>
+</div>
+<div class="spot" aria-hidden="true"></div>
+
+<header class="top">
+  <div class="wrap top-in">
+    <a class="mark" href="/" aria-label="Third Shift home">
       <svg viewBox="0 0 26 26" aria-hidden="true">
         <mask id="mark-cut">
           <rect width="26" height="26" fill="white"/>
           <circle cx="17.5" cy="10.5" r="9" fill="black"/>
         </mask>
-        <circle cx="13" cy="13" r="12" style="fill: var(--amber)" mask="url(#mark-cut)"/>
+        <circle class="mark-moon" cx="13" cy="13" r="12" mask="url(#mark-cut)"/>
       </svg>
-      Third Shift
+      <span>Third Shift</span>
     </a>
-    <nav>
-      <a class="hide-sm" href="#services">What we automate</a>
-      <a class="hide-sm" href="#how">How it starts</a>
-      <a class="btn small" href="#contact">Book a call</a>
+    <nav aria-label="Main">
+      <a class="nav-link" href="#services">What we automate</a>
+      <a class="nav-link" href="#calculator">The math</a>
+      <a class="nav-link" href="#how">How it starts</a>
+      <a class="btn btn-sm" href="#contact" data-magnetic>Book a call</a>
     </nav>
-  </header>
-</div>
+  </div>
+</header>
 
-<main id="top">
-  <div class="wrap hero">
-    <div>
-      <h1>The work that gets done while you sleep.</h1>
-      <p class="lede">Third Shift builds AI automation for small businesses in Kitchener-Waterloo. Invoices, intake, follow-ups and reporting, running overnight so your team starts the day with it done.</p>
-      <div class="actions">
-        <a class="btn" href="#contact">Book a 20-minute call</a>
-        <a class="quiet" href="#services">See what we automate</a>
+<main id="main">
+
+  <section class="hero" aria-labelledby="hero-title">
+    <canvas class="night" aria-hidden="true"></canvas>
+    <div class="wrap hero-in">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="pulse" aria-hidden="true"></span>AI automation for small businesses in Kitchener-Waterloo</p>
+        <h1 id="hero-title">
+          <span class="line"><span>The work that</span></span>
+          <span class="line"><span>gets done while</span></span>
+          <span class="line"><span>you <em>sleep.</em></span></span>
+        </h1>
+        <p class="lede">Third Shift builds the automations that clear your invoices, answer your inquiries, chase your quotes and build your reports overnight, so your team starts the day with it done.</p>
+        <div class="actions">
+          <a class="btn btn-lg" href="#contact" data-magnetic>Book a 20-minute call</a>
+          <a class="link-quiet" href="#calculator">See what you'd get back</a>
+        </div>
+        <p class="hint" aria-hidden="true"><span class="hint-fine">Move across the night. Every light you wake up is a job getting done.</span><span class="hint-touch">Tap the night. Every light is a job getting done.</span></p>
       </div>
-    </div>
 
-    <aside class="log" aria-label="Example of an overnight shift">
-      <header>
-        <strong>Tonight’s shift</strong>
-        <span><span id="clock">—</span> Kitchener</span>
-      </header>
-      <ol id="shiftlog">
-        <li><time>11:02 PM</time><span>Picked up 38 supplier invoices from the AP inbox</span></li>
-        <li><time>11:09 PM</time><span>Matched 36 to purchase orders and posted them</span></li>
-        <li class="flag"><time>11:10 PM</time><span>2 invoices held for review: amounts don’t match the PO</span></li>
-        <li><time>12:40 AM</time><span>Sent 14 follow-ups on quotes older than five days</span></li>
-        <li><time>1:15 AM</time><span>Logged 9 website inquiries in the CRM, replies sent</span></li>
-        <li><time>3:30 AM</time><span>Built Tuesday’s cash position report</span></li>
-        <li><time>6:55 AM</time><span>Morning summary sent to three inboxes</span></li>
-      </ol>
-      <footer>
-        <span class="cursor">Shift ends 7:00 AM</span>
-        <span>2 items need a human</span>
-      </footer>
-    </aside>
+      <aside class="log" aria-label="Example of an overnight shift" data-tilt>
+        <header class="log-head">
+          <strong>Tonight’s shift</strong>
+          <span><span id="clock">—</span> Kitchener</span>
+        </header>
+        <ol id="shiftlog" class="log-rows">
+          <li><time>11:02 PM</time><span>Picked up 38 supplier invoices from the AP inbox</span></li>
+          <li><time>11:09 PM</time><span>Matched 36 to purchase orders and posted them</span></li>
+          <li class="flag"><time>11:10 PM</time><span>2 invoices held for review: amounts don’t match the PO</span></li>
+          <li><time>12:40 AM</time><span>Sent 14 follow-ups on quotes older than five days</span></li>
+          <li><time>1:15 AM</time><span>Logged 9 website inquiries in the CRM, replies sent</span></li>
+        </ol>
+        <footer class="log-foot">
+          <span class="cursor">Shift ends 7:00 AM</span>
+          <span><span id="log-done">5</span> done · <span id="log-held">2</span> need a human</span>
+        </footer>
+      </aside>
+    </div>
+    <a class="scroll-cue" href="#services" aria-label="Scroll to what we automate"><span></span></a>
+  </section>
+
+  <div class="band" role="region" aria-label="Tools we work with">
+    <p class="band-label">Works with what you already run</p>
+    <div class="band-view">
+      <ul class="band-track">
+        <li>Gmail</li><li>Outlook</li><li>QuickBooks</li><li>Xero</li><li>Sage</li><li>NetSuite</li><li>Excel</li><li>Google Sheets</li><li>HubSpot</li><li>Shopify</li><li>Slack</li><li>Stripe</li>
+      </ul>
+      <ul class="band-track" aria-hidden="true">
+        <li>Gmail</li><li>Outlook</li><li>QuickBooks</li><li>Xero</li><li>Sage</li><li>NetSuite</li><li>Excel</li><li>Google Sheets</li><li>HubSpot</li><li>Shopify</li><li>Slack</li><li>Stripe</li>
+      </ul>
+    </div>
   </div>
 
-  <section id="services">
+  <section id="services" class="section" aria-labelledby="services-title">
     <div class="wrap">
-      <h2>What we take off your plate</h2>
-      <p class="intro">Repetitive work that lives in email, spreadsheets and the gaps between your systems. If someone on your team re-keys the same data every week, that’s the job.</p>
-      <ul class="services">
-        <li>
+      <header class="sec-head" data-reveal>
+        <p class="kicker">What we automate</p>
+        <h2 id="services-title">What we take off your plate</h2>
+        <p class="intro">Repetitive work that lives in email, spreadsheets and the gaps between your systems. If someone on your team re-keys the same data every week, that’s the job.</p>
+      </header>
+      <ul class="cards">
+        <li class="card" data-glow data-reveal>
+          <div class="viz viz-ap" aria-hidden="true">
+            <span class="doc d1"></span><span class="doc d2"></span><span class="doc d3 held"></span>
+            <span class="tray"></span>
+          </div>
           <h3>Supplier invoices and payables</h3>
           <p>Invoices arrive by email and vendor portals, get matched to purchase orders, posted to your accounting system, and queued for payment. Anything that doesn’t match waits for a person.</p>
         </li>
-        <li>
+        <li class="card" data-glow data-reveal>
+          <div class="viz viz-leads" aria-hidden="true">
+            <span class="bubble"></span>
+            <span class="row r1"></span><span class="row r2"></span><span class="row r3"></span>
+            <span class="sent-pill"></span>
+          </div>
           <h3>Lead intake and follow-up</h3>
           <p>Website, email and form inquiries land in your CRM with a reply out within minutes. Open quotes get chased on a schedule, so nobody has to remember to.</p>
         </li>
-        <li>
+        <li class="card" data-glow data-reveal>
+          <div class="viz viz-report" aria-hidden="true">
+            <span class="bar b1"></span><span class="bar b2"></span><span class="bar b3"></span><span class="bar b4"></span><span class="bar b5"></span>
+            <span class="baseline"></span>
+          </div>
           <h3>Reporting</h3>
           <p>The numbers you look at every Monday, pulled from the systems they live in and assembled Sunday night, instead of being built by hand that morning.</p>
         </li>
-        <li>
+        <li class="card" data-glow data-reveal>
+          <div class="viz viz-list" aria-hidden="true">
+            <span class="item i1"><span class="box"></span><span class="txt"></span></span>
+            <span class="item i2"><span class="box"></span><span class="txt"></span></span>
+            <span class="item i3"><span class="box"></span><span class="txt"></span></span>
+          </div>
           <h3>The process one person carries in their head</h3>
           <p>The spreadsheet, the checklist, the Friday routine only Dave knows how to do. Written down, built out, and running on a schedule with a log of what it did.</p>
         </li>
@@ -305,20 +193,68 @@
     </div>
   </section>
 
-  <section id="how">
+  <section id="calculator" class="section" aria-labelledby="calc-title">
+    <div class="wrap calc">
+      <div class="calc-copy" data-reveal>
+        <p class="kicker">The math</p>
+        <h2 id="calc-title">What is the repetitive work costing you?</h2>
+        <p class="intro">Three questions, your numbers. We’ll check them against the real process on the call, and tell you plainly if it isn’t worth automating.</p>
+        <dl class="assume">
+          <div><dt>Working year</dt><dd>48 weeks of 37.5 hours</dd></div>
+          <div><dt>What comes back</dt><dd>80% of the hours when it’s the same steps every time, 60% when it’s mostly the same, 30% when it takes a lot of judgment</dd></div>
+        </dl>
+      </div>
+
+      <div class="calc-panel" data-glow data-reveal role="group" aria-labelledby="calc-title">
+        <label class="range">
+          <span class="range-top"><span>Hours a week your team spends on it</span><output id="o-hours" for="c-hours">12</output></span>
+          <input type="range" id="c-hours" min="1" max="80" step="1" value="12">
+        </label>
+        <label class="range">
+          <span class="range-top"><span>Cost per hour, wages plus benefits</span><output id="o-rate" for="c-rate">$40</output></span>
+          <input type="range" id="c-rate" min="20" max="150" step="5" value="40">
+        </label>
+        <fieldset class="seg">
+          <legend>Is it the same steps every time?</legend>
+          <div class="seg-opts">
+            <label><input type="radio" name="c-fit" value="same"><span>Same every time</span></label>
+            <label><input type="radio" name="c-fit" value="mostly" checked><span>Mostly</span></label>
+            <label><input type="radio" name="c-fit" value="judgment"><span>Lots of judgment</span></label>
+          </div>
+        </fieldset>
+
+        <div class="calc-out">
+          <div class="stat stat-big"><span class="stat-num" id="r-dollars">$13,824</span><span class="stat-lbl">of staff time back a year</span></div>
+          <div class="stat"><span class="stat-num" id="r-hours">346</span><span class="stat-lbl">hours a year</span></div>
+          <div class="stat"><span class="stat-num" id="r-weeks">9.2</span><span class="stat-lbl">working weeks</span></div>
+        </div>
+        <p class="verdict" id="r-verdict" data-level="strong"><strong>Strong candidate.</strong> This is the kind of work we’d build first.</p>
+        <p class="sr-only" id="calc-live" aria-live="polite"></p>
+        <button type="button" class="btn" id="calc-send" data-magnetic>Send me these numbers</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="how" class="section" aria-labelledby="how-title">
     <div class="wrap">
-      <h2>How it starts</h2>
-      <p class="intro">No discovery retainer, no slide deck. One call, one page, one build.</p>
-      <ol class="steps">
-        <li>
+      <header class="sec-head" data-reveal>
+        <p class="kicker">How it starts</p>
+        <h2 id="how-title">One call, one page, one build</h2>
+        <p class="intro">No discovery retainer, no slide deck.</p>
+      </header>
+      <ol class="steps" id="steps">
+        <li data-reveal>
+          <span class="step-n" aria-hidden="true">1</span>
           <h3>A 20-minute call</h3>
           <p>You walk through what eats up your team’s week. We tell you plainly what’s worth automating and what isn’t.</p>
         </li>
-        <li>
+        <li data-reveal>
+          <span class="step-n" aria-hidden="true">2</span>
           <h3>A one-page plan</h3>
           <p>The first automation, what it connects to, a fixed price and a delivery date. You decide from there.</p>
         </li>
-        <li>
+        <li data-reveal>
+          <span class="step-n" aria-hidden="true">3</span>
           <h3>Build, test, hand over</h3>
           <p>We build it, run it alongside your team until it’s trusted, then hand it over with monitoring and a log of every run. First builds typically ship within a few weeks.</p>
         </li>
@@ -326,142 +262,142 @@
     </div>
   </section>
 
-  <section id="fit">
+  <section id="trust" class="section" aria-labelledby="trust-title">
+    <div class="wrap">
+      <header class="sec-head" data-reveal>
+        <p class="kicker">How we build</p>
+        <h2 id="trust-title">Built for businesses that handle money</h2>
+        <p class="intro">Automations touch your invoices, your bank and your customers. So they’re built the way a careful finance team would want them.</p>
+      </header>
+      <ul class="principles">
+        <li data-reveal>
+          <h3>People approve the money</h3>
+          <p>Nothing pays, posts or sends money without a person signing off, unless you decide otherwise. New or changed bank details are always held for a call-back.</p>
+        </li>
+        <li data-reveal>
+          <h3>Your data stays in your systems</h3>
+          <p>We build inside the accounts you already own. Where an AI model reads a document, we use business-grade services that don’t train on your data.</p>
+        </li>
+        <li data-reveal>
+          <h3>The least access that does the job</h3>
+          <p>Read-only wherever possible, a separate login for each automation, and access you can revoke at any time without breaking anything else.</p>
+        </li>
+        <li data-reveal>
+          <h3>Every run is logged</h3>
+          <p>A plain-English record of what ran, what it touched and what it held back. If you ever need to know what happened on a Tuesday night, it’s written down.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="fit" class="section" aria-label="Who it’s for and who’s behind it">
     <div class="wrap fit">
-      <div>
-        <h2>Who it’s for</h2>
-        <p>Owner-run businesses in Waterloo Region with roughly 5 to 100 people: distributors, trades, clinics, professional services, manufacturers. Businesses with enough volume that the manual work hurts, and not enough to justify a developer on payroll.</p>
+      <div data-reveal>
+        <p class="kicker">Who it’s for</p>
+        <h2>Owner-run businesses in Waterloo Region</h2>
+        <p>Roughly 5 to 100 people: distributors, trades, clinics, professional services, manufacturers. Businesses with enough volume that the manual work hurts, and not enough to justify a developer on payroll.</p>
       </div>
-      <div>
-        <h2>Who’s behind it</h2>
-        <p>Third Shift is run by Aaron, who spent years inside accounts payable and finance operations automating his own job before building the same thing for other businesses. The automations are built by someone who has sat in the chair, not sold by someone who hasn’t.</p>
+      <div data-reveal>
+        <p class="kicker">Who’s behind it</p>
+        <h2>Built by someone who has sat in the chair</h2>
+        <p>Third Shift is run by Aaron, who spent years inside accounts payable and finance operations automating his own job before building the same thing for other businesses. The automations are built by someone who has done the work, not sold by someone who hasn’t.</p>
         <p>Based in Kitchener-Waterloo. We meet in person.</p>
       </div>
     </div>
   </section>
 
-  <section id="contact">
+  <section id="faq" class="section" aria-labelledby="faq-title">
+    <div class="wrap faq">
+      <header class="sec-head" data-reveal>
+        <p class="kicker">Questions</p>
+        <h2 id="faq-title">What owners ask first</h2>
+      </header>
+      <div class="faq-list" data-reveal>
+        <details>
+          <summary>What does a build cost?</summary>
+          <p>Every build has a fixed price, written on the one-page plan before any work starts. You know the number before you commit.</p>
+        </details>
+        <details>
+          <summary>Do we need new software?</summary>
+          <p>Usually not. We connect the email, spreadsheets and accounting system you already use. If a new tool would genuinely help, we say so and why.</p>
+        </details>
+        <details>
+          <summary>Will AI make mistakes with our numbers?</summary>
+          <p>The AI reads and sorts; rules and checks do the math. Anything outside the rules, like an invoice that doesn’t match its purchase order, is held for a person. You see every exception.</p>
+        </details>
+        <details>
+          <summary>What happens when something breaks?</summary>
+          <p>Every automation is monitored and logs each run. When something fails or looks wrong, it stops and tells a person instead of guessing.</p>
+        </details>
+        <details>
+          <summary>How long does a first build take?</summary>
+          <p>First builds typically ship within a few weeks. We run it alongside your team until it’s trusted, then hand it over.</p>
+        </details>
+        <details>
+          <summary>Do you only work in Kitchener-Waterloo?</summary>
+          <p>We’re based in Kitchener-Waterloo and meet clients in person across Waterloo Region. If you’re farther out, ask.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="section" aria-labelledby="contact-title">
     <div class="wrap contact">
-      <div class="side">
-        <h2>Tell us what eats your week</h2>
+      <div class="side" data-reveal>
+        <p class="kicker">Book a call</p>
+        <h2 id="contact-title">Tell us what eats your week</h2>
         <p>We’ll reply within one business day with a time for a call, or a straight answer if it’s not a fit.</p>
         <p>Prefer email? <a href="mailto:hello@thirdshift.ca">hello@thirdshift.ca</a></p>
       </div>
       <!-- method="post" so that if the script ever fails, a native submit never puts a lead's details in the URL. -->
-      <form id="lead" method="post" novalidate>
+      <form id="lead" method="post" novalidate data-glow data-reveal>
         <label>Name
-          <input type="text" name="name" autocomplete="name" required>
+          <input type="text" name="name" autocomplete="name" maxlength="120" required>
         </label>
         <label>Work email
-          <input type="email" name="email" autocomplete="email" required>
+          <input type="email" name="email" autocomplete="email" maxlength="160" required>
         </label>
         <label>Company
-          <input type="text" name="company" autocomplete="organization" required>
+          <input type="text" name="company" autocomplete="organization" maxlength="160" required>
         </label>
-        <label>Phone <span class="opt">(optional)</span>
-          <input type="tel" name="phone" autocomplete="tel">
+        <label><span>Phone <span class="opt">(optional)</span></span>
+          <input type="tel" name="phone" autocomplete="tel" maxlength="40">
         </label>
         <label class="full">What takes up your team’s time?
-          <textarea name="message" required placeholder="e.g. We get about 200 supplier invoices a month and one person keys them all into QuickBooks."></textarea>
+          <textarea name="message" maxlength="4000" required placeholder="e.g. We get about 200 supplier invoices a month and one person keys them all into QuickBooks."></textarea>
         </label>
         <div class="hp" aria-hidden="true">
           <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
         </div>
+        <div class="full ts-slot" id="ts-slot" hidden></div>
         <div class="full form-foot">
-          <button class="btn" type="submit" id="send">Send</button>
+          <button class="btn" type="submit" id="send" data-magnetic>Send</button>
           <p class="note" id="status" aria-live="polite"></p>
         </div>
+        <p class="full fine">We use what you send only to reply to you. <a href="/privacy">Privacy</a></p>
       </form>
     </div>
   </section>
 </main>
 
-<div class="wrap">
-  <footer class="foot">
-    <div>
-      <div>Third Shift — AI automation for small businesses, Kitchener-Waterloo, Ontario</div>
-      <div>© 2026 Third Shift</div>
+<footer class="foot">
+  <div class="wrap">
+    <p class="foot-line" data-reveal>Shift ends 7:00 AM.<br><span>Your team starts the day with it done.</span></p>
+    <div class="foot-grid">
+      <div>
+        <div>Third Shift — AI automation for small businesses, Kitchener-Waterloo, Ontario</div>
+        <div>© 2026 Third Shift · <a href="/privacy">Privacy</a></div>
+      </div>
+      <ul>
+        <li><a href="mailto:hello@thirdshift.ca">hello@thirdshift.ca</a></li>
+        <!-- LinkedIn goes here once the company page exists:
+        <li><a href="https://www.linkedin.com/company/SLUG" rel="me">LinkedIn</a></li> -->
+        <li><a href="https://www.instagram.com/thirdshift.ca" rel="me">Instagram</a></li>
+        <li><a href="https://x.com/thirdshiftca" rel="me">X</a></li>
+        <li><a href="https://www.facebook.com/thirdshift.ca" rel="me">Facebook</a></li>
+      </ul>
     </div>
-    <ul>
-      <li><a href="mailto:hello@thirdshift.ca">hello@thirdshift.ca</a></li>
-      <!-- LinkedIn goes here once the company page exists:
-      <li><a href="https://www.linkedin.com/company/SLUG" rel="me">LinkedIn</a></li> -->
-      <li><a href="https://www.instagram.com/thirdshift.ca" rel="me">Instagram</a></li>
-      <li><a href="https://x.com/thirdshiftca" rel="me">X</a></li>
-      <li><a href="https://www.facebook.com/thirdshift.ca" rel="me">Facebook</a></li>
-    </ul>
-  </footer>
-</div>
-
-<script>
-  // ---- Lead form endpoint -------------------------------------------------
-  // Paste the Apps Script web app URL here after deploying Code.gs
-  // (Deploy → New deployment → Web app → Execute as Me → Anyone).
-  const LEAD_ENDPOINT = "";
-
-  // ---- Clock in the shift log --------------------------------------------
-  (function () {
-    const el = document.getElementById("clock");
-    function tick() {
-      try {
-        // en-US gives "1:03 AM" to match the log rows; en-CA would print "1:03 a.m."
-        el.textContent = new Date().toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", timeZone: "America/Toronto" });
-      } catch (e) { el.textContent = ""; }
-    }
-    tick(); setInterval(tick, 30000);
-  })();
-
-  // ---- One orchestrated reveal of the log --------------------------------
-  (function () {
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const rows = document.querySelectorAll("#shiftlog li");
-    rows.forEach(function (li, i) {
-      if (reduce) { li.classList.add("in"); return; }
-      setTimeout(function () { li.classList.add("in"); }, 350 + i * 420);
-    });
-  })();
-
-  // ---- Form ---------------------------------------------------------------
-  (function () {
-    const form = document.getElementById("lead");
-    const status = document.getElementById("status");
-    const send = document.getElementById("send");
-
-    function say(msg, isErr) { status.textContent = msg; status.classList.toggle("err", !!isErr); }
-
-    form.addEventListener("submit", async function (ev) {
-      ev.preventDefault();
-      say("", false);
-
-      const data = Object.fromEntries(new FormData(form).entries());
-      const missing = ["name", "email", "company", "message"].filter(function (k) { return !String(data[k] || "").trim(); });
-      if (missing.length) { say("Fill in name, work email, company and what takes up your time.", true); form.querySelector("[name=" + missing[0] + "]").focus(); return; }
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) { say("That email doesn’t look right.", true); form.email.focus(); return; }
-
-      if (!LEAD_ENDPOINT) {
-        say("The form isn’t connected yet. Email hello@thirdshift.ca for now.", true);
-        return;
-      }
-
-      send.disabled = true; send.textContent = "Sending";
-      data.source = location.hostname || "thirdshift.ca";
-      data.submitted_at = new Date().toISOString();
-
-      try {
-        // text/plain keeps this a simple request (no CORS preflight), which Apps Script web apps need.
-        const res = await fetch(LEAD_ENDPOINT, { method: "POST", body: JSON.stringify(data), headers: { "Content-Type": "text/plain;charset=utf-8" } });
-        let ok = res.ok;
-        try { const j = await res.json(); ok = ok && j.ok !== false; } catch (e) { /* opaque or non-JSON; treat HTTP ok as success */ }
-        if (!ok) throw new Error("bad response");
-        form.innerHTML = '<div class="sent full" tabindex="-1"><strong>Sent.</strong>We’ll reply within one business day. If it’s urgent, email hello@thirdshift.ca.</div>';
-        // The live status line went with the form, so move focus to the confirmation for screen readers.
-        form.querySelector(".sent").focus();
-      } catch (err) {
-        say("Couldn’t send just now. Try again, or email hello@thirdshift.ca.", true);
-        send.disabled = false; send.textContent = "Send";
-      }
-    });
-  })();
-</script>
+  </div>
+</footer>
 </body>
 </html>
