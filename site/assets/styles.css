@@ -14,7 +14,7 @@
   --ink: #ECF1F8;
   --ink-2: #C3CFE0;
   --muted: #95A6BF;
-  --faint: #6A7C98;
+  --faint: #73849E;     /* the dimmest text; 4.6:1 or better on every panel (WCAG AA) */
   --line: rgba(236, 241, 248, .09);
   --line-2: rgba(236, 241, 248, .17);
   --amber: #F2B055;
@@ -267,7 +267,7 @@ h1 em {
 .log-rows li { flex: none; display: grid; grid-template-columns: 5.4em 1fr; gap: .75rem; padding: .34rem .45rem; margin: 0 -.45rem; border-radius: 6px; }
 .log-rows time { color: #F2B55A; }
 .log-rows li.flag span::before { content: ""; display: inline-block; width: .5em; height: .5em; border-radius: 50%; background: #F2B55A; margin-right: .5em; vertical-align: middle; box-shadow: 0 0 10px #F2B55A; }
-.log-rows li.divider { grid-template-columns: 1fr; color: #6E81A0; text-align: center; font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; padding-block: .6rem; }
+.log-rows li.divider { grid-template-columns: 1fr; color: #7585A0; text-align: center; font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; padding-block: .6rem; }
 .js .log-rows li:not(.live) { animation: rowIn .6s var(--ease) both; }
 .js .log-rows li:not(.live):nth-child(1) { animation-delay: .85s; }
 .js .log-rows li:not(.live):nth-child(2) { animation-delay: 1.25s; }
@@ -341,7 +341,7 @@ h1 em {
   mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
 }
 .band-track { flex: none; display: flex; gap: 3.2rem; padding: 0 3.2rem 0 0; margin: 0; list-style: none; animation: marquee 45s linear infinite; }
-.band-track li { font-size: 1.12rem; font-weight: 600; letter-spacing: -.01em; color: #5F7190; white-space: nowrap; transition: color .2s; }
+.band-track li { font-size: 1.12rem; font-weight: 600; letter-spacing: -.01em; color: #7585A0; white-space: nowrap; transition: color .2s; }
 .band-track li:hover { color: var(--ink); }
 .band-view:hover .band-track { animation-play-state: paused; }
 @keyframes marquee { to { transform: translateX(-100%); } }
