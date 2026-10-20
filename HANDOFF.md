@@ -89,7 +89,9 @@ app (step 5.4). The profile also keeps Third Shift apart from work.
 **Moving to Workspace (later):** as the Workspace user, make a copy of the Third Shift CRM sheet (File >
 Make a copy keeps the tabs and data), create the two Apps Script projects again from `backend/`, set their
 script properties, run `selfTest` and `setupCrm`, deploy, then send thirdshift the new form address for
-`LEAD_ENDPOINT`. About 20 minutes. Point the sales bot at the new sheet id.
+`LEAD_ENDPOINT`. About 20 minutes. Point the sales bot at the new sheet id. While the scripts are being
+recreated anyway, batch `crmUpdateRow_` in `Schema.gs` (contiguous `setValues` runs and an optional header
+index; the sales bot suggested it on Oct 20) and copy it to all three Schema files.
 
 ### 4. Turn on the contact form (intake)
 
