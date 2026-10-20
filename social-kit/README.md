@@ -25,14 +25,15 @@ The site's own icons (`site/favicon.ico`, `site/apple-touch-icon.png`, `site/ico
 
 ## Animated videos (`motion/`)
 
-Made by `npm run motion` from `tools/brand/motion.html`, in about a minute and a half (all ten videos render side by side). Needs Google Chrome and ffmpeg (`winget install Gyan.FFmpeg.Essentials`, once; the script finds winget's copy even before a new terminal picks up the PATH). All are H.264 MP4 at 30 fps with a silent audio track, which every platform accepts.
+Made by `npm run motion` from `tools/brand/motion.html`, in about three minutes (all twenty videos render side by side). Needs Google Chrome and ffmpeg (`winget install Gyan.FFmpeg.Essentials`, once; the script finds winget's copy even before a new terminal picks up the PATH). All are H.264 MP4 at 30 fps with a silent audio track, which every platform accepts.
 
-There are two sets with the same files, timing and layout:
+There are three folders:
 
 - **`motion/`: black on white, for social.** It matches the profile picture, covers and first post: a white background, black crescent and type, no colour at all.
-- **`motion/night/`: night and amber**, the website's colours, kept for anywhere that look is wanted (the site itself, slides on a dark screen). Don't mix the two sets in the same feed.
+- **`motion/industries/`: the same black-on-white shift, one per "Who it's for" page**, for posts aimed at that kind of business.
+- **`motion/night/`: night and amber**, the website's colours, kept for anywhere that look is wanted (the site itself, slides on a dark screen). Don't mix it with the black-on-white videos in the same feed.
 
-Both are flat, with no gradients, glow or fine lines, so they stay crisp after X, Instagram and LinkedIn recompress them. Moves ease in and settle; nothing bounces, flashes or types itself.
+All are flat, with no gradients, glow or fine lines, so they stay crisp after X, Instagram and LinkedIn recompress them. Moves ease in and settle; nothing bounces, flashes or types itself.
 
 | File (in `motion/` and `motion/night/`) | Use it for | Length |
 |---|---|---|
@@ -42,17 +43,29 @@ Both are flat, with no gradients, glow or fine lines, so they stay crisp after X
 | `overnight-shift-1080x1350.mp4` | Instagram 4:5 feed. An example night as a checklist, 11 PM to 7 AM: web inquiries, open quotes, the weekly sales report, crew schedules and appointment reminders, then supplier invoices, with one invoice held for a person to approve. Each job is ticked off as the clock runs, then the logo. It says "Example shift" on screen; keep captions to the same framing. | 14.5 s |
 | `overnight-shift-story-1080x1920.mp4` | The same night for Reels, Stories and TikTok | 14.5 s |
 
-**Covers.** The reveal opens on a plain disc, so wherever the platform lets you pick a cover or thumbnail (Instagram, TikTok, LinkedIn, YouTube), pick the last frame: the full logo. The shift video's first frame, the night's to-do list, works as it is.
+**By industry** (`motion/industries/`, black on white, 14.5 s each, a 4:5 feed version and a story version):
+
+| Files | The night on the checklist |
+|---|---|
+| `overnight-shift-trades-1080x1350.mp4`, `overnight-shift-trades-story-1080x1920.mp4` | 9 PM to 7 AM: quotes followed up, website inquiries, tomorrow's crew schedules, customer reminders, supplier invoices matched to jobs, two held, timesheets checked |
+| `overnight-shift-distributors-1080x1350.mp4`, `overnight-shift-distributors-story-1080x1920.mp4` | 9:30 PM to 7 AM: emailed orders read and drafted, two held, supplier invoices matched, the reorder list, past-due statements, the morning summary |
+| `overnight-shift-clinics-1080x1350.mp4`, `overnight-shift-clinics-story-1080x1920.mp4` | 9:30 PM to 7 AM, business side only: website inquiries, next week's staff schedule, the supply reorder list, monthly numbers, supplier invoices, two held, the morning summary |
+| `overnight-shift-professional-services-1080x1350.mp4`, `overnight-shift-professional-services-story-1080x1920.mp4` | 8 PM to 7 AM: year-end paper reminders, a new client set up, time entries held, invoices drafted from approved time, overdue accounts, the morning summary |
+| `overnight-shift-manufacturers-1080x1350.mp4`, `overnight-shift-manufacturers-story-1080x1920.mp4` | 5:30 PM to 7 AM: shift timesheets, material reorders, the weekly report, supplier invoices matched, one held (steel over the PO), the morning summary |
+
+Each says "Example:" and the kind of business in the corner. The rows are the example night on that industry's page, shortened to fit, with the same times, order and numbers. The jobs tick at an even pace and the clock hurries through the quiet hours.
+
+**Covers.** The reveal opens on a plain disc, so wherever the platform lets you pick a cover or thumbnail (Instagram, TikTok, LinkedIn, YouTube), pick the last frame: the full logo. A shift video's first frame, the night's to-do list, works as it is.
 
 **Re-rendering**
 
 | To | Run |
 |---|---|
-| Re-render all ten | `npm run motion` |
-| Re-render one set | `npm run motion -- mono` (black on white) or `npm run motion -- night` |
-| Re-render some | Add parts of the file names: `npm run motion -- mono story`, `npm run motion -- night reveal wide` |
+| Re-render all twenty | `npm run motion` |
+| Re-render one set | `npm run motion -- mono` (everything black on white) or `npm run motion -- night` |
+| Re-render some | Add parts of the paths: `npm run motion -- industries`, `npm run motion -- trades`, `npm run motion -- mono story`, `npm run motion -- night reveal wide` |
 | Check a change without encoding | `npm run motion -- mono shift --stills 0,6.8,14.4 --to tmp-stills` (PNGs at those seconds) |
 | Pull a still from a finished video | `ffmpeg -ss 6.8 -i social-kit/motion/overnight-shift-1080x1350.mp4 -frames:v 1 still.png` |
-| Watch it while editing | Open `tools/brand/motion.html?scene=shift&mono=1&play=1` in Chrome (leave out `mono=1` for night), or add `&t=6.5` to hold one moment. The layout follows the window size, so set the window (or the DevTools device toolbar) to the video's size. |
+| Watch it while editing | Open `tools/brand/motion.html?scene=shift&mono=1&night=trades&play=1` in Chrome (leave out `mono=1` for night colours, `night=` for the general night), or add `&t=6.5` to hold one moment. The layout follows the window size, so set the window (or the DevTools device toolbar) to the video's size. |
 
-The checklist's jobs, results and times are `SHIFT_ROWS` in `motion.html` (times are minutes after 11 PM); the closing logo is `lockup()`, laid out like the flat Instagram post; each set's colours are the CSS variables at the top (`:root` for night, `:root.mono` for black on white). If ffmpeg lives somewhere unusual, set `FFMPEG` to its path.
+The checklists are `NIGHTS` in `motion.html`: one row per job, with its clock time, job, result and whether it's held for a person. When an industry page's example night changes in `content/industries.mjs`, change its night there too. The industry videos follow the list of pages, so a new page stops the render until its night is added. A row too long for the card also stops it, with the row named. The closing logo is `lockup()`, laid out like the flat Instagram post; each set's colours are the CSS variables at the top (`:root` for night, `:root.mono` for black on white). If ffmpeg lives somewhere unusual, set `FFMPEG` to its path.

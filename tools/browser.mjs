@@ -84,7 +84,9 @@ export async function openBrowser(port, extraArgs = []) {
       ws.close();
       child.kill();
       await sleep(300);
-      fs.rmSync(profile, { recursive: true, force: true });
+      // Windows can hold the profile's files for a moment after the browser exits; a temp folder left
+      // behind is harmless, so it never fails the export.
+      try { fs.rmSync(profile, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 }); } catch { /* left for the OS */ }
     },
   };
 }

@@ -198,18 +198,72 @@ function buildReveal() {
 
 // ------------------------------------------------------------------ scene: the overnight shift
 
-// An example night. Inquiries, quotes, reports and schedules come first and invoices after, so it doesn't
-// read as a bookkeeping service. [minutes after 11 PM, job, result, "held" for the one left for a person]
-const SHIFT_ROWS = [
-  [12, "Web inquiries", "9 answered"],
-  [64, "Open quotes", "14 followed up"],
-  [118, "Weekly sales report", "ready"],
-  [171, "Crew schedules", "6 sent"],
-  [227, "Appointment reminders", "22 sent"],
-  [280, "Supplier invoices", "36 matched to POs"],
-  [326, "Invoice over its PO", "held for you", "held"],
-  [435, "Morning summary", "in your inbox"],
-];
+// The example nights, picked with &night= (the general one when it's left out). Inquiries, quotes,
+// reports and schedules come first and invoices after, so a shift doesn't read as a bookkeeping service.
+// Each row is [clock time, job, result, "held" for one left for a person to approve].
+// The industry nights are the ones on the "Who it's for" pages (content/industries.mjs), shortened to
+// fit the card but with the same times, order and numbers: change one, change the other. Their jobs tick
+// at an even pace and the clock hurries through the quiet hours; the general night's clock runs steady.
+const NIGHTS = {
+  "general": { label: "Example shift", start: "11:00 PM", steady: true, rows: [
+    ["11:12 PM", "Web inquiries", "9 answered"],
+    ["12:04 AM", "Open quotes", "14 followed up"],
+    ["12:58 AM", "Weekly sales report", "ready"],
+    ["1:51 AM", "Crew schedules", "6 sent"],
+    ["2:47 AM", "Appointment reminders", "22 sent"],
+    ["3:40 AM", "Supplier invoices", "36 matched to POs"],
+    ["4:26 AM", "Invoice over its PO", "held for you", "held"],
+    ["6:15 AM", "Morning summary", "in your inbox"],
+  ] },
+  "trades": { label: "Example: trades", start: "9:00 PM", rows: [
+    ["9:40 PM", "Quotes with no answer", "5 followed up"],
+    ["10:15 PM", "Website inquiries", "3 answered"],
+    ["11:15 PM", "Tomorrow’s crew schedules", "sent"],
+    ["11:20 PM", "Customer reminders", "queued for 8 AM"],
+    ["11:50 PM", "Supplier invoices", "14 matched to jobs"],
+    ["11:52 PM", "2 billed to a closed job", "held for you", "held"],
+    ["6:30 AM", "Timesheets", "1 crew missing Thursday"],
+  ] },
+  "distributors": { label: "Example: distributor", start: "9:30 PM", rows: [
+    ["10:05 PM", "Emailed customer orders", "23 read"],
+    ["10:12 PM", "Draft orders", "21 entered"],
+    ["10:14 PM", "2 unknown item codes", "held for you", "held"],
+    ["11:30 PM", "Supplier invoices", "46 matched to POs"],
+    ["1:00 AM", "Reorder list", "9 items below minimum"],
+    ["2:15 AM", "Past-due statements", "7 drafted"],
+    ["6:50 AM", "Morning summary", "in your inbox"],
+  ] },
+  "clinics": { label: "Example: clinic", start: "9:30 PM", rows: [
+    ["10:10 PM", "Website inquiries", "booking link sent"],
+    ["10:40 PM", "Next week’s staff schedule", "sent"],
+    ["11:30 PM", "Supply reorder list", "6 items low"],
+    ["2:00 AM", "Monthly numbers", "ready"],
+    ["2:30 AM", "Supplier invoices", "16 matched to orders"],
+    ["2:33 AM", "2 invoices to review", "held for you", "held"],
+    ["6:45 AM", "Morning summary", "to the manager"],
+  ] },
+  "professional-services": { label: "Example: professional firm", start: "8:00 PM", rows: [
+    ["8:30 PM", "Year-end papers", "6 reminders sent"],
+    ["9:15 PM", "New client set up", "letter drafted"],
+    ["11:00 PM", "3 entries, no client code", "held for you", "held"],
+    ["1:00 AM", "Invoices from approved time", "drafted"],
+    ["2:30 AM", "Overdue accounts", "listed for Monday"],
+    ["6:45 AM", "Morning summary", "in your inbox"],
+  ] },
+  "manufacturers": { label: "Example: manufacturer", start: "5:30 PM", rows: [
+    ["6:00 PM", "Shift timesheets", "checked"],
+    ["9:00 PM", "Material reorders", "list ready"],
+    ["10:30 PM", "Weekly report", "ready"],
+    ["11:20 PM", "Supplier invoices", "31 matched to POs"],
+    ["11:24 PM", "Steel 8% over the PO", "held for you", "held"],
+    ["6:30 AM", "Morning summary", "to the shop manager"],
+  ] },
+};
+// "9:40 PM" -> minutes after noon, so a night from the evening to 7 AM counts up without wrapping
+const minutesOf = (time) => {
+  const [, h, m, half] = time.match(/^(\d+):(\d\d) (AM|PM)$/);
+  return (+h % 12) * 60 + +m + (half === "AM" ? 720 : 0);
+};
 
 // The status mark: an empty ring, an arc that fills it while the job runs, then a check
 // (done) or a pause (held for a person).
@@ -233,6 +287,8 @@ function tick() {
 }
 
 function buildShift() {
+  const night = NIGHTS[q.get("night") || "general"];
+  if (!night) throw new Error(`No example night called "${q.get("night")}": add it to NIGHTS in tools/brand/motion.html`);
   const s = W / 100 * (tall ? 1.2 : 1);
   const pad = W * .06;
 
@@ -240,14 +296,14 @@ function buildShift() {
   const brandName = el("span", "name", "Third Shift");
   const brand = el("div", "brand", brandMoon, brandName);
   brand.style.fontSize = px(s * 4.4);
-  const label = el("div", "label", "Example shift");
+  const label = el("div", "label", night.label);
   label.style.fontSize = px(s * 2.1);
   const top = el("div", "top", brand, label);
   top.style.left = top.style.right = px(pad);
 
   const card = el("div", "card");
   card.style.cssText += `left:${px(pad)};right:${px(pad)};font-size:${px(s * 2.6)}`;
-  const clock = el("span", "clock", "11:00 PM");
+  const clock = el("span", "clock", night.start);
   const fill = el("i");
   const rowsBox = el("div", "rows");
   const doneN = el("b", null, "0"), heldN = el("b", null, "0");
@@ -257,15 +313,18 @@ function buildShift() {
     rowsBox,
     el("div", "tally", el("span", null, doneN, " done"), el("span", null, heldN, " held for you")),
   );
-  const rows = SHIFT_ROWS.map(([, job, result, held]) => {
+  const rows = night.rows.map(([, job, result, held]) => {
     const mark = tick();
     const task = el("span", "task", job), res = el("span", "result", result);
     const row = el("div", "row" + (held ? " held" : ""), mark, task, res);
     row.style.height = (tall ? 3.25 : 3) + "em";
     rowsBox.append(row);
-    return { mark, task, res, held: !!held };
+    return { row, mark, task, res, held: !!held };
   });
   stage.append(top, card);
+  for (const r of rows) {
+    if (r.row.scrollWidth > r.row.clientWidth + 1) throw new Error(`Too long for the card at ${W}x${H}: "${r.row.textContent}"`);
+  }
 
   // centre the bar and the card together, inside the part of a story the app's buttons don't cover
   const th = top.getBoundingClientRect().height, ch = card.getBoundingClientRect().height;
@@ -277,20 +336,32 @@ function buildShift() {
 
   const L = lockup(Math.min(W, H) / 100 * (tall ? 1.3 : 1));
 
-  // Eight hours from t = 0.7 to t = 9.3, then a beat on the finished list, then the logo.
+  // The night runs from t = 0.7 to t = 9.3, then a beat on the finished list, then the logo.
   const T0 = .7, T1 = 9.3, OUT = 10.2, END = 10.6;
-  const minuteAt = (t) => clamp((t - T0) / (T1 - T0)) * 480;
-  const tAt = (mins) => T0 + (mins / 480) * (T1 - T0);
-  const clockText = (mins) => {
-    const v = (23 * 60 + Math.floor(mins)) % 1440, h24 = Math.floor(v / 60);
+  // minutes into the shift, counted from its start
+  const start = minutesOf(night.start), length = minutesOf("7:00 AM") - start;
+  const mins = night.rows.map(([time]) => minutesOf(time) - start);
+  const doneAt = night.steady
+    ? mins.map((m) => T0 + (m / length) * (T1 - T0))
+    : mins.map((_, k) => T0 + (k + .7) * (T1 - T0) / mins.length);
+  // a steady clock, or one that passes through each job's time as it ticks
+  const knots = [[T0, 0], ...doneAt.map((t, k) => [t, mins[k]]), [T1, length]];
+  const minuteAt = (t) => {
+    if (night.steady) return clamp((t - T0) / (T1 - T0)) * length;
+    const k = knots.findIndex(([kt]) => kt >= t);
+    if (k <= 0) return k ? length : 0;
+    const [t0, m0] = knots[k - 1], [t1, m1] = knots[k];
+    return lerp(m0, m1, (t - t0) / (t1 - t0));
+  };
+  const clockText = (m) => {
+    const v = (720 + start + Math.floor(m)) % 1440, h24 = Math.floor(v / 60);
     return `${h24 % 12 || 12}:${String(v % 60).padStart(2, "0")} ${h24 < 12 ? "AM" : "PM"}`;
   };
-  const doneAt = SHIFT_ROWS.map(([mins]) => tAt(mins));
 
   function frame(t) {
-    const mins = minuteAt(t);
-    clock.textContent = clockText(mins);
-    fill.style.width = (mins / 480 * 100).toFixed(3) + "%";
+    const m = minuteAt(t);
+    clock.textContent = clockText(m);
+    fill.style.width = (m / length * 100).toFixed(3) + "%";
     let done = 0, held = 0;
     rows.forEach((r, k) => {
       const at = doneAt[k];
@@ -321,9 +392,18 @@ function buildShift() {
 // ------------------------------------------------------------------ wiring
 
 // Load every face the scenes use before laying anything out, so no frame is drawn in a fallback font.
-const FACES = ['500 40px "Bricolage Grotesque"', '600 40px "Bricolage Grotesque"', '700 40px "Bricolage Grotesque"', '500 40px "IBM Plex Mono"', '600 40px "IBM Plex Mono"'];
+const FACES = ['500 40px "Bricolage Grotesque"', '600 40px "Bricolage Grotesque"', '700 40px "Bricolage Grotesque"', '400 40px "IBM Plex Mono"', '500 40px "IBM Plex Mono"', '600 40px "IBM Plex Mono"'];
 Promise.all(FACES.map((f) => document.fonts.load(f))).then(() => document.fonts.ready).then(() => {
-  const { frame, duration } = (scene === "shift" ? buildShift : buildReveal)();
+  let built;
+  try {
+    built = (scene === "shift" ? buildShift : buildReveal)();
+  } catch (err) {
+    // the exporter reads this and stops with the message
+    document.body.dataset.error = err.message;
+    document.body.dataset.ready = "1";
+    throw err;
+  }
+  const { frame, duration } = built;
   frame(0);
   window.DURATION = duration;
   // The exporter calls this, then takes the picture; taking it paints the frame, so no waiting here.
