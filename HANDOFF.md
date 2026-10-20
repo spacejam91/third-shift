@@ -34,7 +34,9 @@ text messages. Save each set of backup codes somewhere offline.
 1. Sign up for Google Workspace **Business Starter** with the domain thirdshift.ca. Create the user as
    first name "Third", last name "Shift", with the address `office@thirdshift.ca`, and turn on 2-step
    verification for it straight away. That name and address are what prospects see as the organizer
-   on calendar invites and on the booking page, so they show the business, not a person.
+   on calendar invites and on the booking page, so they show the business, not a person. Cold email
+   goes out from its own send-as alias with its own display name (see `third-shift-outreach/README.md`),
+   so it isn't tied to this account's name.
 2. Workspace asks you to verify the domain with a TXT record. Add it in GoDaddy (My Products >
    thirdshift.ca > DNS > Add record). Leave every existing record alone: the A records, the `www`
    CNAME and the `_github-pages-challenge-spacejam91` TXT keep the site up.
