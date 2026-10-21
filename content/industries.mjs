@@ -42,8 +42,8 @@ export const INDUSTRIES = [
       h2: "The work after the work",
       intro: "Most of it gets done at the kitchen table after the trucks are parked.",
       cards: [
-        ["Quotes that go quiet", "Every quote gets a polite follow-up on your schedule, and the follow-ups stop when the customer replies or books.", "lead-follow-up"],
-        ["Inquiries while you’re on a job", "Website and email inquiries are logged and get a reply within minutes, so people hear back quickly even while you’re on site.", "lead-follow-up"],
+        ["Quotes and inquiries", "Inquiries get a reply within minutes, even while you’re on site, and every quote gets a polite follow-up that stops when the customer replies or books.", "lead-follow-up"],
+        ["Subcontractor paperwork", "WSIB clearances and insurance certificates from your subs kept on file, with a reminder before any of them lapse.", "compliance-automation"],
         ["Scheduling and reminders", "Each crew gets tomorrow’s jobs with addresses and notes, and customers get a reminder the day before.", "custom-automation"],
         ["Timesheets and payroll prep", "Crew hours gathered in one place, checked for gaps and overtime, and ready for payroll. You approve before anyone is paid.", "custom-automation"],
         ["Supplier invoices", "Materials invoices matched to jobs and purchase orders, where you use them, posted to your books, with anything odd held for you.", "invoice-automation"],
@@ -187,7 +187,7 @@ export const INDUSTRIES = [
         ["Staff schedules and timesheets", "Schedules sent to the team, hours checked against them, and payroll prep ready for approval.", "custom-automation"],
         ["Supplies and reorders", "Supply counts checked against your minimums, with a reorder list ready for whoever places the orders.", "custom-automation"],
         ["The monthly numbers", "Revenue, supply costs and staffing costs from your accounting system, built overnight and checked against the source. Patient balances stay in your clinic software.", "reporting-automation"],
-        ["Month-end checklists", "The close steps run in order, each one logged, so month-end doesn’t depend on one person’s memory.", "process-automation"],
+        ["Registrations and certificates", "Each practitioner’s college registration, CPR and other certificates tracked, with a reminder well before any renewal is due.", "compliance-automation"],
       ],
     },
     person: {
@@ -327,7 +327,7 @@ export const INDUSTRIES = [
         ["Timesheets and payroll prep", "Shift hours checked against the schedule, overtime flagged, and payroll prep ready for approval.", "custom-automation"],
         ["The weekly numbers", "Shipments, open orders, overtime and overdue accounts, built overnight from the systems they live in.", "reporting-automation"],
         ["RFQs and quotes", "RFQs logged and acknowledged, and quotes followed up on schedule, so new work doesn’t sit in an inbox.", "lead-follow-up"],
-        ["Checklists and routines", "Month-end, maintenance reminders and the Friday routine, run on schedule and logged.", "process-automation"],
+        ["Training records and questionnaires", "Forklift, WHMIS and other training tracked by person, and supplier questionnaires from bigger customers drafted from your records for a person to check.", "compliance-automation"],
       ],
     },
     person: {

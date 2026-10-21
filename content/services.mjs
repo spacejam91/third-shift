@@ -348,6 +348,89 @@ export const SERVICES = [
   },
 
   {
+    slug: "compliance-automation",
+    crumb: "Certificates and compliance",
+    title: "Compliance and Certificate Tracking in Ontario | Third Shift",
+    description: "WSIB clearances, insurance certificates, training tickets and Ontario filings kept on file and checked overnight, with a reminder before anything lapses.",
+    h1: "Every certificate on file. Every deadline <em>seen coming.</em>",
+    lede: "Subcontractor clearances, insurance certificates, training tickets, staff registrations and the Ontario filings that come with a due date. Third Shift builds the automation that keeps them on file, checks every night what’s about to lapse, and chases what’s missing, so nothing expires because nobody was watching. What gets filed and signed stays with you.",
+    more: "Clearances, certificates, training tickets and filings tracked, with reminders before they lapse.",
+    linkText: "How compliance tracking works",
+    schema: {
+      name: "Compliance and certificate tracking",
+      serviceType: "Compliance record automation",
+      description: "Subcontractor clearance and insurance certificates, staff training and registrations, and recurring Ontario filings kept on file and checked overnight, with reminders before anything lapses.",
+    },
+    log: {
+      label: "An example night",
+      boot: [["Shared drive", "read-only"], ["Inbox", "connected"], ["Filings", "a person signs", true]],
+      rows: [
+        ["1:00 AM", "Checked 38 certificates and tickets against their expiry dates"],
+        ["1:02 AM", "New insurance certificate from the electrician filed with the job"],
+        ["1:03 AM", "Drywall sub’s WSIB clearance lapses in 9 days: renewal on the list"],
+        ["1:04 AM", "1 held: framing sub starts Monday, no clearance on file", true],
+        ["1:05 AM", "Two first aid certificates expire next month: added to the training list"],
+        ["6:55 AM", "Morning list sent: what’s missing, what’s due, what needs a signature"],
+      ],
+      foot: "An example. Yours runs on your own records.",
+    },
+    handles: {
+      kicker: "What it handles",
+      h2: "The paperwork with an expiry date",
+      intro: "Most of it lives in an inbox, a filing cabinet and a calendar reminder that’s easy to miss.",
+      cards: [
+        ["Subcontractor clearances", "WSIB clearance certificates on file before a subcontractor starts, renewed before they lapse, with copies kept. Clearances expire, so the dates matter."],
+        ["Insurance certificates", "Certificates of insurance from subcontractors and suppliers kept with the job, the end dates watched, and new ones asked for before the old ones run out."],
+        ["Training and tickets", "Working at heights, first aid, WHMIS, forklift and the rest, tracked by person, with a list of who’s due before anyone’s card runs out."],
+        ["Licences and registrations", "Trade licences, professional registrations and permits renewed on time, with the reminder going to whoever does the renewing."],
+        ["Ontario filings and policies", "The filings and written policies that come with growing, like the accessibility compliance report at 20 employees or the electronic monitoring policy at 25, on the calendar with what each one needs."],
+        ["Customer questionnaires", "Security and supplier questionnaires from bigger customers, and insurance renewal forms, drafted from your own records. A person checks and approves every answer before it goes back."],
+      ],
+    },
+    how: {
+      kicker: "How it works",
+      h2: "Nothing lapses because nobody was watching",
+      intro: "It keeps the records and the dates. You sign what gets signed.",
+      steps: [
+        ["Gathered", "What you already have, in a shared drive, an inbox or a filing cabinet, goes into one list with each document’s owner and expiry date."],
+        ["Checked", "Every night the list is checked against the dates, and against who starts work or is due for training soon."],
+        ["Chased", "Reminders go out ahead of time to whoever needs to renew, in words you approved, and missing documents are asked for."],
+        ["Filed", "New certificates are filed where they belong and the list is updated."],
+        ["Summarized", "The morning email says what’s missing, what’s due soon and what needs your signature."],
+      ],
+    },
+    person: {
+      kicker: "What stays with a person",
+      h2: "The records are kept for you. The sign-off is yours.",
+      items: [
+        ["Filings and signatures", "Anything that gets filed or signed, like a compliance report or a written policy, is prepared for you to check. A person in your business signs it."],
+        ["Legal questions", "We keep records and dates, not legal opinions. Where a rule needs interpreting, your lawyer, accountant or safety advisor makes the call."],
+        ["Staff records", "Training and registration records stay in your own systems, read-only wherever possible, and only the people you choose can see them."],
+        ["Every run logged", "A plain-English record of what it checked, filed and chased, so you can show what was done and when."],
+      ],
+    },
+    fit: {
+      items: [
+        "You hire subcontractors and need their clearances and insurance on file.",
+        "Training tickets are tracked in a spreadsheet or someone’s memory.",
+        "A bigger customer or your insurer sends questionnaires nobody wants to fill in.",
+        "You’re growing, and new Ontario rules come with the headcount.",
+      ],
+      tools: ["Gmail", "Outlook", "Google Drive", "OneDrive", "SharePoint", "Excel", "Google Sheets"],
+    },
+    faq: [
+      ["Will this make us compliant?", "No tool can promise that, and we don’t give legal advice. It keeps the records, watches the dates and chases what’s missing, so the work compliance depends on doesn’t slip. What the rules require of your business is for you and your advisors to confirm."],
+      ["Where are the records kept?", "In your own systems: the shared drive, inbox and spreadsheets you already use. Access is read-only wherever possible, and you can switch it off at any time."],
+      ["We only have a few subcontractors. Is it worth it?", "Maybe not on its own. It’s often added to another build, like supplier invoices or the weekly numbers. We’ll tell you plainly on the call whether it’s worth it for you."],
+      ["What does a build cost?", PRICE],
+    ],
+    cta: {
+      h2: "Tell us which dates you keep track of",
+      p: "A free 20-minute call. Tell us what you keep on file and how you track it today, and we’ll tell you plainly what’s worth automating.",
+    },
+  },
+
+  {
     slug: "custom-automation",
     crumb: "Built to fit",
     title: "Custom Automation and Internal Tools in Ontario | Third Shift",

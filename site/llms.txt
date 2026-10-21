@@ -1,6 +1,6 @@
 # Third Shift
 
-> AI systems implementation for small businesses in Ontario, based in Kitchener-Waterloo. Third Shift designs AI systems around the tools a business already uses and builds automations that answer inquiries, chase quotes, build reports and clear supplier invoices overnight, so the team starts the day with it done. Those are the usual starting points; every build is tailored, from inventory alerts and scheduling to document drafting, onboarding and small internal tools.
+> AI systems implementation for small businesses in Ontario, based in Kitchener-Waterloo. Third Shift designs AI systems around the tools a business already uses and builds automations that answer inquiries, chase quotes, build reports and clear supplier invoices overnight, so the team starts the day with it done. Those are the usual starting points; every build is tailored, from certificate and compliance tracking, inventory alerts and scheduling to document drafting, onboarding and small internal tools.
 
 - Who it's for: owner-run businesses with roughly 5 to 100 people (distributors, trades, clinics, professional services, manufacturers), met in person across Waterloo Region (Kitchener, Waterloo, Cambridge) and by video call elsewhere in Ontario.
 - How it starts: a free 20-minute call, then a one-page plan with a fixed price, the monthly running cost and a delivery date. Software and AI accounts a build uses are in the client's name and billed to them directly.
@@ -15,6 +15,7 @@
 - [Reporting](https://thirdshift.ca/reporting-automation): weekly and monthly reports built overnight and checked against the source
 - [Routine processes](https://thirdshift.ca/process-automation): the routine one person carries in their head, written down and run on a schedule
 - [Invoices and payables](https://thirdshift.ca/invoice-automation): supplier invoices collected, matched to purchase orders and posted overnight; people approve every payment
+- [Certificates and compliance](https://thirdshift.ca/compliance-automation): subcontractor WSIB clearances, insurance certificates, training tickets, registrations and Ontario filings kept on file, with reminders before anything lapses; the business signs what gets filed
 - [Built to fit](https://thirdshift.ca/custom-automation): reorder alerts, scheduling, timesheets, quotes, onboarding, app syncing and small internal tools
 - [Trades and contractors](https://thirdshift.ca/trades): quote follow-ups, crew schedules, timesheets and supplier invoices for trades businesses
 - [Distributors and wholesalers](https://thirdshift.ca/distributors): order entry, supplier invoice matching, reorder alerts and collections
