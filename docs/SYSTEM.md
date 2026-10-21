@@ -65,9 +65,9 @@ Every link to thirdshift.ca that a bot publishes carries campaign tags, so the C
 | Profile links | Same, with `utm_campaign=bio`, or `page-button` for the Facebook action button |
 | Community replies | Same, with `utm_campaign=reply` |
 | Google Business Profile | `?utm_source=google&utm_medium=social&utm_campaign=<post-slug or bio>` |
-| Outreach emails | `?utm_source=outreach&utm_medium=email&utm_campaign=cold-vN-<industry>` (the sales bot bumps N when the copy changes; `cold-v2` since Oct 20) |
+| Outreach emails | `?utm_source=outreach&utm_medium=email&utm_campaign=cold-vN-<industry>` (the sales bot bumps N when the copy changes; `cold-v3` since Oct 21) |
 
-Links may land on any page: the home page, a service page (`/invoice-automation` and the others) or a "who it's for" page (`/trades`, `/distributors`, `/clinics`, `/professional-services`, `/manufacturers`). The sales bot links each industry to its page; logistics, property and anything else go to the home page.
+Links may land on any page: the home page, a service page (`/invoice-automation` and the others) or a "who it's for" page (`/trades`, `/distributors`, `/clinics`, `/professional-services`, `/manufacturers`). The sales bot links each industry to its page (general contractors go to `/trades`, which links on to `/compliance-automation`); logistics, property and anything else go to the home page.
 
 Whichever page a visit starts on, the site keeps the first tags the visitor arrived with and sends them along with the form. Intake writes them to the `Leads` tab and sets the Deal's `source`:
 
