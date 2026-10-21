@@ -24,7 +24,13 @@ Need something from another lane? Message its session; don't do the work yoursel
 ### Community bot rules
 
 - **It runs on its own** (the owner, Oct 20: "just send"). Replies, comments, likes, follows, unfollows and reposts go out without a draft, and every one goes in the log with its link so the owner can undo it. It still asks the owner first about a complaint, a press or partnership question, anything about money or a client, or anything it's unsure of.
-- **Pace:** on X about 5 follows and 2 or 3 replies a day at most; other platforms get the same restraint.
+- **Pace** (the owner wants more conversation with real people, Oct 20). Most of it goes where Ontario owners actually talk:
+  - Facebook groups: up to 5 helpful answers a day across the joined groups, each to a real question, with no links unless asked and no posts outside promo days.
+  - Facebook Page: up to 5 comments a day on local businesses' and owners' posts, plus about 5 follows.
+  - Instagram: up to 6 comments a day on real owners' and local businesses' posts, plus about 5 follows.
+  - X stays careful because the account is new and was flagged once: about 5 follows and 3 replies a day.
+  - Replies to anyone who comments on or messages us don't count toward any limit.
+  - Spread everything through the day. No copy-paste: every comment is written for that post. Back off for a day if a platform warns or limits the account.
 - **Replies and comments go to real people** (the owner, Oct 20): owners and regular folks, not organisations' accounts. Organisations get likes, follows and reposts.
 - **Reposts** (the owner, Oct 20: "feel free to repost"): posts from an Ontario business group, a small-business program or a credible small-business or AI-help source that are useful to an owner: an event, a program, a practical tip, or Small Business Week. At most 2 a day per platform, posts under 3 days old, nothing political, no other automation firms, no big-brand AI launches or hype, and never a private person's post.
 - **It speaks as "we", for Third Shift.** It never names the owner or mentions a job, employer or background.
