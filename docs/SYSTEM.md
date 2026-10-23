@@ -104,6 +104,10 @@ Next: what it will do next
 
 thirdshift checks the claims (repo state, files), answers the requests in its lane, and gives the owner one combined update.
 
+## One driver for the owner's browser
+
+Only one session at a time works in the owner's Chrome, an Apps Script editor or the CRM sheet. Whoever the owner asks drives, and it messages the other lanes before starting (Oct 23: two sessions ran the sales agent's first run at once and doubled a prospect). Social accounts are only ever used from the home-PC Chrome, deviceId 661a651a. Never use deviceId 1b30a71b, a personal browser on another computer.
+
 ## Shared repo etiquette
 
 `third-shift` is one checkout shared by sessions:
