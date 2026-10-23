@@ -66,7 +66,7 @@ Every link to thirdshift.ca that a bot publishes carries campaign tags, so the C
 | Community replies | Same, with `utm_campaign=reply` |
 | Google Business Profile | `?utm_source=google&utm_medium=social&utm_campaign=<post-slug or bio>` |
 | Print QR codes | `?utm_source=print&utm_medium=qr&utm_campaign=<piece>` (`leave-behind`, `card`), on the home page only, so the code stays short |
-| Outreach emails | `?utm_source=outreach&utm_medium=email&utm_campaign=cold-vN-<industry>` (the sales bot bumps N when the copy changes; `cold-v3` since Oct 21) |
+| Outreach emails | `?utm_source=outreach&utm_medium=email&utm_campaign=cold-vN-<industry>` (the sales bot bumps N when the copy changes; `cold-v4` since Oct 22) |
 
 Links may land on any page: the home page, a service page (`/invoice-automation` and the others) or a "who it's for" page (`/trades`, `/distributors`, `/clinics`, `/professional-services`, `/manufacturers`). The sales bot links each industry to its page (general contractors go to `/trades`, which links on to `/compliance-automation`); logistics, property and anything else go to the home page.
 
