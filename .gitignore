@@ -5,3 +5,6 @@ __pycache__/
 Thumbs.db
 .clasp.json
 tmp-stills/
+
+# Post media staged for the publisher task (copies of third-shift-marketing/data/media)
+.publish/
