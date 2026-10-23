@@ -1584,7 +1584,7 @@ function newDeal() {
   const names = h("datalist", { id: "co-names" }, S.data.companies.map((c) => h("option", { value: c.name })));
   const company = input({ name: "company_name", list: "co-names", autocomplete: "off", maxlength: 160, required: true, placeholder: "Business name" });
   const coHint = h("p", { class: "hint", hidden: true }, "Already in the CRM. The deal will be added to that company.");
-  const newCoFields = h("div", { class: "grid2" }, field("Website", input({ name: "company_website", placeholder: "example.ca", autocomplete: "off" })), field("City", input({ name: "company_city", placeholder: "Kitchener", maxlength: 80 })));
+  const newCoFields = h("div", { class: "grid2" }, field("Website", input({ name: "company_website", placeholder: "example.ca", autocomplete: "off" })), field("City", input({ name: "company_city", placeholder: "Hamilton", maxlength: 80 })));
   const err = h("p", { class: "form-err", role: "alert" });
   const submit = h("button", { class: "btn", type: "submit" }, "Add deal");
 

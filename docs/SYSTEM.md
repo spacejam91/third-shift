@@ -85,7 +85,7 @@ Whichever page a visit starts on, the site keeps the first tags the visitor arri
 
 - **Drafts first:** nothing public or outbound goes out without the owner's OK (posts, emails, profile changes), until the owner tells a bot it can run on its own.
 - **Real-world actions are the owner's:** no new accounts, purchases, domains or paid tools without the owner's say-so.
-- **Copy:** no invented clients, results or testimonials. Claims must match the site: fixed-price builds, people approve the money, read-only access where possible, we meet in person in Waterloo Region.
+- **Copy:** no invented clients, results or testimonials. Claims must match the site: fixed-price builds, people approve the money, read-only access where possible, we meet in person where we can and by video call everywhere else. No city or region is named anywhere public (the owner, Oct 22).
 - **Privacy:** no ad pixels or trackers on the site. The privacy page promises none.
 - **CASL:** the sales bot owns compliance (identification, unsubscribe, consent basis). The Suppression list applies to every lane.
 

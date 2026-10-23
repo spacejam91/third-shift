@@ -21,7 +21,7 @@ function safely(name, start) {
   }
 }
 
-// The log's clock shows Kitchener time; the fast-forward borrows it to show the simulated night.
+// The log's clock shows Ontario (Toronto) time; the fast-forward borrows it to show the simulated night.
 const clock = safely("clock", () => {
   const el = document.getElementById("clock");
   if (!el) return null;

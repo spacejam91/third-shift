@@ -36,7 +36,7 @@ function crm({ agent = true } = {}) {
 }
 
 const draft = (over = {}) => ({
-  id: "O-1", status: "Draft", company: "Grand River Dental", city: "Kitchener", industry: "Dental clinic",
+  id: "O-1", status: "Draft", company: "Grand River Dental", city: "Guelph", industry: "Dental clinic",
   email: "office@grandriverdental.example", email_kind: "role", email_source_url: "https://grandriverdental.example/contact",
   reason: "Insurance claims by hand", subject: "Insurance paperwork at Grand River Dental",
   body1: "Hi,\n\nFirst email.", body2: "Second.", body3: "Third.", approved: "", step: "0",

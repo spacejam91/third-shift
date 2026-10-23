@@ -34,10 +34,6 @@ export const COLLECTIONS = [
 ];
 
 const AREA = [
-  { "@type": "City", name: "Kitchener" },
-  { "@type": "City", name: "Waterloo" },
-  { "@type": "City", name: "Cambridge" },
-  { "@type": "AdministrativeArea", name: "Region of Waterloo, Ontario" },
   { "@type": "State", name: "Ontario" },
 ];
 
@@ -108,7 +104,7 @@ export function renderPage(svc, collection = COLLECTIONS[0], policy = sitePolicy
 <title>${esc(svc.title)}</title>
 <meta name="description" content="${esc(svc.description)}">
 <meta name="geo.region" content="CA-ON">
-<meta name="geo.placename" content="Kitchener-Waterloo">
+<meta name="geo.placename" content="Ontario">
 <link rel="canonical" href="${url}">
 <link rel="icon" href="favicon.ico" sizes="32x32">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -188,7 +184,7 @@ ${structuredData(svc, url, collection)}
       <aside class="log log-static" aria-label="${esc(log.label)}" data-tilt>
         <header class="log-head">
           <strong>${esc(log.label)}</strong>
-          <span>Kitchener</span>
+          <span>Ontario</span>
         </header>
         <ul class="log-boot" aria-label="Connected for this run">
 ${lines(log.boot, ([name, state, hold]) => `          <li${hold ? ' class="hold"' : ""}>${esc(name)} <b>${esc(state)}</b></li>`)}

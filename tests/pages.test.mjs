@@ -133,7 +133,7 @@ test("the home page and each service page agree on the service's address", () =>
   }
 });
 
-test("house rules: a copyright line on every page, no tool names, no emojis", () => {
+test("house rules: a copyright line on every page, no tool names, no city names, no emojis", () => {
   for (const file of ALL) assert.match(read(file), /^<!DOCTYPE html>\n<!-- Copyright \(c\) 2026 Third Shift/, file);
   const files = fs.readdirSync(SITE, { recursive: true })
     .map((f) => f.replace(/\\/g, "/"))
@@ -141,6 +141,8 @@ test("house rules: a copyright line on every page, no tool names, no emojis", ()
   for (const f of files) {
     const text = read(f);
     assert.doesNotMatch(text, /\b(claude|anthropic|openai|chatgpt|copilot)\b/i, `${f} names a tool`);
+    // Public copy says Ontario and never the city or region (the owner, Oct 22).
+    assert.doesNotMatch(text, /\b(kitchener|waterloo|cambridge)\b/i, `${f} names a city`);
     // © and ® are pictographic to Unicode but are plain typography here.
     assert.doesNotMatch(text, /(?![©®])\p{Extended_Pictographic}/u, `${f} has an emoji`);
   }

@@ -1,7 +1,7 @@
 {
   "name": "Third Shift",
   "short_name": "Third Shift",
-  "description": "AI automation for small businesses in Kitchener-Waterloo.",
+  "description": "AI systems implementation for small businesses in Ontario.",
   "start_url": "./",
   "display": "browser",
   "background_color": "#050913",

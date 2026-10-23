@@ -147,13 +147,13 @@ also covers DuckDuckGo and the search inside ChatGPT.
 
 ### 7. Google Business Profile
 
-For "automation Kitchener" style searches this is probably the strongest single listing, and Google's
+For local searches this is probably the strongest single listing, and Google's
 verification can take days or weeks, so start it early.
 
 1. business.google.com > Add business. Name: **Third Shift**. Primary category: "Business management
    consultant". Add "Software company" as a second category if offered.
 2. When it asks about a location customers can visit, say **no**. That makes it a service-area business
-   with your address hidden. Service areas: Kitchener, Waterloo, Cambridge.
+   with your address hidden. Service area: Ontario (no city or region names; the owner, Oct 22).
 3. Website: `https://thirdshift.ca/?utm_source=google&utm_medium=social&utm_campaign=bio` (the tags
    let the CRM show leads that came from the profile).
 4. Verify the way Google offers (video, phone, email or postcard). For a video, Google lists what to show.
@@ -172,8 +172,8 @@ intake project's `TURNSTILE_SECRET` script property.
 
 ### 9. Local listings
 
-Greater Kitchener Waterloo Chamber of Commerce, Communitech, the Waterloo Region Small Business Centre,
-and a LinkedIn company page. Each links back to the site.
+A LinkedIn company page (location: Ontario, Canada) linking back to the site. Local chamber and
+tech-hub directories would name a city, so they wait unless the owner decides otherwise (Oct 22).
 
 ### 10. Smaller items
 
@@ -186,8 +186,8 @@ and a LinkedIn company page. Each links back to the site.
 ## Copy: signed off
 
 The owner confirmed the site copy on Oct 20, 2026: "First builds typically ship within a few weeks",
-"We'll reply within one business day" (form, auto-reply and success message), "We meet in person" across
-Waterloo Region, and the "Built to fit" list. The service and "who it's for" pages added the same day use
+"We'll reply within one business day" (form, auto-reply and success message), "We meet in person",
+and the "Built to fit" list. The service and "who it's for" pages added the same day use
 only those claims. Anything new that promises a time, a price or a result needs the owner's OK first.
 
 Changed after sign-off, on the owner's word the same night:
@@ -195,9 +195,9 @@ Changed after sign-off, on the owner's word the same night:
   without a person signing off", because the example log shows matched invoices being posted automatically.
 - The "Who's behind it" paragraph became "Where we work", with no name or background (see the anonymity
   note at the top).
-- Service area: in person across Waterloo Region, and elsewhere in Ontario by video call. Titles,
-  descriptions, the hero and the footer lead with Ontario; "based in Kitchener-Waterloo" stays where it's
-  a fact (where we meet in person).
+- Service area (changed Oct 22, the owner: "make sure Kitchener isn't located anywhere"): anywhere in
+  Ontario, in person where we can and by video call everywhere else. No city or region is named
+  anywhere public: site, structured data, social profiles or email copy.
 - Invoices aren't the headline: the hero line, the example log, the service cards and the overnight
   checklist lead with inquiries, quotes and reports, and invoices come fourth. The owner's point: we don't
   only automate accounting.

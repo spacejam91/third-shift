@@ -47,7 +47,7 @@ export function bookAll() {
 }
 
 export function flagCopies() {
-  console.info("Third Shift, thirdshift.ca. Built in Kitchener-Waterloo. All rights reserved.");
+  console.info("Third Shift, thirdshift.ca. Built in Ontario, Canada. All rights reserved.");
   const host = location.hostname;
   if (!host || HOMES.includes(host) || host.endsWith(".localhost") || host.endsWith(".translate.goog")) return;
   const note = document.createElement("a");
