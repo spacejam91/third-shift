@@ -12,7 +12,10 @@
     mark       the crescent alone (bg=night for app icons, bg=none for transparent)
     wordmark   crescent + "Third Shift" (theme=dark for dark backgrounds, theme=light for light ones)
     banner     wide social cover: network on the left, headline on the right
-    square     1:1 post: mark, wordmark and the line
+    square     1:1 post: mark, wordmark and the line. Sized from the short side, so on a wide frame (the
+               Google Business Profile cover) it sits in the middle square and survives any crop.
+    card       n=0..3: a square "what we do" picture for a Google Business Profile photo grid: one
+               headline the site already uses, big enough to read as a thumbnail
     og         1200x630 link preview
   The night network is the same idea as site/assets/night.js, drawn once and still. banner and square
   take flat=1 for the profile versions: a solid night background with a crescent in place of the
@@ -63,6 +66,7 @@ canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 .banner .shade { position: absolute; inset: 0; background: linear-gradient(90deg, transparent 30%, rgba(5, 9, 19, .55) 62%, rgba(5, 9, 19, .7)); }
 
 .square .text { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; text-align: center; }
+.card .text { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; text-align: center; padding: 10%; }
 .square .shade { position: absolute; inset: 0; background: radial-gradient(closest-side, rgba(5, 9, 19, .82), rgba(5, 9, 19, .35) 70%, transparent); }
 
 .flat { background: #060A14; }
@@ -303,9 +307,9 @@ function buildBanner() {
     head.style.margin = (u * 3.4 * z) + "px 0 " + (u * 4 * z) + "px";
     url.style.fontSize = (u * 4.2 * z) + "px";
   } else {
-    // very wide and short (LinkedIn page cover): one line
+    // very wide and short (LinkedIn page cover): one line, unless line= breaks it
     kick.style.fontSize = (u * 6.4) + "px";
-    head.style.fontSize = (u * 17) + "px";
+    head.style.fontSize = (u * 17 * z) + "px";
     head.style.whiteSpace = "nowrap";
     head.style.margin = (u * 4.5) + "px 0 " + (u * 5) + "px";
     url.style.fontSize = (u * 7) + "px";
@@ -322,7 +326,7 @@ function buildBanner() {
 function buildSquare() {
   const flat = q.get("flat") === "1", mono = q.get("mono") === "1";
   stage.className = "stage square " + (flat ? "flat" : "night") + (mono ? " mono" : "");
-  const u = W / 100;
+  const u = Math.min(W, H) / 100;
   if (!flat) {
     stage.append(drawNetwork({
       sp: W / 13, seed: 5,
@@ -345,6 +349,35 @@ function buildSquare() {
   kick.style.fontSize = (u * 2.1) + "px";
   kick.style.marginTop = (u * 5) + "px";
   stage.append(el("div", "text", m, lock, line, kick));
+}
+
+// Words the site already uses, one per picture: what we take off an owner's desk, and the promise
+// about money. Inquiries come first; nothing here is about invoices alone. "|" breaks the line, so all
+// four read as two lines of the same size side by side in the grid.
+const CARDS = [
+  ["Inquiries and quotes", "Every inquiry answered.|Every quote followed up."],
+  ["Reporting", "The Monday numbers,|ready before you are."],
+  ["Routine processes", "The job only one person|knows how to do."],
+  ["How we build", "People approve|the money."],
+];
+
+// Black on white, everything inside the middle 80% so the grid's square crop keeps it, and no web
+// address or call to action: Google wants photos that show the business, not adverts.
+function buildCard() {
+  stage.className = "stage card flat mono";
+  const u = Math.min(W, H) / 100;
+  const [label, line] = CARDS[+(q.get("n") || 0)];
+  const lock = el("div", "lockup", moon(Math.round(u * 6.6), { color: "#0A0A0A" }), "Third Shift");
+  lock.style.fontSize = (u * 6) + "px";
+  const kick = el("div", "kicker", label);
+  kick.style.fontSize = (u * 2.7) + "px";
+  kick.style.margin = (u * 9) + "px 0 " + (u * 3.6) + "px";
+  const head = el("h1", "head");
+  line.split("|").forEach((part, i) => { if (i) head.append(document.createElement("br")); head.append(part); });
+  head.style.fontSize = (u * 7.6) + "px";
+  head.style.lineHeight = "1.04";
+  head.style.whiteSpace = "nowrap";
+  stage.append(el("div", "text", lock, kick, head));
 }
 
 function buildOg() {
@@ -374,7 +407,7 @@ function buildOg() {
   stage.append(log);
 }
 
-({ flat: buildFlat, mark: buildMark, wordmark: buildWordmark, banner: buildBanner, square: buildSquare, og: buildOg })[kind]();
+({ flat: buildFlat, mark: buildMark, wordmark: buildWordmark, banner: buildBanner, square: buildSquare, card: buildCard, og: buildOg })[kind]();
 
 // The exporter waits for this before it takes the picture.
 document.fonts.ready.then(() => requestAnimationFrame(() => { document.body.dataset.ready = "1"; }));

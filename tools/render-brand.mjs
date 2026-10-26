@@ -42,6 +42,21 @@ const JOBS = [
   { out: "social-kit/facebook-cover-1640x624.png", w: 1640, h: 624, dsf: 2,
     q: "kind=banner&flat=1&mono=1&align=center&kicker=0&moon=top&lift=.05&url=0&zoom=.85&line=" + encodeURIComponent("Inquiries answered. Quotes chased.|Reports done overnight.") },
   { out: "social-kit/instagram-post-1080.png", w: 1080, h: 1080, q: "kind=square&flat=1&mono=1" },
+
+  // Profile kit (social-kit/profiles/README.md): the LinkedIn company page and the Google Business Profile.
+  // The logos are the profile picture at each platform's size; its crescent stays inside a circle crop.
+  { out: "social-kit/profiles/linkedin-logo-400x400.png", w: 400, h: 400, q: "kind=flat&fg=000000&bg=FFFFFF&scale=.62" },
+  // LinkedIn puts the logo over the cover's bottom left and trims the sides on phones, so the cover is
+  // just the line, centred, in the middle two fifths. The @2x copy is sharper on high-density screens.
+  ...[1, 2].map((dsf) => ({
+    out: `social-kit/profiles/linkedin-cover-1128x191${dsf > 1 ? "@2x" : ""}.png`, w: 1128, h: 191, dsf,
+    q: "kind=banner&flat=1&mono=1&moon=0&align=center&kicker=0&url=0&zoom=1.25&line=" + encodeURIComponent("The work that gets done|while you sleep."),
+  })),
+  { out: "social-kit/profiles/google-logo-720x720.png", w: 720, h: 720, q: "kind=flat&fg=000000&bg=FFFFFF&scale=.62" },
+  // Google crops the cover to different shapes in Search and Maps; the post's lockup sits in the middle square.
+  { out: "social-kit/profiles/google-cover-1024x576.png", w: 1024, h: 576, q: "kind=square&flat=1&mono=1" },
+  ...["inquiries", "reporting", "routines", "approval"].map((name, n) => (
+    { out: `social-kit/profiles/google-photo-${n + 1}-${name}-720x720.png`, w: 720, h: 720, q: `kind=card&n=${n}` })),
 ];
 const only = process.argv[2];
 
