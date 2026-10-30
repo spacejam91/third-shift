@@ -18,8 +18,8 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="manifest" href="site.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="theme-color" content="#060A14">
-<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Third Shift">
 <meta property="og:locale" content="en_CA">
@@ -126,13 +126,6 @@
 <body class="svc">
 <a class="skip" href="#main">Skip to content</a>
 
-<div class="sky" aria-hidden="true">
-  <div class="stars"></div>
-  <div class="dawn"></div>
-</div>
-<div class="spot" aria-hidden="true"></div>
-<div class="progress" aria-hidden="true"></div>
-
 <header class="top">
   <div class="wrap top-in">
     <a class="mark" href="./" aria-label="Third Shift home">
@@ -169,11 +162,11 @@
         <h1 id="page-title">Supplier invoices, cleared <em>overnight.</em></h1>
         <p class="lede">Third Shift builds the automation that collects your supplier invoices, matches them to purchase orders and posts them to your accounting system while the office is closed. Anything that doesn’t match waits for a person, and nothing gets paid until someone approves it.</p>
         <div class="actions">
-          <a class="btn btn-lg comet" href="./#contact" data-book>Book a free 20-minute call</a>
+          <a class="btn btn-lg" href="./#contact" data-book>Book a free 20-minute call</a>
           <a class="link-quiet" href="#how-it-works">How it works</a>
         </div>
       </div>
-      <aside class="log log-static" aria-label="An example night" data-tilt>
+      <aside class="log log-static" aria-label="An example night">
         <header class="log-head">
           <strong>An example night</strong>
           <span>Ontario</span>
@@ -204,27 +197,27 @@
         <p class="intro">The steps an accounts payable clerk does by hand, done in the same order, with the same checks, every night.</p>
       </header>
       <ul class="cards">
-        <li class="card" data-glow data-reveal>
+        <li class="card" data-panel data-reveal>
           <h3>Collecting invoices</h3>
           <p>From the AP inbox, supplier emails and the vendor portals you already log into. Each one is kept with the original attached, so nobody has to ask where a number came from.</p>
         </li>
-        <li class="card" data-glow data-reveal>
+        <li class="card" data-panel data-reveal>
           <h3>Reading and coding</h3>
           <p>Supplier, invoice number, dates, line items and GST/HST are read off the page and coded to the right accounts, using rules taken from how your team codes them today.</p>
         </li>
-        <li class="card" data-glow data-reveal>
+        <li class="card" data-panel data-reveal>
           <h3>Matching</h3>
           <p>Each invoice is checked against its purchase order and, where you track it, what was received. Prices, quantities and totals have to agree within the tolerance you set.</p>
         </li>
-        <li class="card" data-glow data-reveal>
+        <li class="card" data-panel data-reveal>
           <h3>Duplicates and bank details</h3>
           <p>The same invoice arriving twice, from a second email or a resent PDF, is flagged and held before it’s posted. New or changed bank details are always held for a call-back.</p>
         </li>
-        <li class="card" data-glow data-reveal>
+        <li class="card" data-panel data-reveal>
           <h3>Posting and the payment run</h3>
           <p>Matched invoices are posted as bills with the PDF attached and lined up for payment by their due dates. A person reviews and approves each payment run.</p>
         </li>
-        <li class="card" data-glow data-reveal>
+        <li class="card" data-panel data-reveal>
           <h3>Due dates and discounts</h3>
           <p>Due dates and early-payment discounts are tracked, so the morning summary says what’s due this week and which discounts are still worth taking.</p>
         </li>
@@ -372,7 +365,7 @@
 
   <section class="section" aria-labelledby="cta-title">
     <div class="wrap">
-      <div class="cta-end" data-glow data-reveal data-cta-end>
+      <div class="cta-end" data-panel data-reveal data-cta-end>
         <div>
           <p class="kicker">Book a call</p>
           <h2 id="cta-title">Tell us how your invoices arrive</h2>

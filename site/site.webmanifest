@@ -4,8 +4,8 @@
   "description": "AI systems implementation for small businesses in Ontario.",
   "start_url": "./",
   "display": "browser",
-  "background_color": "#050913",
-  "theme_color": "#060A14",
+  "background_color": "#FFFFFF",
+  "theme_color": "#FFFFFF",
   "icons": [
     {
       "src": "icon-192.png",

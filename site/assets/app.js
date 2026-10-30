@@ -1,7 +1,6 @@
 // Copyright (c) 2026 Third Shift (thirdshift.ca). All rights reserved. See LICENSE.
 // Entry point. Each feature starts on its own, so one failing never takes the others down.
 
-import { initNight } from "./night.js";
 import { initLog } from "./log.js";
 import { initEffects } from "./effects.js";
 import { initCalculator } from "./calculator.js";
@@ -70,15 +69,25 @@ const log = safely("log", () => initLog({
   onKind: (kind) => lede?.flash(kind),
 }));
 
-const night = safely("night", () => {
-  const canvas = document.querySelector("canvas.night");
-  return canvas ? initNight(canvas, { reduced, onJob: () => log?.push() }) : null;
+// The shift goes on by itself: a new job every few seconds while the log is on screen and the tab is
+// open. Anyone who has asked for less motion gets the log as it stands (the fast-forward still works).
+safely("shift", () => {
+  const panel = document.querySelector(".log");
+  if (!log || !panel || reduced || !("IntersectionObserver" in window)) return;
+  let onScreen = false, timer = 0;
+  const next = () => {
+    clearTimeout(timer);
+    if (!onScreen || document.hidden) return;
+    timer = setTimeout(() => { log.push(); next(); }, 3200 + Math.random() * 2400);
+  };
+  new IntersectionObserver(([e]) => { onScreen = e.isIntersecting; next(); }).observe(panel);
+  document.addEventListener("visibilitychange", next);
 });
 
 safely("effects", () => initEffects({ reduced, finePointer }));
 
-// "Fast-forward to 7 AM": the whole night runs in a few seconds, with jobs streaking off the panel
-// and dawn coming up inside it, then the morning summary with the booking link.
+// "Fast-forward to 7 AM": the whole night runs in a few seconds, with dawn coming up inside the panel,
+// then the morning summary with the booking link.
 safely("fast-forward", () => {
   const btn = document.getElementById("ff");
   const panel = document.querySelector(".log");
@@ -135,17 +144,11 @@ safely("fast-forward", () => {
     btn.textContent = "Fast-forwarding";
     card?.remove();
     panel.classList.add("is-ff");
-    let n = 0;
     const tally = await log.fastForward({
       onRow(kind, progress, time) {
         panel.style.setProperty("--ff", progress.toFixed(3));
         clock?.hold(time);
         if (kind) lede?.flash(kind);
-        if (!reduced && night && n++ % 3 === 0) {
-          const r = panel.getBoundingClientRect();
-          const x = Math.max(12, r.left - 30 - Math.random() * 160);
-          night.pulse(x, r.top + 40 + Math.random() * Math.max(40, r.height - 80));
-        }
       },
     });
     if (!tally) return;
@@ -157,13 +160,8 @@ safely("fast-forward", () => {
   });
 });
 
-const form = safely("form", () => initForm(document.getElementById("lead"), {
-  onLaunch: (x, y) => { if (!reduced) night?.launch(x, y); },
-}));
+const form = safely("form", () => initForm(document.getElementById("lead")));
 
 safely("calculator", () => initCalculator({ reduced, onSend: (text) => form?.prefill(text) }));
 
-safely("audit", () => initAudit({
-  onTick: (x, y) => night?.startJob(x, y),
-  onSend: (text) => form?.prefill(text),
-}));
+safely("audit", () => initAudit({ onSend: (text) => form?.prefill(text) }));

@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Third Shift (thirdshift.ca). All rights reserved. See LICENSE.
-// The "Tonight's shift" panel. The rows in the HTML are the opening of the night; every job that
-// finishes on the hero canvas adds the next one, on a simulated clock that runs from 11 PM to 7 AM
-// and then starts a new shift. Text is built with textContent only.
+// The "Tonight's shift" panel. The rows in the HTML are the opening of the night; app.js asks for the
+// next job every few seconds, on a simulated clock that runs from 11 PM to 7 AM and then starts a new
+// shift. Text is built with textContent only.
 
 const SHIFT_START = 23 * 60;          // 11:00 PM, in minutes after midnight
 const SHIFT_LENGTH = 8 * 60;          // to 7:00 AM

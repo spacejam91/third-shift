@@ -110,8 +110,8 @@ export function renderPage(svc, collection = COLLECTIONS[0], policy = sitePolicy
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="manifest" href="site.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="theme-color" content="#060A14">
-<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Third Shift">
 <meta property="og:locale" content="en_CA">
@@ -133,13 +133,6 @@ ${structuredData(svc, url, collection)}
 </head>
 <body class="svc">
 <a class="skip" href="#main">Skip to content</a>
-
-<div class="sky" aria-hidden="true">
-  <div class="stars"></div>
-  <div class="dawn"></div>
-</div>
-<div class="spot" aria-hidden="true"></div>
-<div class="progress" aria-hidden="true"></div>
 
 <header class="top">
   <div class="wrap top-in">
@@ -177,11 +170,11 @@ ${structuredData(svc, url, collection)}
         <h1 id="page-title">${svc.h1}</h1>
         <p class="lede">${esc(svc.lede)}</p>
         <div class="actions">
-          <a class="btn btn-lg comet" href="./#contact" data-book>Book a free 20-minute call</a>
+          <a class="btn btn-lg" href="./#contact" data-book>Book a free 20-minute call</a>
           <a class="link-quiet" href="${jump[0]}">${jump[1]}</a>
         </div>
       </div>
-      <aside class="log log-static" aria-label="${esc(log.label)}" data-tilt>
+      <aside class="log log-static" aria-label="${esc(log.label)}">
         <header class="log-head">
           <strong>${esc(log.label)}</strong>
           <span>Ontario</span>
@@ -205,7 +198,7 @@ ${lines(log.rows, ([time, text, flag]) => `          <li${flag ? ' class="flag"'
         <p class="intro">${esc(handles.intro)}</p>
       </header>
       <ul class="cards">
-${lines(handles.cards, ([h, p, link]) => `        <li class="card" data-glow data-reveal>
+${lines(handles.cards, ([h, p, link]) => `        <li class="card" data-panel data-reveal>
           <h3>${esc(h)}</h3>
           <p>${esc(p)}</p>${link ? cardLink(link) : ""}
         </li>`)}
@@ -295,7 +288,7 @@ ${lines(others, (o) => `        <li><a href="${o.slug}"><strong>${esc(o.crumb)}<
 
   <section class="section" aria-labelledby="cta-title">
     <div class="wrap">
-      <div class="cta-end" data-glow data-reveal data-cta-end>
+      <div class="cta-end" data-panel data-reveal data-cta-end>
         <div>
           <p class="kicker">Book a call</p>
           <h2 id="cta-title">${esc(svc.cta.h2)}</h2>

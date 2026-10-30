@@ -9,9 +9,7 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const TIMEOUT_MS = 15000;
 const TURNSTILE_SRC = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
 
-// onLaunch(x, y) fires when a message actually goes out, from the Send button's centre, so the
-// night canvas can send it across the page as a job.
-export function initForm(form, { onLaunch = () => {} } = {}) {
+export function initForm(form) {
   if (!form) return null;
   const came = arrival();
   const status = document.getElementById("status");
@@ -82,8 +80,6 @@ export function initForm(form, { onLaunch = () => {} } = {}) {
     send.disabled = true;
     send.textContent = "Sending";
     send.classList.add("is-sending");
-    const at = send.getBoundingClientRect();
-    onLaunch(at.left + at.width / 2, at.top + at.height / 2);
     data.source = location.hostname || "thirdshift.ca";
     data.submitted_at = new Date().toISOString();
     data.elapsed_ms = Math.round(performance.now() - openedAt);
@@ -131,12 +127,8 @@ export function initForm(form, { onLaunch = () => {} } = {}) {
     const swap = () => form.replaceChildren(box);
     // The form morphs into the confirmation where the browser supports view transitions.
     // Then the live status line has gone with the form, so focus moves to the confirmation for screen
-    // readers, and a second burst of light marks it delivered.
-    const after = () => {
-      box.focus();
-      const at = box.getBoundingClientRect();
-      if (at.width) onLaunch(at.left + at.width / 2, at.top + at.height / 2);
-    };
+    // readers.
+    const after = () => box.focus();
     // A tab in the background skips view transitions without running the swap, which would leave the
     // button on "Sending" for a visitor who looked away during the few seconds Apps Script takes.
     const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;

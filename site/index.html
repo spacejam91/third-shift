@@ -18,8 +18,8 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="manifest" href="site.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="theme-color" content="#060A14">
-<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Third Shift">
 <meta property="og:locale" content="en_CA">
@@ -99,14 +99,6 @@
 <body>
 <a class="skip" href="#main">Skip to content</a>
 
-<div class="sky" aria-hidden="true">
-  <div class="stars"></div>
-  <div class="dawn"></div>
-</div>
-<canvas class="night" aria-hidden="true"></canvas>
-<div class="spot" aria-hidden="true"></div>
-<div class="progress" aria-hidden="true"></div>
-
 <header class="top">
   <div class="wrap top-in">
     <a class="mark" href="./" aria-label="Third Shift home">
@@ -142,13 +134,12 @@
         </h1>
         <p class="lede">Third Shift builds the automations that <span class="task" data-kind="leads">answer your inquiries</span>, <span class="task" data-kind="quotes">chase your quotes</span>, <span class="task" data-kind="reports">build your reports</span> and <span class="task" data-kind="ap">clear your invoices</span> overnight, so your team starts the day with it done.</p>
         <div class="actions">
-          <a class="btn btn-lg comet" href="#contact" data-book>Book a free 20-minute call</a>
+          <a class="btn btn-lg" href="#contact" data-book>Book a free 20-minute call</a>
           <a class="link-quiet" href="#calculator">See what you'd get back</a>
         </div>
-        <p class="hint" aria-hidden="true"><span class="hint-fine">Move across the night. Every light you wake up is a job getting done.</span><span class="hint-touch">Tap the night. Every light is a job getting done.</span></p>
       </div>
 
-      <aside class="log" aria-label="Example of an overnight shift" data-tilt>
+      <aside class="log" aria-label="Example of an overnight shift">
         <header class="log-head">
           <strong>Tonight’s shift</strong>
           <span><span id="clock">—</span> Ontario</span>
@@ -173,19 +164,13 @@
         </footer>
       </aside>
     </div>
-    <a class="scroll-cue" href="#services" aria-label="Scroll to what we automate"><span></span></a>
   </section>
 
   <div class="band" role="region" aria-label="Tools we work with">
     <p class="band-label">Works with what you already run</p>
-    <div class="band-view">
-      <ul class="band-track">
-        <li>Gmail</li><li>Outlook</li><li>QuickBooks</li><li>Xero</li><li>Sage</li><li>NetSuite</li><li>Excel</li><li>Google Sheets</li><li>HubSpot</li><li>Shopify</li><li>Slack</li><li>Stripe</li>
-      </ul>
-      <ul class="band-track" aria-hidden="true">
-        <li>Gmail</li><li>Outlook</li><li>QuickBooks</li><li>Xero</li><li>Sage</li><li>NetSuite</li><li>Excel</li><li>Google Sheets</li><li>HubSpot</li><li>Shopify</li><li>Slack</li><li>Stripe</li>
-      </ul>
-    </div>
+    <ul class="band-list">
+      <li>Gmail</li><li>Outlook</li><li>QuickBooks</li><li>Xero</li><li>Sage</li><li>NetSuite</li><li>Excel</li><li>Google Sheets</li><li>HubSpot</li><li>Shopify</li><li>Slack</li><li>Stripe</li>
+    </ul>
   </div>
 
   <section id="services" class="section" aria-labelledby="services-title">
@@ -196,7 +181,7 @@
         <p class="intro">Repetitive work that lives in email, spreadsheets and the gaps between your systems. If someone on your team re-keys the same data every week, that’s the job.</p>
       </header>
       <ul class="cards">
-        <li class="card" data-glow data-reveal>
+        <li class="card" data-panel data-reveal>
           <div class="viz viz-leads" data-label="NEW INQUIRY" aria-hidden="true">
             <span class="msg"><span class="msg-l1"></span><span class="msg-l2"></span></span>
             <span class="packet"></span>
@@ -211,7 +196,7 @@
           <p>Website, email and form inquiries land in your CRM with a reply out within minutes. Open quotes get chased on a schedule, so nobody has to remember to.</p>
           <a class="link-quiet card-link" href="lead-follow-up">How lead follow-up works</a>
         </li>
-        <li class="card" data-glow data-reveal>
+        <li class="card" data-panel data-reveal>
           <div class="viz viz-report" data-label="MONDAY REPORT" aria-hidden="true">
             <span class="bars"><span class="bar b1"></span><span class="bar b2"></span><span class="bar b3"></span><span class="bar b4"></span><span class="bar b5"></span><span class="bar b6"></span></span>
             <svg class="trend" viewBox="0 0 300 40" preserveAspectRatio="none"><path pathLength="1" d="M0,34 L60,26 L120,29 L180,18 L240,20 L300,6"/></svg>
@@ -222,7 +207,7 @@
           <p>The numbers you look at every Monday, pulled from the systems they live in and assembled Sunday night, instead of being built by hand that morning.</p>
           <a class="link-quiet card-link" href="reporting-automation">How automated reporting works</a>
         </li>
-        <li class="card" data-glow data-reveal>
+        <li class="card" data-panel data-reveal>
           <div class="viz viz-list" data-label="FRIDAY ROUTINE" aria-hidden="true">
             <span class="items">
               <span class="item i1"><span class="box"></span><span class="txt"></span></span>
@@ -236,7 +221,7 @@
           <p>The spreadsheet, the checklist, the Friday routine only Dave knows how to do. Written down, built out, and running on a schedule with a log of what it did.</p>
           <a class="link-quiet card-link" href="process-automation">How process automation works</a>
         </li>
-        <li class="card" data-glow data-reveal>
+        <li class="card" data-panel data-reveal>
           <div class="viz viz-ap" data-label="AP INBOX" aria-hidden="true">
             <span class="lane"></span><span class="scan"></span>
             <span class="tray tray-ok"></span><span class="tray tray-hold"></span>
@@ -246,7 +231,7 @@
           <p>Invoices arrive by email and vendor portals, get matched to purchase orders, posted to your accounting system, and queued for payment. Anything that doesn’t match waits for a person.</p>
           <a class="link-quiet card-link" href="invoice-automation">How invoice automation works</a>
         </li>
-        <li class="card card-wide" data-glow data-reveal>
+        <li class="card card-wide" data-panel data-reveal>
           <div class="custom">
             <div>
               <p class="custom-kicker">Certificates and compliance</p>
@@ -267,7 +252,7 @@
             </ul>
           </div>
         </li>
-        <li class="card card-wide" data-glow data-reveal>
+        <li class="card card-wide" data-panel data-reveal>
           <div class="custom">
             <div>
               <p class="custom-kicker">Built to fit</p>
@@ -340,7 +325,7 @@
         </dl>
       </div>
 
-      <div class="calc-panel" data-glow data-reveal role="group" aria-labelledby="calc-title">
+      <div class="calc-panel" data-panel data-reveal role="group" aria-labelledby="calc-title">
         <label class="range">
           <span class="range-top"><span>Hours a week your team spends on it</span><output id="o-hours" for="c-hours">12</output></span>
           <input type="range" id="c-hours" min="1" max="80" step="1" value="12">
@@ -500,7 +485,7 @@
         <p>Prefer email? <a href="mailto:thirdshift.ca@gmail.com">thirdshift.ca@gmail.com</a></p>
       </div>
       <!-- method="post" so that if the script ever fails, a native submit never puts a lead's details in the URL. -->
-      <form id="lead" method="post" novalidate data-glow data-reveal>
+      <form id="lead" method="post" novalidate data-panel data-reveal>
         <label>Name
           <input type="text" name="name" autocomplete="name" maxlength="120" required>
         </label>

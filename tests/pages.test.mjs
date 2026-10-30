@@ -133,6 +133,23 @@ test("the home page and each service page agree on the service's address", () =>
   }
 });
 
+// Daylight (Oct 30, 2026) took out the night network behind every page and the pointer effects. The
+// shift log now gets its jobs from a timer in app.js instead of the network.
+test("Daylight: no night network or pointer effects, every page light, the shift log still runs", () => {
+  assert.ok(!fs.existsSync(new URL("assets/night.js", SITE)), "assets/night.js is back");
+  for (const f of fs.readdirSync(new URL("assets/", SITE)).filter((name) => name.endsWith(".js"))) {
+    // (calculator.js has initNights, its year of nights: a different thing)
+    assert.doesNotMatch(read("assets/" + f), /night\.js|\binitNight\b/, `assets/${f} still loads the night network`);
+  }
+  for (const file of ALL) {
+    const html = read(file);
+    assert.doesNotMatch(html, /<canvas class="night"|class="(sky|spot|progress)"|data-glow|data-tilt|\bcomet\b/, `${file} still has part of the night layer`);
+    assert.match(html, /<meta name="color-scheme" content="light">/, `${file} should say it is a light page`);
+    assert.match(html, /<meta name="theme-color" content="#FFFFFF">/, `${file} should have a white theme colour`);
+  }
+  assert.match(read("assets/app.js"), /log\.push\(\)/, "nothing adds rows to the shift log");
+});
+
 test("house rules: a copyright line on every page, no tool names, no city names, no emojis", () => {
   for (const file of ALL) assert.match(read(file), /^<!DOCTYPE html>\n<!-- Copyright \(c\) 2026 Third Shift/, file);
   const files = fs.readdirSync(SITE, { recursive: true })
