@@ -111,7 +111,7 @@ function crmNextBusinessDay_(from) {
   return Utilities.formatDate(d, CRM_TZ, "yyyy-MM-dd");
 }
 
-// Sheets reads a value starting with = + - @ as a formula: a phone like "+1 519 555 0100" turns
+// Sheets reads a value starting with = + - @ as a formula: a phone like "+1 416 555 0100" turns
 // into #ERROR!, and a message starting with "=" would run. A leading apostrophe stores it as text.
 function cellSafe_(v) {
   return typeof v === "string" && /^[=+\-@]/.test(v) ? "'" + v : v;

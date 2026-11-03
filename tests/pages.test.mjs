@@ -14,6 +14,12 @@ const SITE = new URL("../site/", import.meta.url);
 const read = (name) => fs.readFileSync(new URL(name, SITE), "utf8").replace(/\r\n/g, "\n");
 const decode = (s) => s.replace(/&quot;/g, '"').replace(/&amp;/g, "&").replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
 const norm = (s) => s.replace(/[‘’]/g, "'");
+const sha256 = (s) => crypto.createHash("sha256").update(s).digest("hex");
+const PLACE_HASHES = new Set([
+  "4676fef2821e300a3101f81a1090f37da82163cfc2a70a990b0c0e45fa6f4092",
+  "eae6d77e26d53f8b50aae22c0c31508293e4abe5056e6db46d13d681e9880f42",
+  "546f729f98eb03a0486f48ed2044711dfc9da79e1031a7c883c333bfb6d4e874",
+]);
 const ldOf = (html) => {
   const block = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
   return block ? JSON.parse(block[1]) : null;
@@ -162,8 +168,10 @@ test("house rules: a copyright line on every page, no tool names, no city names,
   for (const f of files) {
     const text = read(f);
     assert.doesNotMatch(text, /\b(claude|anthropic|openai|chatgpt|copilot)\b/i, `${f} names a tool`);
-    // Public copy says Ontario and never the city or region (the owner, Oct 22).
-    assert.doesNotMatch(text, /\b(kitchener|waterloo|cambridge)\b/i, `${f} names a city`);
+    // Public copy says Ontario and never the city or region (the owner, Oct 22). The names are kept
+    // as hashes so this file doesn't list them.
+    const place = [...new Set(text.toLowerCase().match(/\p{L}+/gu) || [])].find((w) => PLACE_HASHES.has(sha256(w)));
+    assert.equal(place, undefined, `${f} names a city`);
     // Words that read as machine-written: show it, don't announce it (the owner, Nov 2).
     assert.doesNotMatch(text, /\b(plainly|honestly|genuinely)\b/i, `${f} vouches for its own honesty`);
     // © and ® are pictographic to Unicode but are plain typography here.

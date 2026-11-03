@@ -36,9 +36,9 @@ function crm({ agent = true } = {}) {
 }
 
 const draft = (over = {}) => ({
-  id: "O-1", status: "Draft", company: "Grand River Dental", city: "Guelph", industry: "Dental clinic",
-  email: "office@grandriverdental.example", email_kind: "role", email_source_url: "https://grandriverdental.example/contact",
-  reason: "Insurance claims by hand", subject: "Insurance paperwork at Grand River Dental",
+  id: "O-1", status: "Draft", company: "Lakeview Dental", city: "Barrie", industry: "Dental clinic",
+  email: "office@lakeviewdental.example", email_kind: "role", email_source_url: "https://lakeviewdental.example/contact",
+  reason: "Insurance claims by hand", subject: "Insurance paperwork at Lakeview Dental",
   body1: "Hi,\n\nFirst email.", body2: "Second.", body3: "Third.", approved: "", step: "0",
   thread_id: "", message_id: "", about: "A long page excerpt", deal_id: "D-1", ...over,
 });
@@ -60,7 +60,7 @@ test("Outreach tab: drafts, live sequences and recent results, without thread id
   p.add("Outreach", draft({ id: "O-5", status: "Skipped", updated: p.ago(60) }));
   p.add("Outreach", draft({ id: "O-6", status: "Excluded", closed_reason: "No-solicitation notice", updated: p.ago(2) }));
   p.add("Outreach", draft({ id: "O-7", status: "No email", updated: p.ago(10) }));
-  p.add("Actions", { id: "X-1", kind: "call", status: "Draft", outreach_id: "O-3", deal_id: "D-1", company: "Grand River Dental", to: "maya@grandriverdental.example", subject: "Re: Insurance", body: "Thursday at 2 works.", thread_id: "T-3", in_reply_to: "<r@x>", call_start: p.ago(-2), created: p.ago(0), updated: p.ago(0) });
+  p.add("Actions", { id: "X-1", kind: "call", status: "Draft", outreach_id: "O-3", deal_id: "D-1", company: "Lakeview Dental", to: "maya@lakeviewdental.example", subject: "Re: Insurance", body: "Thursday at 2 works.", thread_id: "T-3", in_reply_to: "<r@x>", call_start: p.ago(-2), created: p.ago(0), updated: p.ago(0) });
   p.add("Actions", { id: "X-2", kind: "reply", status: "Done", company: "Old Co", updated: p.ago(45) });
   p.add("Suppression", { email: "no@example.com", reason: "Unsubscribed" });
   p.add("Runs", { at: p.ago(1), job: "daily", summary: "found 4" });
@@ -91,12 +91,12 @@ test("Outreach tab: approving writes the edits and then the decision, and only o
   p.add("Outreach", draft({ created: p.ago(0), updated: p.ago(1) }));
   const shown = p.ctx.crmOutreachLoad().outreach[0];
 
-  const r = p.ctx.crmOutreachDecide({ id: "O-1", decision: "approve", updated: shown.updated, subject: "Claims at Grand River Dental", body1: "=Hi Maya,\n\nShorter." });
+  const r = p.ctx.crmOutreachDecide({ id: "O-1", decision: "approve", updated: shown.updated, subject: "Claims at Lakeview Dental", body1: "=Hi Maya,\n\nShorter." });
   assert.equal(r.outreach.approved, "yes");
   assert.equal(r.outreach.status, "Draft", "the agent moves it on, not the screen");
   const row = p.row("Outreach", "O-1");
   assert.equal(row.approved, "yes");
-  assert.equal(row.subject, "Claims at Grand River Dental");
+  assert.equal(row.subject, "Claims at Lakeview Dental");
   assert.equal(row.body1, "=Hi Maya,\n\nShorter.", "formula-looking text is stored as text, line breaks kept");
   assert.equal(row.body2, "Second.", "untouched follow-ups stay as they were");
 
@@ -150,8 +150,8 @@ test("Outreach tab: approve all approves only the drafts still waiting", () => {
 
 test("Outreach tab: drafted replies and call bookings can be edited, sent or skipped", () => {
   const p = crm();
-  p.add("Actions", { id: "X-1", kind: "reply", status: "Draft", company: "Grand River Dental", to: "maya@grandriverdental.example", subject: "Re: Insurance", body: "Hi Maya,\n\nHere are three times.", created: p.ago(0), updated: p.ago(0) });
-  p.add("Actions", { id: "X-2", kind: "call", status: "Done", company: "Conestoga Plumbing", body: "Booked." });
+  p.add("Actions", { id: "X-1", kind: "reply", status: "Draft", company: "Lakeview Dental", to: "maya@lakeviewdental.example", subject: "Re: Insurance", body: "Hi Maya,\n\nHere are three times.", created: p.ago(0), updated: p.ago(0) });
+  p.add("Actions", { id: "X-2", kind: "call", status: "Done", company: "Maple Plumbing", body: "Booked." });
   const r = p.ctx.crmActionDecide({ id: "X-1", decision: "approve", body: "Hi Maya,\n\nThursday at 2 works." });
   assert.equal(r.action.approved, "yes");
   assert.equal(p.row("Actions", "X-1").body, "Hi Maya,\n\nThursday at 2 works.");
