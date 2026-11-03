@@ -12,7 +12,7 @@ const INTAKE = ["intake/Schema.gs", "intake/Code.gs"];
 const CRM = ["crm/Schema.gs", "crm/Crm.gs"];
 
 const lead = (over = {}) => ({
-  name: "Jane Doe", email: "jane@acme.example", company: "Acme Distribution", phone: "+1 519 555 0100",
+  name: "Jane Doe", email: "jane@acme.example", company: "Acme Distribution", phone: "+1 416 555 0100",
   message: "=HYPERLINK(\"x\")\nWe key 200 invoices a month.", elapsed_ms: 45000, ...over,
 });
 const post = (ctx, data) => JSON.parse(ctx.doPost({ postData: { contents: typeof data === "string" ? data : JSON.stringify(data) } }).getContent());
@@ -25,7 +25,7 @@ test("a lead lands on the Leads tab and is filed as company, contact, deal and i
   assert.deepEqual(post(ctx, lead()), { ok: true });
 
   const [row] = tab(ss, "Leads");
-  assert.equal(row.phone, "+1 519 555 0100", "phone stored as text, not #ERROR!");
+  assert.equal(row.phone, "+1 416 555 0100", "phone stored as text, not #ERROR!");
   assert.ok(row.message.startsWith("=HYPERLINK"), "formula-looking message stored as text");
   assert.ok(row.message.includes("\n"), "message keeps its line breaks");
   assert.equal(row.status, "New");
@@ -110,17 +110,21 @@ test("bots get a quiet ok and nothing is stored", () => {
   const { ctx, env, ss } = loadProject(INTAKE);
   assert.deepEqual(post(ctx, lead({ website: "spam" })), { ok: true });
   assert.deepEqual(post(ctx, lead({ elapsed_ms: 400 })), { ok: true });
+  const { elapsed_ms, ...scripted } = lead();
+  assert.deepEqual(post(ctx, scripted), { ok: true }, "a post without the form's timer");
+  assert.deepEqual(post(ctx, lead({ elapsed_ms: "soon" })), { ok: true });
+  assert.deepEqual(post(ctx, lead({ elapsed_ms: null })), { ok: true });
   assert.equal(tab(ss, "Leads").length, 0);
   assert.equal(env.mails.length, 0);
-  const { elapsed_ms, ...old } = lead();
-  assert.deepEqual(post(ctx, old), { ok: true }, "older clients without elapsed_ms still get through");
-  assert.equal(tab(ss, "Leads").length, 1);
 });
 
 test("bad requests are refused without detail", () => {
   const { ctx } = loadProject(INTAKE);
   assert.deepEqual(post(ctx, lead({ company: "  " })), { ok: false, error: "missing_fields" });
   assert.deepEqual(post(ctx, lead({ email: "nope" })), { ok: false, error: "bad_email" });
+  for (const email of ["a@x.example,b@y.example", "a@x.example;b", "\"A\" <a@x.example>", "a@x", "a@x.example\nbcc"]) {
+    assert.deepEqual(post(ctx, lead({ email })), { ok: false, error: "bad_email" }, email);
+  }
   assert.deepEqual(post(ctx, "{bad json"), { ok: false, error: "bad_request" });
   assert.deepEqual(post(ctx, "[1,2]"), { ok: false, error: "bad_request" });
   assert.deepEqual(post(ctx, JSON.stringify(lead({ message: "x".repeat(25000) }))), { ok: false, error: "bad_request" });
@@ -142,6 +146,13 @@ test("auto-reply greeting only ever uses a plain first name", () => {
   assert.ok(env.mails.at(-1).body.startsWith("Hi there,"));
   post(ctx, lead({ email: "b@x.example", name: "Zoë-Anne O'Neil" }));
   assert.ok(env.mails.at(-1).body.startsWith("Hi Zoë-Anne,"));
+});
+
+test("plus-addressed variants of one inbox get one auto-reply", () => {
+  const { ctx, env } = loadProject(INTAKE);
+  for (const email of ["pat@x.example", "pat+1@x.example", "PAT+two@x.example"]) post(ctx, lead({ email }));
+  assert.equal(env.mails.filter((m) => m.to !== "thirdshift.ca@gmail.com").length, 1);
+  assert.equal(env.mails.length, 4, "three notices to us, one auto-reply");
 });
 
 test("Turnstile: enforced once the secret is set, hostname checked, outage tolerated", () => {
@@ -375,8 +386,8 @@ test("notes, calls and tasks; tasks tick off", () => {
 test("contact edits", () => {
   const p = crm();
   const r = p.ctx.crmSaveDeal({ company_name: "Gale Clinic", contact_name: "Lee", contact_email: "lee@gale.example" });
-  const saved = p.ctx.crmSaveContact({ id: r.contact.id, phone: "+1 226 555 0199", title: "Office manager", updated: r.contact.updated });
-  assert.equal(saved.contact.phone, "+1 226 555 0199");
+  const saved = p.ctx.crmSaveContact({ id: r.contact.id, phone: "+1 647 555 0199", title: "Office manager", updated: r.contact.updated });
+  assert.equal(saved.contact.phone, "+1 647 555 0199");
   assert.throws(() => p.ctx.crmSaveContact({ id: r.contact.id, email: "bad" }), /email/);
 });
 

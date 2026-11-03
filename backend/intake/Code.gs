@@ -44,10 +44,12 @@ function doPost(e) {
     try { data = JSON.parse(raw); } catch (parseErr) { return json_({ ok: false, error: "bad_request" }); }
     if (!data || typeof data !== "object" || Array.isArray(data)) return json_({ ok: false, error: "bad_request" });
 
-    // Bots: the hidden field filled in, or the form sent faster than a person could. Both get a quiet ok.
+    // Bots: the hidden field filled in, or the form sent faster than a person could. The site's form has
+    // sent elapsed_ms since before the endpoint went live, so a post without it didn't come from the page.
+    // All of these get a quiet ok.
     if (data.website) return json_({ ok: true });
     const elapsed = Number(data.elapsed_ms);
-    if (data.elapsed_ms != null && Number.isFinite(elapsed) && elapsed < MIN_FILL_MS) return json_({ ok: true });
+    if (data.elapsed_ms == null || !Number.isFinite(elapsed) || elapsed < MIN_FILL_MS) return json_({ ok: true });
 
     const lead = {
       name: clean_(data.name, 120),
@@ -248,9 +250,10 @@ function takeMailBudget_() {
 }
 
 // True the first time an address shows up in AUTO_REPLY_GAP_SECONDS; false for repeats.
+// "name+anything@" reaches the same inbox as "name@", so it counts as a repeat too.
 function firstReplyFor_(email) {
   const cache = CacheService.getScriptCache();
-  const key = "autoreply:" + email.toLowerCase();
+  const key = "autoreply:" + email.toLowerCase().replace(/\+[^@]*@/, "@");
   if (cache.get(key)) return false;
   cache.put(key, "1", AUTO_REPLY_GAP_SECONDS);
   return true;
@@ -279,7 +282,9 @@ function clean_(v, max, multiline) {
   if (multiline) s = s.replace(/\n{3,}/g, "\n\n");
   return s.trim().slice(0, max);
 }
-function isEmail_(s) { return s.length <= 160 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s); }
+// One plain address: no commas, semicolons or brackets that a mail service could read as a second
+// recipient or a display name. Same rule as the sales agent's isEmail_.
+function isEmail_(s) { return s.length <= 160 && /^[^\s@<>()",;:]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,24}$/.test(s); }
 function esc_(s) { return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
 function json_(obj) { return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON); }
 
@@ -287,7 +292,7 @@ function json_(obj) { return ContentService.createTextOutput(JSON.stringify(obj)
 // (No trailing underscore: Apps Script hides functions ending in "_" from the Run dropdown.)
 function selfTest() {
   const fake = { postData: { contents: JSON.stringify({
-    name: "Test Person", email: NOTIFY_TO, company: "Test Co", phone: "+1 519 555 0100",
+    name: "Test Person", email: NOTIFY_TO, company: "Test Co", phone: "+1 416 555 0100",
     message: "Self-test from the Apps Script editor.", source: "selftest", elapsed_ms: 60000,
   }) } };
   Logger.log(doPost(fake).getContent());
