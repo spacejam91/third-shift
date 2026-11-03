@@ -5,7 +5,7 @@
 import { BOOKING_URL } from "./config.js";
 
 // Where the real site lives. Anywhere else (a scraped copy, a cloned repo on a new domain) gets a note.
-const HOMES = ["thirdshift.ca", "www.thirdshift.ca", "spacejam91.github.io", "localhost", "127.0.0.1"];
+const HOMES = ["thirdshift.ca", "www.thirdshift.ca", "localhost", "127.0.0.1"];
 const ARRIVAL_KEY = "ts-arrival";
 const TAGS = ["utm_source", "utm_medium", "utm_campaign"];
 
