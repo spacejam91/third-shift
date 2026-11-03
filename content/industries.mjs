@@ -76,7 +76,7 @@ export const INDUSTRIES = [
     ],
     cta: {
       h2: "Tell us where your evenings go",
-      p: "A free 20-minute call. Tell us how quotes, schedules and invoices work today, and we’ll tell you plainly what’s worth automating.",
+      p: "A free 20-minute call. Tell us how quotes, schedules and invoices work today, and we’ll tell you what’s worth automating.",
     },
   },
 
@@ -146,7 +146,7 @@ export const INDUSTRIES = [
     ],
     cta: {
       h2: "Tell us where the re-keying happens",
-      p: "A free 20-minute call. Tell us how orders, invoices and stock move today, and we’ll tell you plainly what’s worth automating.",
+      p: "A free 20-minute call. Tell us how orders, invoices and stock move today, and we’ll tell you what’s worth automating.",
     },
   },
 
@@ -216,7 +216,7 @@ export const INDUSTRIES = [
     ],
     cta: {
       h2: "Tell us what keeps the front desk late",
-      p: "A free 20-minute call. Tell us which office jobs take the most time, and we’ll tell you plainly what’s worth automating.",
+      p: "A free 20-minute call. Tell us which office jobs take the most time, and we’ll tell you what’s worth automating.",
     },
   },
 
@@ -286,7 +286,7 @@ export const INDUSTRIES = [
     ],
     cta: {
       h2: "Tell us where the non-billable hours go",
-      p: "A free 20-minute call. Tell us which admin jobs eat into the week, and we’ll tell you plainly what’s worth automating.",
+      p: "A free 20-minute call. Tell us which admin jobs eat into the week, and we’ll tell you what’s worth automating.",
     },
   },
 
@@ -356,7 +356,7 @@ export const INDUSTRIES = [
     ],
     cta: {
       h2: "Tell us what the office is behind on",
-      p: "A free 20-minute call. Tell us how purchasing, invoices and hours work today, and we’ll tell you plainly what’s worth automating.",
+      p: "A free 20-minute call. Tell us how purchasing, invoices and hours work today, and we’ll tell you what’s worth automating.",
     },
   },
 ];

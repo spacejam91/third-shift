@@ -86,7 +86,6 @@ function cardLink(slug) {
 export function renderPage(svc, collection = COLLECTIONS[0], policy = sitePolicy()) {
   const url = SITE + svc.slug;
   const others = collection.items.filter((s) => s.slug !== svc.slug);
-  const ogTitle = svc.title.replace(/ \| Third Shift$/, "") + " — Third Shift";
   const { log, handles, how, person, fit } = svc;
   const jump = how ? ["#how-it-works", "How it works"] : ["#what-it-handles", "What it takes off your plate"];
 
@@ -116,7 +115,7 @@ export function renderPage(svc, collection = COLLECTIONS[0], policy = sitePolicy
 <meta property="og:site_name" content="Third Shift">
 <meta property="og:locale" content="en_CA">
 <meta property="og:url" content="${url}">
-<meta property="og:title" content="${esc(ogTitle)}">
+<meta property="og:title" content="${esc(svc.title)}">
 <meta property="og:description" content="${esc(svc.description)}">
 <meta property="og:image" content="https://thirdshift.ca/assets/og-image.png">
 <meta property="og:image:width" content="1200">
@@ -306,7 +305,7 @@ ${lines(others, (o) => `        <li><a href="${o.slug}"><strong>${esc(o.crumb)}<
     <p class="foot-line" data-reveal>Shift ends 7:00 AM.<br><span>Your team starts the day with it done.</span></p>
     <div class="foot-grid">
       <div>
-        <div>Third Shift — AI systems implementation for small businesses, Ontario, Canada</div>
+        <div>Third Shift · AI systems implementation for small businesses, Ontario, Canada</div>
         <div>© 2026 Third Shift · <a href="privacy">Privacy</a></div>
       </div>
       <ul>

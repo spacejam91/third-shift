@@ -151,7 +151,11 @@ test("Daylight: no night network or pointer effects, every page light, the shift
 });
 
 test("house rules: a copyright line on every page, no tool names, no city names, no emojis", () => {
-  for (const file of ALL) assert.match(read(file), /^<!DOCTYPE html>\n<!-- Copyright \(c\) 2026 Third Shift/, file);
+  for (const file of ALL) {
+    const html = read(file);
+    assert.match(html, /^<!DOCTYPE html>\n<!-- Copyright \(c\) 2026 Third Shift/, file);
+    assert.doesNotMatch(html, /<title>[^<]*—|og:title" content="[^"]*—/, `${file} has a long dash in its title`);
+  }
   const files = fs.readdirSync(SITE, { recursive: true })
     .map((f) => f.replace(/\\/g, "/"))
     .filter((f) => /\.(html|js|css|txt|xml|webmanifest)$/.test(f));
@@ -160,6 +164,8 @@ test("house rules: a copyright line on every page, no tool names, no city names,
     assert.doesNotMatch(text, /\b(claude|anthropic|openai|chatgpt|copilot)\b/i, `${f} names a tool`);
     // Public copy says Ontario and never the city or region (the owner, Oct 22).
     assert.doesNotMatch(text, /\b(kitchener|waterloo|cambridge)\b/i, `${f} names a city`);
+    // Words that read as machine-written: show it, don't announce it (the owner, Nov 2).
+    assert.doesNotMatch(text, /\b(plainly|honestly|genuinely)\b/i, `${f} vouches for its own honesty`);
     // © and ® are pictographic to Unicode but are plain typography here.
     assert.doesNotMatch(text, /(?![©®])\p{Extended_Pictographic}/u, `${f} has an emoji`);
   }

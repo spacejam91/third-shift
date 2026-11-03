@@ -93,7 +93,7 @@ export const SERVICES = [
     ],
     cta: {
       h2: "Tell us where your leads go quiet",
-      p: "A free 20-minute call. Tell us how inquiries arrive and what happens after a quote is sent, and we’ll tell you plainly what’s worth automating.",
+      p: "A free 20-minute call. Tell us how inquiries arrive and what happens after a quote is sent, and we’ll tell you what’s worth automating.",
     },
   },
 
@@ -169,14 +169,14 @@ export const SERVICES = [
       tools: ["QuickBooks", "Xero", "Sage", "NetSuite", "Shopify", "Stripe", "HubSpot", "Excel", "Google Sheets"],
     },
     faq: [
-      ["Do we need a new dashboard tool?", "Usually not. An email and a spreadsheet you already know how to read are often enough. If a dashboard would genuinely help, we say so and why."],
+      ["Do we need a new dashboard tool?", "Usually not. An email and a spreadsheet you already know how to read are often enough. If a dashboard would help, we say so and why."],
       ["What if two systems disagree?", "The report says so at the top, with the difference. It never picks one number and hides the other."],
       ["Can our accountant use it?", "Yes. The same figures can go to your accountant in the format they ask for."],
       ["What does a build cost?", PRICE],
     ],
     cta: {
       h2: "Tell us which numbers you build by hand",
-      p: "A free 20-minute call. Bring the report you build today, and we’ll tell you plainly whether it’s worth automating.",
+      p: "A free 20-minute call. Bring the report you build today, and we’ll tell you whether it’s worth automating.",
     },
   },
 
@@ -259,7 +259,7 @@ export const SERVICES = [
     ],
     cta: {
       h2: "Tell us about the routine only one person knows",
-      p: "A free 20-minute call. Describe what happens and how often, and we’ll tell you plainly whether it’s worth automating.",
+      p: "A free 20-minute call. Describe what happens and how often, and we’ll tell you whether it’s worth automating.",
     },
   },
 
@@ -295,7 +295,7 @@ export const SERVICES = [
       h2: "The invoice work nobody misses",
       intro: "The steps an accounts payable clerk does by hand, done in the same order, with the same checks, every night.",
       cards: [
-        ["Collecting invoices", "From the AP inbox, supplier emails and the vendor portals you already log into. Each one is kept with the original attached, so nobody has to ask where a number came from."],
+        ["Collecting invoices", "From the AP inbox, supplier emails and the vendor portals you already log into. Each one is kept with the original attached, for when someone asks where a number came from."],
         ["Reading and coding", "Supplier, invoice number, dates, line items and GST/HST are read off the page and coded to the right accounts, using rules taken from how your team codes them today."],
         ["Matching", "Each invoice is checked against its purchase order and, where you track it, what was received. Prices, quantities and totals have to agree within the tolerance you set."],
         ["Duplicates and bank details", "The same invoice arriving twice, from a second email or a resent PDF, is flagged and held before it’s posted. New or changed bank details are always held for a call-back."],
@@ -343,7 +343,7 @@ export const SERVICES = [
     ],
     cta: {
       h2: "Tell us how your invoices arrive",
-      p: "A free 20-minute call. Bring a rough count of invoices a month and the system you post them to, and we’ll tell you plainly whether it’s worth automating.",
+      p: "A free 20-minute call. Bring a rough count of invoices a month and the system you post them to, and we’ll tell you whether it’s worth automating.",
     },
   },
 
@@ -353,7 +353,7 @@ export const SERVICES = [
     title: "Compliance and Certificate Tracking in Ontario | Third Shift",
     description: "WSIB clearances, insurance certificates, training tickets and Ontario filings kept on file and checked overnight, with a reminder before anything lapses.",
     h1: "Every certificate on file. Every deadline <em>seen coming.</em>",
-    lede: "Subcontractor clearances, insurance certificates, training tickets, staff registrations and the Ontario filings that come with a due date. Third Shift builds the automation that keeps them on file, checks every night what’s about to lapse, and chases what’s missing, so nothing expires because nobody was watching. What gets filed and signed stays with you.",
+    lede: "Subcontractor clearances, insurance certificates, training tickets, staff registrations and the Ontario filings that come with a due date. Third Shift builds the automation that keeps them on file, checks every night what’s about to lapse, and chases what’s missing. What gets filed and signed stays with you.",
     more: "Clearances, certificates, training tickets and filings tracked, with reminders before they lapse.",
     linkText: "How compliance tracking works",
     schema: {
@@ -421,12 +421,12 @@ export const SERVICES = [
     faq: [
       ["Will this make us compliant?", "No tool can promise that, and we don’t give legal advice. It keeps the records, watches the dates and chases what’s missing, so the work compliance depends on doesn’t slip. What the rules require of your business is for you and your advisors to confirm."],
       ["Where are the records kept?", "In your own systems: the shared drive, inbox and spreadsheets you already use. Access is read-only wherever possible, and you can switch it off at any time."],
-      ["We only have a few subcontractors. Is it worth it?", "Maybe not on its own. It’s often added to another build, like supplier invoices or the weekly numbers. We’ll tell you plainly on the call whether it’s worth it for you."],
+      ["We only have a few subcontractors. Is it worth it?", "Maybe not on its own. It’s often added to another build, like supplier invoices or the weekly numbers. We’ll tell you on the call whether it’s worth it for you."],
       ["What does a build cost?", PRICE],
     ],
     cta: {
       h2: "Tell us which dates you keep track of",
-      p: "A free 20-minute call. Tell us what you keep on file and how you track it today, and we’ll tell you plainly what’s worth automating.",
+      p: "A free 20-minute call. Tell us what you keep on file and how you track it today, and we’ll tell you what’s worth automating.",
     },
   },
 
@@ -474,10 +474,10 @@ export const SERVICES = [
     },
     how: {
       kicker: "How it starts",
-      h2: "One call, one page, one build",
-      intro: "No discovery retainer, no slide deck.",
+      h2: "From the first call to a working build",
+      intro: "You see the price and the delivery date before anything is built.",
       steps: [
-        ["A 20-minute call", "You walk through the job that eats up your week. We tell you plainly whether it’s worth automating."],
+        ["A 20-minute call", "You walk through the job that eats up your week. We tell you whether it’s worth automating."],
         ["A one-page plan", "What it connects to, a fixed price and a delivery date. You decide from there."],
         ["Build, test, hand over", "We build it, run it alongside your team until it’s trusted, then hand it over with monitoring and a log of every run."],
       ],
@@ -502,13 +502,13 @@ export const SERVICES = [
       tools: ["Gmail", "Outlook", "QuickBooks", "Xero", "Sage", "NetSuite", "Excel", "Google Sheets", "HubSpot", "Shopify", "Slack", "Stripe"],
     },
     faq: [
-      ["Can you build something that isn’t on this list?", "Yes. These are examples, not the limit. Tell us what the job is and we’ll say honestly whether it’s worth building."],
+      ["Can you build something that isn’t on this list?", "Yes. These are examples, not the limit. Tell us what the job is and we’ll tell you whether it’s worth building."],
       ["What if it isn’t worth automating?", "Then we’ll tell you on the call, and why. Some jobs don’t repeat enough, or need a judgment call every time."],
       ["What does a build cost?", PRICE],
     ],
     cta: {
       h2: "Tell us what eats your week",
-      p: "A free 20-minute call. Describe the job, how often it happens and who does it today, and we’ll tell you plainly whether it’s worth building.",
+      p: "A free 20-minute call. Describe the job, how often it happens and who does it today, and we’ll tell you whether it’s worth building.",
     },
   },
 ];
