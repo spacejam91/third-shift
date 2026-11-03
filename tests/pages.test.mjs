@@ -140,8 +140,11 @@ test("the home page and each service page agree on the service's address", () =>
 });
 
 // Daylight (Oct 30, 2026) took out the night network behind every page and the pointer effects. The
-// shift log now gets its jobs from a timer in app.js instead of the network.
-test("Daylight: no night network or pointer effects, every page light, the shift log still runs", () => {
+// shift log now gets its jobs from a timer in app.js instead of the network. Work Order (Nov 2026) took
+// out what read as a generated site: the sketches of software above each service, everything fading
+// up as it scrolled in, the pulsing dot. The pointer touches it added (touches.js) answer the mouse
+// without moving the layout.
+test("Work Order: no night network or generated-site defaults, every page on card stock, the shift log still runs", () => {
   assert.ok(!fs.existsSync(new URL("assets/night.js", SITE)), "assets/night.js is back");
   for (const f of fs.readdirSync(new URL("assets/", SITE)).filter((name) => name.endsWith(".js"))) {
     // (calculator.js has initNights, its year of nights: a different thing)
@@ -150,9 +153,16 @@ test("Daylight: no night network or pointer effects, every page light, the shift
   for (const file of ALL) {
     const html = read(file);
     assert.doesNotMatch(html, /<canvas class="night"|class="(sky|spot|progress)"|data-glow|data-tilt|\bcomet\b/, `${file} still has part of the night layer`);
+    assert.doesNotMatch(html, /class="viz\b|data-reveal|class="pulse"/, `${file} has a sketch, a scroll reveal or the pulsing dot back`);
     assert.match(html, /<meta name="color-scheme" content="light">/, `${file} should say it is a light page`);
-    assert.match(html, /<meta name="theme-color" content="#FFFFFF">/, `${file} should have a white theme colour`);
+    assert.match(html, /<meta name="theme-color" content="#EEEBE3">/, `${file} should have the card-stock theme colour`);
+    assert.match(html, /<link rel="preload" href="assets\/fonts\/archivo-latin\.woff2" as="font" type="font\/woff2" crossorigin>/, `${file} should preload Archivo`);
   }
+  // Every font the stylesheet asks for is on the site, and nothing in fonts/ goes unused.
+  const css = read("assets/styles.css");
+  const used = [...css.matchAll(/url\("fonts\/([^"]+)"\)/g)].map((m) => m[1]).sort();
+  const shipped = fs.readdirSync(new URL("assets/fonts/", SITE)).filter((name) => name.endsWith(".woff2")).sort();
+  assert.deepEqual(used, shipped);
   assert.match(read("assets/app.js"), /log\.push\(\)/, "nothing adds rows to the shift log");
 });
 

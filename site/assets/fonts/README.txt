@@ -1,9 +1,11 @@
-Fonts used on thirdshift.ca, served from this site (Latin subset, WOFF2, as published by Google Fonts).
+Fonts used on thirdshift.ca, served from this site (WOFF2).
 
-bricolage-grotesque-latin.woff2   Bricolage Grotesque (variable: weight, optical size)
-                                  Copyright 2022 The Bricolage Grotesque Project Authors
-ibm-plex-mono-400-latin.woff2     IBM Plex Mono Regular
-ibm-plex-mono-500-latin.woff2     IBM Plex Mono Medium
-                                  Copyright 2017 IBM Corp.
+archivo-latin.woff2   Archivo (variable: weight 400-800, width 62-100)
+                      Copyright 2020 The Archivo Project Authors (https://github.com/Omnibus-Type/Archivo)
 
-Both are licensed under the SIL Open Font License, Version 1.1: https://openfontlicense.org
+Licensed under the SIL Open Font License, Version 1.1: https://openfontlicense.org
+
+Made from the Fontsource package (@fontsource-variable/archivo, Latin) with fontTools: the weight and
+width axes trimmed to the ranges above (instancer), then subset to the characters the site's pages and
+scripts use, plus common accents and punctuation. A character outside that set shows in the stand-in
+face (Arial) until the font is subset again; lab/themes/README.md has the steps.

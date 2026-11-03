@@ -109,7 +109,7 @@ export function renderPage(svc, collection = COLLECTIONS[0], policy = sitePolicy
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="manifest" href="site.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="theme-color" content="#FFFFFF">
+<meta name="theme-color" content="#EEEBE3">
 <meta name="color-scheme" content="light">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Third Shift">
@@ -126,7 +126,7 @@ export function renderPage(svc, collection = COLLECTIONS[0], policy = sitePolicy
 ${structuredData(svc, url, collection)}
 </script>
 <script>document.documentElement.classList.add("js");</script>
-<link rel="preload" href="assets/fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/styles.css">
 <script type="module" src="assets/page.js"></script>
 </head>
@@ -191,13 +191,13 @@ ${lines(log.rows, ([time, text, flag]) => `          <li${flag ? ' class="flag"'
 
   <section class="section" id="what-it-handles" aria-labelledby="handles-title">
     <div class="wrap">
-      <header class="sec-head" data-reveal>
+      <header class="sec-head">
         <p class="kicker">${esc(handles.kicker)}</p>
         <h2 id="handles-title">${esc(handles.h2)}</h2>
         <p class="intro">${esc(handles.intro)}</p>
       </header>
       <ul class="cards">
-${lines(handles.cards, ([h, p, link]) => `        <li class="card" data-panel data-reveal>
+${lines(handles.cards, ([h, p, link]) => `        <li class="card" data-panel>
           <h3>${esc(h)}</h3>
           <p>${esc(p)}</p>${link ? cardLink(link) : ""}
         </li>`)}
@@ -207,13 +207,13 @@ ${lines(handles.cards, ([h, p, link]) => `        <li class="card" data-panel da
 ${how ? `
   <section class="section" id="how-it-works" aria-labelledby="how-title">
     <div class="wrap">
-      <header class="sec-head" data-reveal>
+      <header class="sec-head">
         <p class="kicker">${esc(how.kicker)}</p>
         <h2 id="how-title">${esc(how.h2)}</h2>
         <p class="intro">${esc(how.intro)}</p>
       </header>
       <ol class="steps" id="steps">
-${lines(how.steps, ([h, p], i) => `        <li data-reveal>
+${lines(how.steps, ([h, p], i) => `        <li>
           <span class="step-n" aria-hidden="true">${i + 1}</span>
           <h3>${esc(h)}</h3>
           <p>${esc(p)}</p>
@@ -224,13 +224,13 @@ ${lines(how.steps, ([h, p], i) => `        <li data-reveal>
 ` : ""}
   <section class="section" aria-labelledby="person-title">
     <div class="wrap">
-      <header class="sec-head" data-reveal>
+      <header class="sec-head">
         <p class="kicker">${esc(person.kicker)}</p>
         <h2 id="person-title">${esc(person.h2)}</h2>${person.intro ? `
         <p class="intro">${esc(person.intro)}</p>` : ""}
       </header>
       <ul class="principles">
-${lines(person.items, ([h, p]) => `        <li data-reveal>
+${lines(person.items, ([h, p]) => `        <li>
           <h3>${esc(h)}</h3>
           <p>${esc(p)}</p>
         </li>`)}
@@ -240,14 +240,14 @@ ${lines(person.items, ([h, p]) => `        <li data-reveal>
 
   <section class="section" aria-label="Who it’s for and what it works with">
     <div class="wrap fit">
-      <div data-reveal>
+      <div>
         <p class="kicker">Who it’s for</p>
         <h2>A good fit if</h2>
         <ul class="fit-list">
 ${lines(fit.items, (t) => `          <li>${esc(t)}</li>`)}
         </ul>
       </div>
-      <div data-reveal>
+      <div>
         <p class="kicker">Works with</p>
         <h2>What you already run</h2>
         <ul class="custom-list" aria-label="Systems it works with">
@@ -260,11 +260,11 @@ ${lines(fit.tools, (t) => `          <li>${esc(t)}</li>`)}
 
   <section id="faq" class="section" aria-labelledby="faq-title">
     <div class="wrap faq">
-      <header class="sec-head" data-reveal>
+      <header class="sec-head">
         <p class="kicker">Questions</p>
         <h2 id="faq-title">What owners ask</h2>
       </header>
-      <div class="faq-list" data-reveal>
+      <div class="faq-list">
 ${lines(svc.faq, ([q, a]) => `        <details>
           <summary>${esc(q)}</summary>
           <p>${esc(a)}</p>
@@ -275,11 +275,11 @@ ${lines(svc.faq, ([q, a]) => `        <details>
 
   <section class="section" aria-labelledby="more-title">
     <div class="wrap">
-      <header class="sec-head" data-reveal>
+      <header class="sec-head">
         <p class="kicker">${esc(collection.more.kicker)}</p>
         <h2 id="more-title">${esc(collection.more.h2)}</h2>
       </header>
-      <ul class="more-list" data-reveal>
+      <ul class="more-list">
 ${lines(others, (o) => `        <li><a href="${o.slug}"><strong>${esc(o.crumb)}</strong><span>${esc(o.more)}</span></a></li>`)}
       </ul>
     </div>
@@ -287,7 +287,7 @@ ${lines(others, (o) => `        <li><a href="${o.slug}"><strong>${esc(o.crumb)}<
 
   <section class="section" aria-labelledby="cta-title">
     <div class="wrap">
-      <div class="cta-end" data-panel data-reveal data-cta-end>
+      <div class="cta-end" data-panel data-cta-end>
         <div>
           <p class="kicker">Book a call</p>
           <h2 id="cta-title">${esc(svc.cta.h2)}</h2>
@@ -302,7 +302,7 @@ ${lines(others, (o) => `        <li><a href="${o.slug}"><strong>${esc(o.crumb)}<
 
 <footer class="foot">
   <div class="wrap">
-    <p class="foot-line" data-reveal>Shift ends 7:00 AM.<br><span>Your team starts the day with it done.</span></p>
+    <p class="foot-line">Shift ends 7:00 AM.<br><span>Your team starts the day with it done.</span></p>
     <div class="foot-grid">
       <div>
         <div>Third Shift · AI systems implementation for small businesses, Ontario, Canada</div>
