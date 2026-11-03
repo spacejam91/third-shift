@@ -16,14 +16,16 @@
                Google Business Profile cover) it sits in the middle square and survives any crop.
     card       n=0..3: a square "what we do" picture for a Google Business Profile photo grid: one
                headline the site already uses, big enough to read as a thumbnail
-    og         1200x630 link preview
+    og         1200x630 link preview, in the site's Work Order look: card stock, black rules, the headline in
+               condensed capitals, the time card with its carbon copies, the promises on an amber strip.
+               Archivo, as on the site.
   The night network is the one the site used to draw live behind every page, drawn once and still. banner and square
   take flat=1 for the profile versions: a solid night background with a crescent in place of the
   network, which is what keeps them sharp after X and Facebook recompress them.
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=IBM+Plex+Mono:wght@400;500;600&display=block" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..100,400..800&family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=IBM+Plex+Mono:wght@400;500;600&display=block" rel="stylesheet">
 <style>
 :root {
   --night-0: #050913; --night-2: #0D1730; --ink: #ECF1F8; --ink-2: #C3CFE0; --muted: #95A6BF;
@@ -81,13 +83,28 @@ canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 /* align=center: the text block centred, for covers where the profile picture already carries the mark. */
 .banner .text.center { right: auto; left: 50%; translate: -50% -50%; text-align: center; justify-items: center; }
 
-.og .text { position: absolute; left: 7%; top: 50%; translate: 0 -50%; display: grid; justify-items: start; }
-.og .shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(5, 9, 19, .82) 25%, rgba(5, 9, 19, .35) 58%, transparent 80%); }
-.og .log { position: absolute; right: 6%; top: 50%; translate: 0 -50%; width: 31%; padding: 1.4% 1.6%; border-radius: 14px; border: 1px solid rgba(236, 241, 248, .17); background: linear-gradient(180deg, rgba(14, 23, 44, .92), rgba(7, 12, 25, .95)); box-shadow: 0 30px 70px -20px rgba(0, 0, 0, .9); font-family: "IBM Plex Mono", monospace; color: #E2E9F3; }
-.og .log-head { display: flex; justify-content: space-between; color: #9DB0CC; border-bottom: 1px solid rgba(236, 241, 248, .1); padding-bottom: .7em; margin-bottom: .5em; }
-.og .log-head b { color: var(--ink); font-weight: 500; }
-.og .row { display: grid; grid-template-columns: 5.6em 1fr; gap: .8em; padding: .38em 0; }
-.og .row time { color: #F2B55A; }
+/* og: the site's Work Order look (site/assets/styles.css). Sizes are set from the height in buildOg. */
+.og { --paper: #EEEBE3; --sheet: #FAF8F3; --ink: #141414; --ink-2: #2A2927; --line: #CBC6BB; --amber: #F2A93B;
+  background: var(--paper); color: var(--ink); font-family: "Archivo", "Helvetica Neue", Arial, sans-serif; isolation: isolate; }
+.og .narrow { font-stretch: 70%; font-weight: 800; text-transform: uppercase; }
+.og .bar { position: absolute; left: 0; right: 0; top: 0; display: flex; align-items: center; justify-content: space-between; border-bottom: 3px solid var(--ink); }
+.og .name { display: inline-flex; align-items: center; gap: .3em; letter-spacing: .01em; }
+.og .site, .og .eyebrow { font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--ink); }
+.og h1 { position: absolute; margin: 0; line-height: .84; letter-spacing: -.012em; color: var(--ink); }
+.og h1 span { display: block; }
+.og .eyebrow { position: absolute; margin: 0; line-height: 1.5; }
+.og .slip { position: absolute; background: var(--sheet); border: 3px solid var(--ink); }
+.og .slip::before, .og .slip::after { content: ""; position: absolute; inset: -3px; z-index: -1; border: 3px solid var(--ink); }
+.og .slip::before { background: #EDCDC2; translate: var(--c2) var(--c2); }
+.og .slip::after { background: #F6DFB4; translate: var(--c1) var(--c1); }
+.og .slip-head { display: flex; justify-content: space-between; align-items: center; padding: .55em .9em; background: var(--amber); border-bottom: 3px solid var(--ink); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.og .slip-head b { font-size: 1.75em; line-height: 1; letter-spacing: 0; }
+.og .row { display: grid; grid-template-columns: 5.4em 1fr; gap: 1em; margin: 0 .9em; padding: .62em 0; border-bottom: 1px solid var(--line); color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.og .row:last-child { border-bottom: 0; }
+.og .row time { font-weight: 700; color: var(--ink); }
+.og .hold { padding: .08em .42em; margin-right: .5em; background: var(--amber); font-size: .72em; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--ink); vertical-align: .12em; }
+.og .strip { position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: space-between; background: var(--amber); border-top: 3px solid var(--ink); }
+.og .strip span + span::before { content: ""; display: inline-block; width: 3px; height: .9em; margin: 0 .75em; background: var(--ink); vertical-align: -.08em; }
 </style>
 </head>
 <body>
@@ -381,36 +398,42 @@ function buildCard() {
 }
 
 function buildOg() {
-  stage.className = "stage night og";
-  const u = H / 100;
-  stage.append(drawNetwork({
-    sp: H / 9, seed: 21,
-    strength: (x, y) => smooth((x - .3) / .35) * (.5 + .5 * smooth(1 - Math.abs(y - .5) * 1.2)),
-    path: [[.6, .99], [.66, .88], [.72, .92], [.79, .83]],
-  }));
-  stage.append(el("div", "shade"));
-  const lock = el("div", "lockup", moon(Math.round(u * 6.4)), "Third Shift");
-  lock.style.fontSize = (u * 6.2) + "px";
-  const head = el("h1", "head");
-  head.append("The work that", el("br"), "gets done while", el("br"), "you ", el("em", null, "sleep."));
-  head.style.fontSize = (u * 12.4) + "px";
-  head.style.margin = (u * 5) + "px 0 " + (u * 5) + "px";
-  const sub = el("div", "url", "AI systems implementation · thirdshift.ca");
-  sub.style.fontSize = (u * 3.3) + "px";
-  stage.append(el("div", "text", lock, head, sub));
+  stage.className = "stage og";
+  const u = H / 100, x = W * .054, px = (v) => v + "px";
+  const set = (e, styles) => { for (const [k, v] of Object.entries(styles)) e.style.setProperty(k, v); return e; };
 
-  const log = el("div", "log");
-  log.style.fontSize = (u * 2.55) + "px";
-  const headRow = el("div", "log-head", el("b", null, "Tonight's shift"), "3:12 AM");
-  const rows = [["11:02 PM", "Answered 9 web inquiries"], ["11:20 PM", "Chased 14 open quotes"], ["11:48 PM", "Sent 6 crew schedules"], ["12:15 AM", "Matched 36 invoices to POs"]];
-  log.append(headRow, ...rows.map(([t, s]) => el("div", "row", el("time", null, t), s)));
-  stage.append(log);
+  // The site's header: the crescent and the name, the address on the right, a heavy rule under it.
+  const name = el("span", "name narrow", moon(Math.round(u * 4.6)), "Third Shift");
+  const bar = set(el("div", "bar", set(name, { "font-size": px(u * 4.7) }), set(el("span", "site", "thirdshift.ca"), { "font-size": px(u * 2.5) })),
+    { height: px(u * 13.4), padding: `0 ${px(x)}` });
+
+  // The opening line, as big as the frame allows, with the time card tucked under its long second line.
+  const fs = u * 18.6, top = u * 17.4;
+  const head = set(el("h1", "narrow", el("span", null, "The work that"), el("span", null, "gets done while"), el("span", null, "you sleep.")),
+    { "font-size": px(fs), left: px(x), top: px(top) });
+  const eyebrow = set(el("p", "eyebrow", "AI systems implementation", el("br"), "for Ontario small businesses"),
+    { "font-size": px(u * 2.45), left: px(x), top: px(top + fs * .84 * 3 + u * 4.2) });
+
+  const rows = [["11:02 PM", "Answered 9 web inquiries"], ["11:20 PM", "Chased 14 open quotes"], ["12:15 AM", "Matched 36 invoices to POs"]];
+  const slip = set(el("div", "slip",
+    el("div", "slip-head", set(el("b", "narrow", "Tonight's shift"), {}), "3:12 AM Ontario"),
+    ...rows.map(([t, s]) => el("div", "row", el("time", null, t), el("span", null, s))),
+    el("div", "row", el("time", null, "12:16 AM"), el("span", null, el("span", "hold", "Hold"), "2 invoices held for a person"))),
+    { "font-size": px(u * 2.3), left: px(W * .535), right: px(x + u * 3.4), top: px(top + fs * .84 * 2 + u * 2.6), "--c1": px(u * 1.7), "--c2": px(u * 3.4) });
+
+  // The four promises, as on the amber strip above the site's form.
+  const strip = set(el("div", "strip narrow", ...["Fixed price", "People approve the money", "Every run logged", "We meet in person"].map((s) => el("span", null, s))),
+    { height: px(u * 9.6), padding: `0 ${px(x)}`, "font-size": px(u * 3.3) });
+
+  stage.append(bar, head, eyebrow, slip, strip);
 }
 
 ({ flat: buildFlat, mark: buildMark, wordmark: buildWordmark, banner: buildBanner, square: buildSquare, card: buildCard, og: buildOg })[kind]();
 
 // The exporter waits for this before it takes the picture.
-document.fonts.ready.then(() => requestAnimationFrame(() => { document.body.dataset.ready = "1"; }));
+// The link preview's Archivo is asked for by name, so the picture never goes out in a stand-in face.
+const faces = kind === "og" ? [document.fonts.load('800 100px "Archivo"'), document.fonts.load('700 20px "Archivo"'), document.fonts.load('400 20px "Archivo"')] : [];
+Promise.all(faces).then(() => document.fonts.ready).then(() => requestAnimationFrame(() => { document.body.dataset.ready = "1"; }));
 </script>
 </body>
 </html>
