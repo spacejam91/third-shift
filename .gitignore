@@ -8,3 +8,7 @@ tmp-stills/
 
 # Post media staged for the publisher task (copies of third-shift-marketing/data/media)
 .publish/
+
+# The owner's to-do list and the bots' rules stay on this PC: the repo is public
+HANDOFF.md
+docs/SYSTEM.md
