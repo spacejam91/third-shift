@@ -13,6 +13,7 @@ listed, ask thirdshift.
 | Sales | **sales bot** | The `third-shift-outreach` repo: finding companies, enriching them, drafting and sending outreach, follow-ups, tracking replies. Also the Outreach view inside the CRM screen and the server functions it calls, its own tabs in the CRM sheet, and the Suppression list. | Doesn't touch `site/`, `tools/`, `social-kit/` or brand files. Doesn't post to social or make marketing content. |
 | Marketing | **marketing bot** | Its own folder (`third-shift-marketing`): content calendar, post copy, social profile setup, scheduling. Uses the files in `social-kit/` as they are. | Doesn't touch `site/`, `backend/`, `tools/` or `social-kit/`. Doesn't email prospects or build lead lists. |
 | Community | **community bot** (from when the owner starts it) | Day-to-day talk on Third Shift's own social accounts: replies to comments, mentions and messages people send us, likes and follows, and short, useful replies in Ontario small-business and AI threads. Keeps its log in the shared notes folder. | Doesn't publish posts or change profiles (marketing), doesn't pitch, cold-message or build lead lists (sales), and commits to no repo. |
+| Security | **security bot** | Checks that Third Shift is protected: all three repos and their history, the live site and its headers, the intake and CRM web apps, dependencies, what the public repo gives away about the owner, and how the bots handle text from strangers (comments, emails, web pages). Keeps its findings outside every repo, in `DownloadsThird Shift R&Dsecurity`. Fixes go to the lane that owns the code, as a tested patch on a local branch if that helps. | Doesn't push, deploy or merge, and changes no account, repo, DNS or security setting (those are the owner's; thirdshift lists them for him). No writes to the live CRM or intake form, no scans of systems that aren't ours, no posting. |
 | Business manager | **business manager bot** (coming) | To be set when the owner starts it. It gets its own lane and reports to thirdshift like the others, and this table is updated before it starts work. | Until then, no session takes on business-manager work. |
 
 Need something from another lane? Message its session; don't do the work yourself:
@@ -20,6 +21,7 @@ Need something from another lane? Message its session; don't do the work yoursel
 - Need a prospect list or an email sent? Ask the sales bot.
 - Need a post? Ask the marketing bot.
 - Someone to answer in comments or mentions? Ask the community bot.
+- Think something is exposed, or about to add a key, login or new service? Ask the security bot.
 
 ### Community bot rules
 
@@ -88,13 +90,14 @@ Whichever page a visit starts on, the site keeps the first tags the visitor arri
 - **Copy:** no invented clients, results or testimonials. Claims must match the site: fixed-price builds, people approve the money, read-only access where possible, we meet in person where we can and by video call everywhere else. No city or region is named anywhere public (the owner, Oct 22).
 - **Privacy:** no ad pixels or trackers on the site. The privacy page promises none.
 - **CASL:** the sales bot owns compliance (identification, unsubscribe, consent basis). The Suppression list applies to every lane.
+- **Security findings stay private** until fixed: never in a repo, a GitHub issue, a post or a commit message that says what was weak. A secret that leaks is rotated by the owner, not just deleted from the file.
 
 ## Reporting to thirdshift
 
 At the end of each block of work, each bot sends thirdshift one message in this shape:
 
 ```
-REPORT <sales bot | marketing bot | community bot>
+REPORT <sales bot | marketing bot | community bot | security bot>
 Done: what changed since the last report
 Committed: repo, commit, files (or "nothing yet")
 Needs from thirdshift: schema, site or asset requests (or "none")
