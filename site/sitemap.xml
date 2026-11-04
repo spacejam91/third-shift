@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://thirdshift.ca/</loc>
-    <lastmod>2026-10-20</lastmod>
+    <lastmod>2026-11-04</lastmod>
   </url>
   <url>
     <loc>https://thirdshift.ca/invoice-automation</loc>
@@ -22,7 +22,7 @@
   </url>
   <url>
     <loc>https://thirdshift.ca/compliance-automation</loc>
-    <lastmod>2026-10-21</lastmod>
+    <lastmod>2026-11-04</lastmod>
   </url>
   <url>
     <loc>https://thirdshift.ca/custom-automation</loc>
@@ -47,6 +47,14 @@
   <url>
     <loc>https://thirdshift.ca/manufacturers</loc>
     <lastmod>2026-10-20</lastmod>
+  </url>
+  <url>
+    <loc>https://thirdshift.ca/aoda-compliance-report</loc>
+    <lastmod>2026-11-04</lastmod>
+  </url>
+  <url>
+    <loc>https://thirdshift.ca/wsib-clearance-certificate</loc>
+    <lastmod>2026-11-04</lastmod>
   </url>
   <url>
     <loc>https://thirdshift.ca/privacy</loc>

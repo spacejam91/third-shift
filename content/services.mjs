@@ -379,11 +379,11 @@ export const SERVICES = [
       h2: "The paperwork with an expiry date",
       intro: "Most of it lives in an inbox, a filing cabinet and a calendar reminder that’s easy to miss.",
       cards: [
-        ["Subcontractor clearances", "WSIB clearance certificates on file before a subcontractor starts, renewed before they lapse, with copies kept. Clearances expire, so the dates matter."],
+        ["Subcontractor clearances", "WSIB clearance certificates on file before a subcontractor starts, renewed before they lapse, with copies kept. Clearances expire, so the dates matter.", "wsib-clearance-certificate"],
         ["Insurance certificates", "Certificates of insurance from subcontractors and suppliers kept with the job, the end dates watched, and new ones asked for before the old ones run out."],
         ["Training and tickets", "Working at heights, first aid, WHMIS, forklift and the rest, tracked by person, with a list of who’s due before anyone’s card runs out."],
         ["Licences and registrations", "Trade licences, professional registrations and permits renewed on time, with the reminder going to whoever does the renewing."],
-        ["Ontario filings and policies", "The filings and written policies that come with growing, like the accessibility compliance report at 20 employees or the electronic monitoring policy at 25, on the calendar with what each one needs."],
+        ["Ontario filings and policies", "The filings and written policies that come with growing, like the accessibility compliance report at 20 employees or the electronic monitoring policy at 25, on the calendar with what each one needs.", "aoda-compliance-report"],
         ["Customer questionnaires", "Security and supplier questionnaires from bigger customers, and insurance renewal forms, drafted from your own records. A person checks and approves every answer before it goes back."],
       ],
     },

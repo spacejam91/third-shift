@@ -8,6 +8,7 @@ import crypto from "node:crypto";
 import assert from "node:assert/strict";
 import { SERVICES } from "../content/services.mjs";
 import { INDUSTRIES } from "../content/industries.mjs";
+import { GUIDES } from "../content/guides.mjs";
 import { COLLECTIONS, renderPage, sitePolicy } from "../tools/build-pages.mjs";
 
 const SITE = new URL("../site/", import.meta.url);
@@ -126,6 +127,25 @@ test("each page's FAQ structured data says exactly what the page says", () => {
 
 test("example logs fit the staggered entrance in styles.css (six rows at most)", () => {
   for (const page of [...SERVICES, ...INDUSTRIES]) assert.ok(page.log.rows.length <= 6, `${page.slug} has ${page.log.rows.length} log rows`);
+  for (const guide of GUIDES) assert.ok(guide.glance.rows.length <= 6, `${guide.slug} has ${guide.glance.rows.length} rows at a glance`);
+});
+
+// A guide repeats an official page, so it names that page, links it, and says when it was checked.
+test("each guide is checked against an official page and says when", () => {
+  const official = /^https:\/\/(www\.)?(ontario\.ca|wsib\.ca|canada\.ca|[a-z0-9-]+\.gc\.ca)\//;
+  for (const guide of GUIDES) {
+    const html = read(guide.slug + ".html");
+    assert.match(guide.checked, /^\d{4}-\d{2}-\d{2}$/, guide.slug);
+    assert.ok(guide.sources.length > 0, `${guide.slug} has no sources`);
+    for (const [, href] of guide.sources) {
+      assert.match(href, official, `${guide.slug}: ${href} isn't an official page`);
+      assert.ok(html.includes(`href="${href}"`), `${guide.slug} doesn't link ${href}`);
+    }
+    const article = ldOf(html)["@graph"].find((n) => n["@type"] === "Article");
+    assert.equal(article.dateModified, guide.checked, guide.slug);
+    assert.deepEqual(article.isBasedOn, guide.sources.map(([, href]) => href), guide.slug);
+    assert.ok(html.includes("compliance-automation"), `${guide.slug} doesn't link the compliance service`);
+  }
 });
 
 test("the home page and each service page agree on the service's address", () => {

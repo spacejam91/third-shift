@@ -22,4 +22,6 @@
 - [Clinics](https://thirdshift.ca/clinics): the business side of dental, physiotherapy, chiropractic and veterinary clinics; patient records stay in the clinic software
 - [Professional services](https://thirdshift.ca/professional-services): document chasing, client onboarding and time-to-invoice for accounting firms, brokerages and other offices
 - [Manufacturers](https://thirdshift.ca/manufacturers): purchase orders, supplier invoices, material reorders, timesheets and weekly numbers
+- [Guide: the accessibility compliance report](https://thirdshift.ca/aoda-compliance-report): who in Ontario files the AODA report due December 31, 2026, what to have ready and who signs it, checked against ontario.ca
+- [Guide: WSIB clearance certificates](https://thirdshift.ca/wsib-clearance-certificate): what a clearance is, why a contractor checks one before a subcontractor starts, how long it lasts and how to look one up, checked against wsib.ca
 - [Privacy](https://thirdshift.ca/privacy): what is collected through the site and how to have it deleted
